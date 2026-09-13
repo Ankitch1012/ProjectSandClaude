@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Project Sand Atlas — a public archive of ten original experimental interfaces spanning field science, conservation, operations, print, and physics."
+    />
+    <meta name="theme-color" content="#191713" />
+    <title>Project Sand Atlas — Experimental Interface Archive</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#project-grid">Skip to project index</a>
+
+    <div class="site-shell">
+      <aside class="index-rail" aria-label="Archive filters">
+        <a class="monogram" href="/" aria-label="Project Sand Atlas home">
+          <span>PS</span>
+          <small>ATLAS</small>
+        </a>
+
+        <nav class="filter-stack" aria-label="Filter projects">
+          <button class="filter-button is-active" type="button" data-filter="all">
+            <span>00</span>
+            <strong>All systems</strong>
+          </button>
+          <button class="filter-button" type="button" data-filter="live">
+            <span>01</span>
+            <strong>Live demos</strong>
+          </button>
+          <button class="filter-button" type="button" data-filter="field">
+            <span>02</span>
+            <strong>Field work</strong>
+          </button>
+          <button class="filter-button" type="button" data-filter="operations">
+            <span>03</span>
+            <strong>Operations</strong>
+          </button>
+          <button class="filter-button" type="button" data-filter="analysis">
+            <span>04</span>
+            <strong>Analysis</strong>
+          </button>
+        </nav>
+
+        <a
+          class="rail-link"
+          href="https://github.com/Ankitch1012/ProjectSandClaude"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+          <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
+
+      <main>
+        <header class="hero">
+          <div class="hero-copy">
+            <div class="section-label">
+              <span>Closed programme</span>
+              <span>Public archive · 2026</span>
+            </div>
+            <h1>
+              Ten strange tools,
+              <em>one working atlas.</em>
+            </h1>
+            <p>
+              Experimental interfaces for real, awkward work: tracing chair
+              springs, balancing lock flights, proving signatures, reconciling
+              stock, and watching water turn to vapor.
+            </p>
+          </div>
+
+          <div class="hero-stamp" aria-label="Archive contains ten projects">
+            <span class="stamp-orbit" aria-hidden="true"></span>
+            <strong>10</strong>
+            <small>original<br />systems</small>
+          </div>
+        </header>
+
+        <section class="toolbar" aria-label="Project search">
+          <label>
+            <span>Find an instrument</span>
+            <input
+              id="project-search"
+              type="search"
+              placeholder="Search by name, craft, or stack"
+              autocomplete="off"
+            />
+          </label>
+          <output id="project-count" aria-live="polite">10 projects shown</output>
+        </section>
+
+        <section
+          class="project-grid"
+          id="project-grid"
+          aria-label="Project archive"
+        ></section>
+
+        <section class="archive-note">
+          <p class="section-label">A note from the bench</p>
+          <div>
+            <h2>Built as systems, not screens.</h2>
+            <p>
+              Each project joins a distinct visual language to domain rules,
+              state transitions, responsive behavior, and adversarial edge
+              cases. The two browser-only instruments are available as live
+              demos; the full-stack studies remain documented in source.
+            </p>
+          </div>
+        </section>
+
+        <footer>
+          <span>Project Sand Atlas</span>
+          <span>Original interface studies · 2026</span>
+          <a
+            href="https://github.com/Ankitch1012/ProjectSandClaude"
+            target="_blank"
+            rel="noreferrer"
+            >Browse the complete source ↗</a
+          >
+        </footer>
+      </main>
+
+      <aside class="field-ledger" aria-label="Archive summary">
+        <div class="ledger-head">
+          <span>Field ledger</span>
+          <span class="signal"><i></i> Public</span>
+        </div>
+
+        <dl>
+          <div>
+            <dt>Interfaces</dt>
+            <dd>10</dd>
+          </div>
+          <div>
+            <dt>Live now</dt>
+            <dd>02</dd>
+          </div>
+          <div>
+            <dt>Disciplines</dt>
+            <dd>07</dd>
+          </div>
+          <div>
+            <dt>Stacks</dt>
+            <dd>04</dd>
+          </div>
+        </dl>
+
+        <div class="ledger-key">
+          <p>Archive key</p>
+          <span><i class="key-dot live"></i> Interactive</span>
+          <span><i class="key-dot source"></i> Source study</span>
+          <span><i class="key-dot fixed"></i> Finished state</span>
+        </div>
+
+        <p class="ledger-foot">
+          Selected from a larger set of build, verifier, and research
+          artifacts. Temporary outputs are intentionally absent.
+        </p>
+      </aside>
+    </div>
+
+    <dialog id="preview-dialog" aria-labelledby="preview-title">
+      <div class="dialog-bar">
+        <div>
+          <span id="preview-number">01 / 10</span>
+          <h2 id="preview-title">Project preview</h2>
+        </div>
+        <button type="button" id="preview-close" aria-label="Close preview">
+          Close
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="dialog-image-wrap">
+        <img id="preview-image" alt="" />
+      </div>
+      <p id="preview-caption"></p>
+    </dialog>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

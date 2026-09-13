@@ -1,5 +1,6 @@
 # Dependencies and build output
 **/node_modules/
+**/node_modules
 **/dist/
 **/build/
 **/coverage/
@@ -9,6 +10,8 @@
 # Generated verification output
 jobs/
 **/.local*/
+**/.blind*/
+**/.blind-*/
 **/.compare*/
 **/.final*/
 **/.harden*/
@@ -24,7 +27,6 @@ blind-probe*/
 partial-fix-probe*/
 final-byte-check*/
 final-upload-byte-check*/
-reel-paper-bench/
 
 # Raw/intermediate downloads and archives
 *.tar

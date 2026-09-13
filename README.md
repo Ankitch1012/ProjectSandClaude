@@ -1,6 +1,6 @@
 # ProjectSandClaude
 
-Private working repository for Project Sand task design, implementation, verifier authoring, reference solutions, and final import archives.
+Public archive of Project Sand task design, implementation, verifier authoring, reference solutions, and selected final import archives.
 
 ## Contents
 
@@ -11,6 +11,13 @@ Private working repository for Project Sand task design, implementation, verifie
 
 Generated dependencies, Harbor jobs, logs, byte-check copies, and blind-solver workspaces are intentionally excluded.
 
-## Confidentiality
+## Public showcase
 
-Keep this repository private while tasks are under review. Publishing task source can create a public-code originality match.
+The root Vercel build creates **Project Sand Atlas**, a single responsive index of the ten canonical interface studies. Cavitation Lab and CycleCount Pivot are included as browser-only live demos; the remaining full-stack systems are presented through their finished views and source.
+
+```bash
+npm run build
+npm run serve
+```
+
+Generated showcase output is written to `showcase/dist/` and is not committed.

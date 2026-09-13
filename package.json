@@ -1,0 +1,14 @@
+{
+  "name": "project-sand-atlas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public showcase for the Project Sand application archive.",
+  "type": "module",
+  "scripts": {
+    "build": "node showcase/build.mjs",
+    "serve": "npx --yes serve@14 showcase/dist"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

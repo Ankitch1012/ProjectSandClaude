@@ -1,0 +1,563 @@
+diff --git a/backend/catalog.js b/backend/catalog.js
+index eb84fdf..747afaf 100644
+--- a/backend/catalog.js
++++ b/backend/catalog.js
+@@ -13,15 +13,15 @@ const MODES = {
+       { id: 'ragged-cut', grade: 1, contact: 'open' },
+       { id: 'no-cut', grade: 0, contact: 'close' },
+     ],
+-    passingGrade: 1,
++    passingGrade: 2,
+   },
+ };
+ 
+ const STATIONS = [
+   { id: 'drive-end', label: 'Drive end', shortLabel: 'D end', adjusters: ['drive'] },
+-  { id: 'drive-quarter', label: 'Drive quarter', shortLabel: 'D ¼', adjusters: ['nonDrive'] },
+-  { id: 'center', label: 'Center', shortLabel: 'Center', adjusters: ['drive'] },
+-  { id: 'non-drive-quarter', label: 'Non-drive quarter', shortLabel: 'ND ¼', adjusters: ['drive'] },
++  { id: 'drive-quarter', label: 'Drive quarter', shortLabel: 'D ¼', adjusters: ['drive'] },
++  { id: 'center', label: 'Center', shortLabel: 'Center', adjusters: ['drive', 'nonDrive'] },
++  { id: 'non-drive-quarter', label: 'Non-drive quarter', shortLabel: 'ND ¼', adjusters: ['nonDrive'] },
+   { id: 'non-drive-end', label: 'Non-drive end', shortLabel: 'ND end', adjusters: ['nonDrive'] },
+ ];
+ 
+diff --git a/backend/contact-engine.js b/backend/contact-engine.js
+index 112f352..1cc6679 100644
+--- a/backend/contact-engine.js
++++ b/backend/contact-engine.js
+@@ -9,6 +9,7 @@ function passes(observation) {
+ }
+ 
+ function contactDemand(observation, fixture) {
++  if (observation.mode !== 'lengthwise') return 0;
+   const outcome = modeOutcome(observation.mode, observation.outcome);
+   if (!outcome || outcome.contact === 'neutral') return 0;
+   return outcome.contact === 'close'
+@@ -19,33 +20,32 @@ function contactDemand(observation, fixture) {
+ function stationEvidence(observations, stationId) {
+   return observations
+     .filter((observation) => observation.station === stationId)
+-    .sort((first, second) => first.blade - second.blade)
+-    .slice(0, 1);
++    .sort((first, second) => first.blade - second.blade);
+ }
+ 
+ function collapseDemands(demands) {
+   if (!demands.length) return { movementMm: 0, conflict: false };
++  const nonZero = demands.filter((value) => value !== 0);
++  if (!nonZero.length) return { movementMm: 0, conflict: false };
++  const signs = new Set(nonZero.map((value) => Math.sign(value)));
++  if (signs.size > 1) return { movementMm: 0, conflict: true };
+   return {
+-    movementMm: demands.reduce((sum, value) => sum + value, 0) / demands.length,
++    movementMm: nonZero.reduce(
++      (worst, value) => Math.abs(value) > Math.abs(worst) ? value : worst,
++      nonZero[0],
++    ),
+     conflict: false,
+   };
+ }
+ 
+ function fixtureProfile(fixture) {
+-  if (!profileCache.has(fixture.adjusterFamily)) {
+-    profileCache.set(fixture.adjusterFamily, {
+-      clickPitchMm: fixture.clickPitchMm,
+-      maxClicks: fixture.maxClicks,
+-      closeDirection: fixture.closeDirection,
++  if (!profileCache.has(fixture.id)) {
++    profileCache.set(fixture.id, {
++      drive: { ...fixture.adjusters.drive },
++      nonDrive: { ...fixture.adjusters.nonDrive },
+     });
+   }
+-  return profileCache.get(fixture.adjusterFamily);
+-}
+-
+-function detentsFor(movementMm, profile) {
+-  const requested = Math.floor((Math.abs(movementMm) / profile.clickPitchMm) + 0.5);
+-  const clicks = Math.min(requested, profile.maxClicks);
+-  return { clicks, capped: clicks > profile.maxClicks };
++  return profileCache.get(fixture.id);
+ }
+ 
+ function opposite(direction) {
+@@ -53,44 +53,156 @@ function opposite(direction) {
+ }
+ 
+ function servicePattern(observations) {
+-  const byStation = new Map();
++  const byBlade = new Map();
+   for (const observation of observations) {
+     if (observation.mode !== 'lengthwise') continue;
+     const outcome = modeOutcome(observation.mode, observation.outcome);
+     if (!outcome || outcome.contact === 'neutral') continue;
+-    if (!byStation.has(observation.station)) byStation.set(observation.station, new Set());
+-    byStation.get(observation.station).add(observation.blade);
++    if (!byBlade.has(observation.blade)) byBlade.set(observation.blade, []);
++    byBlade.get(observation.blade).push({
++      station: observation.station,
++      direction: outcome.contact,
++    });
+   }
+-  for (const [station, blades] of byStation) {
+-    if (blades.size >= 3) {
+-      const label = STATIONS.find((entry) => entry.id === station)?.label || station;
+-      return { active: true, label: `${label.toUpperCase()} PATTERN` };
+-    }
++
++  for (const [blade, contacts] of byBlade) {
++    const stations = new Set(contacts.map((entry) => entry.station));
++    const directions = new Set(contacts.map((entry) => entry.direction));
++    if (stations.size < 3 || directions.size !== 1) continue;
++    const hasPassingPeers = Array.from(stations).every((station) => (
++      observations.some((observation) => (
++        observation.blade !== blade
++          && observation.station === station
++          && observation.mode === 'lengthwise'
++          && modeOutcome(observation.mode, observation.outcome)?.contact === 'neutral'
++      ))
++    ));
++    if (hasPassingPeers) return { active: true, label: `BLADE ${blade} CHECK` };
+   }
+   return { active: false, label: 'CLEAR' };
+ }
+ 
+-function recommendation(end, observations, fixture) {
+-  const stationDemands = STATIONS
+-    .filter((station) => station.adjusters.includes(end))
+-    .map((station) => collapseDemands(
++function stationDemands(observations, fixture) {
++  return STATIONS.map((station, index) => ({
++    station: station.id,
++    position: index / (STATIONS.length - 1),
++    ...collapseDemands(
+       stationEvidence(observations, station.id)
+         .map((observation) => contactDemand(observation, fixture)),
+-    ));
++    ),
++  }));
++}
+ 
+-  if (stationDemands.some((demand) => demand.conflict)) {
+-    return {
+-      end,
+-      status: 'withheld',
+-      clicks: 0,
+-      direction: '—',
+-      movementMm: 0,
+-      capped: false,
+-    };
++function movementAt(pair, position, profile) {
++  const driveMovement = pair.drive * profile.drive.clickPitchMm;
++  const nonDriveMovement = pair.nonDrive * profile.nonDrive.clickPitchMm;
++  return ((1 - position) * driveMovement) + (position * nonDriveMovement);
++}
++
++function violationFor(pair, demands, profile) {
++  return demands.reduce((total, demand) => {
++    if (!demand.movementMm) return total;
++    const supplied = movementAt(pair, demand.position, profile);
++    if (demand.movementMm > 0) {
++      return total + Math.max(0, demand.movementMm - supplied);
++    }
++    return total + Math.max(0, supplied - demand.movementMm);
++  }, 0);
++}
++
++function handleClicks(end, signedClicks, profile) {
++  if (!signedClicks) return 0;
++  const endProfile = profile[end];
++  const direction = signedClicks > 0
++    ? endProfile.closeDirection
++    : opposite(endProfile.closeDirection);
++  const takeup = direction === endProfile.lastApproach
++    ? 0
++    : endProfile.takeupClicks;
++  return Math.abs(signedClicks) + takeup;
++}
++
++function pairRank(pair, profile) {
++  const drive = handleClicks('drive', pair.drive, profile);
++  const nonDrive = handleClicks('nonDrive', pair.nonDrive, profile);
++  return [
++    drive + nonDrive,
++    Math.max(drive, nonDrive),
++    -drive,
++    pair.drive,
++    pair.nonDrive,
++  ];
++}
++
++function compareRank(first, second, profile) {
++  const left = pairRank(first, profile);
++  const right = pairRank(second, profile);
++  for (let index = 0; index < left.length; index += 1) {
++    if (left[index] !== right[index]) return left[index] - right[index];
++  }
++  return 0;
++}
++
++function coupledPlan(observations, fixture) {
++  const profile = fixtureProfile(fixture);
++  const demands = stationDemands(observations, fixture);
++  if (demands.some((demand) => demand.conflict)) {
++    return { withheld: true, pair: { drive: 0, nonDrive: 0 }, capped: new Set() };
++  }
++
++  const pairs = [];
++  for (let drive = -profile.drive.maxClicks; drive <= profile.drive.maxClicks; drive += 1) {
++    for (
++      let nonDrive = -profile.nonDrive.maxClicks;
++      nonDrive <= profile.nonDrive.maxClicks;
++      nonDrive += 1
++    ) {
++      const pair = { drive, nonDrive };
++      if (
++        handleClicks('drive', drive, profile) <= profile.drive.maxClicks
++        && handleClicks('nonDrive', nonDrive, profile) <= profile.nonDrive.maxClicks
++      ) {
++        pairs.push(pair);
++      }
++    }
++  }
++
++  const epsilon = 1e-9;
++  const feasible = pairs
++    .filter((pair) => violationFor(pair, demands, profile) <= epsilon)
++    .sort((first, second) => compareRank(first, second, profile));
++  if (feasible.length) {
++    return { withheld: false, pair: feasible[0], capped: new Set() };
++  }
++
++  const signs = new Set(
++    demands
++      .map((demand) => Math.sign(demand.movementMm))
++      .filter((sign) => sign !== 0),
++  );
++  if (signs.size > 1) {
++    return { withheld: true, pair: { drive: 0, nonDrive: 0 }, capped: new Set() };
+   }
+ 
+-  const combined = collapseDemands(stationDemands.map((demand) => demand.movementMm));
+-  if (combined.conflict) {
++  const ranked = pairs
++    .map((pair) => ({
++      pair,
++      violation: violationFor(pair, demands, profile),
++    }))
++    .sort((first, second) => (
++      first.violation - second.violation || compareRank(first.pair, second.pair, profile)
++    ));
++  const pair = ranked[0]?.pair || { drive: 0, nonDrive: 0 };
++  const capped = new Set(
++    ['drive', 'nonDrive'].filter((end) => (
++      handleClicks(end, pair[end], profile) === profile[end].maxClicks
++    )),
++  );
++  return { withheld: false, pair, capped };
++}
++
++function recommendationFromPlan(end, plan, fixture) {
++  if (plan.withheld) {
+     return {
+       end,
+       status: 'withheld',
+@@ -100,18 +212,19 @@ function recommendation(end, observations, fixture) {
+       capped: false,
+     };
+   }
+-
+   const profile = fixtureProfile(fixture);
+-  const detents = detentsFor(combined.movementMm, profile);
+-  const closing = profile.closeDirection[end];
+-  const direction = combined.movementMm >= 0 ? closing : opposite(closing);
++  const signedClicks = plan.pair[end];
++  const endProfile = profile[end];
++  const closing = endProfile.closeDirection;
++  const direction = signedClicks >= 0 ? closing : opposite(closing);
++  const clicks = handleClicks(end, signedClicks, profile);
+   return {
+     end,
+-    status: detents.clicks ? 'turn' : 'no-move',
+-    clicks: detents.clicks,
+-    direction: detents.clicks ? direction : '—',
+-    movementMm: detents.clicks * profile.clickPitchMm,
+-    capped: detents.capped,
++    status: signedClicks ? 'turn' : 'no-move',
++    clicks,
++    direction: signedClicks ? direction : '—',
++    movementMm: Math.abs(signedClicks) * endProfile.clickPitchMm,
++    capped: plan.capped.has(end) || clicks === endProfile.maxClicks,
+   };
+ }
+ 
+@@ -121,9 +234,10 @@ function evaluateContact(observations, fixture) {
+     passing: passes(observation),
+   }));
+   const serviceHold = servicePattern(annotated);
++  const plan = coupledPlan(annotated, fixture);
+   const recommendations = {
+-    drive: recommendation('drive', annotated, fixture),
+-    nonDrive: recommendation('nonDrive', annotated, fixture),
++    drive: recommendationFromPlan('drive', plan, fixture),
++    nonDrive: recommendationFromPlan('nonDrive', plan, fixture),
+   };
+   if (serviceHold.active) {
+     for (const end of ['drive', 'nonDrive']) {
+diff --git a/backend/proof-session.js b/backend/proof-session.js
+index cf627cb..a8e1266 100644
+--- a/backend/proof-session.js
++++ b/backend/proof-session.js
+@@ -1,6 +1,6 @@
+ const { STATIONS } = require('./catalog');
+ 
+-const CELL_SHIFT = Math.ceil(Math.log2(STATIONS.length));
++const CELL_SHIFT = Math.ceil(Math.log2(STATIONS.length * 2));
+ let proofSerial = 0;
+ 
+ function cellToken({ blade, station, mode }) {
+diff --git a/backend/release-gate.js b/backend/release-gate.js
+index 949cec9..7269890 100644
+--- a/backend/release-gate.js
++++ b/backend/release-gate.js
+@@ -2,19 +2,25 @@ const { passes } = require('./contact-engine');
+ 
+ function releaseGate(observations, freeSpin, fixture) {
+   const expected = fixture.bladeCount * fixture.stations.length * 2;
+-  const coverageByBlade = Array(fixture.bladeCount);
+-  for (const observation of observations) {
+-    const index = observation.blade - 1;
+-    coverageByBlade[index] = (coverageByBlade[index] || 0) + 1;
+-  }
+-  const complete = coverageByBlade.every((count) => count === fixture.stations.length * 2);
++  const coordinates = new Set(
++    observations.map((observation) => (
++      `${observation.blade}:${observation.station}:${observation.mode}`
++    )),
++  );
++  const complete = Array.from(
++    { length: fixture.bladeCount },
++    (_, index) => index + 1,
++  ).every((blade) => fixture.stations.every((station) => (
++    coordinates.has(`${blade}:${station.id}:lengthwise`)
++      && coordinates.has(`${blade}:${station.id}:upright`)
++  )));
+   const passing = complete && observations.every(passes);
+   return {
+     ready: complete && passing && freeSpin,
+     complete,
+     passing,
+     expected,
+-    completed: observations.length,
++    completed: coordinates.size,
+   };
+ }
+ 
+diff --git a/frontend/src/bench-state.js b/frontend/src/bench-state.js
+index 3a08262..7e32ba5 100644
+--- a/frontend/src/bench-state.js
++++ b/frontend/src/bench-state.js
+@@ -1,14 +1,20 @@
+ export function acceptSnapshot(current, incoming) {
++  if (current && incoming.proofId !== current.proofId) return current;
++  if (current && incoming.revision < current.revision) return current;
+   const received = [current, incoming].filter(Boolean);
+   return received[received.length - 1];
+ }
+ 
+ export function orderedStations(fixture) {
+-  return fixture.stations;
++  return fixture.driveSide === 'right'
++    ? [...fixture.stations].reverse()
++    : fixture.stations;
+ }
+ 
+-export function screenEnds() {
+-  return { left: 'DRIVE END', right: 'NON-DRIVE END' };
++export function screenEnds(fixture) {
++  return fixture.driveSide === 'right'
++    ? { left: 'NON-DRIVE END', right: 'DRIVE END' }
++    : { left: 'DRIVE END', right: 'NON-DRIVE END' };
+ }
+ 
+ export function formatDistance(mm, unit, digits = 3) {
+@@ -17,10 +23,7 @@ export function formatDistance(mm, unit, digits = 3) {
+ }
+ 
+ export function displayRecommendation(recommendation, fixture, unit) {
+-  if (unit !== 'in' || !recommendation.clicks) return recommendation;
+-  const displayedMovement = recommendation.movementMm / 25.4;
+-  return {
+-    ...recommendation,
+-    clicks: Math.ceil(displayedMovement / fixture.clickPitchMm),
+-  };
++  void fixture;
++  void unit;
++  return recommendation;
+ }
+diff --git a/frontend/src/components/ServiceMat.jsx b/frontend/src/components/ServiceMat.jsx
+index 0fbcce7..cc35104 100644
+--- a/frontend/src/components/ServiceMat.jsx
++++ b/frontend/src/components/ServiceMat.jsx
+@@ -17,6 +17,9 @@ export default function ServiceMat({
+   const { fixture, results, recommendations, release } = state;
+   const stations = orderedStations(fixture);
+   const ends = screenEnds(fixture);
++  const adjusterEnds = fixture.driveSide === 'right'
++    ? ['nonDrive', 'drive']
++    : ['drive', 'nonDrive'];
+ 
+   return (
+     <main className="service-mat" aria-label="Reel paper service mat">
+@@ -60,8 +63,8 @@ export default function ServiceMat({
+ 
+       <section className="adjuster-deck" aria-label="Bedbar adjusters">
+         <KnurledAdjuster
+-          end="drive"
+-          recommendation={recommendations.drive}
++          end={adjusterEnds[0]}
++          recommendation={recommendations[adjusterEnds[0]]}
+           fixture={fixture}
+           unit={unit}
+         />
+@@ -71,8 +74,8 @@ export default function ServiceMat({
+           <small>of {release.expected}</small>
+         </div>
+         <KnurledAdjuster
+-          end="nonDrive"
+-          recommendation={recommendations.nonDrive}
++          end={adjusterEnds[1]}
++          recommendation={recommendations[adjusterEnds[1]]}
+           fixture={fixture}
+           unit={unit}
+         />
+diff --git a/frontend/src/styles.css b/frontend/src/styles.css
+index 390692a..4436fa7 100644
+--- a/frontend/src/styles.css
++++ b/frontend/src/styles.css
+@@ -677,12 +677,10 @@ input:focus-visible {
+   }
+ 
+   .service-mat {
+-    display: grid;
+-    grid-template-columns: minmax(0, 1fr);
+-    grid-template-rows: auto auto auto auto minmax(300px, auto) auto;
+-    min-height: 720px;
++    display: block;
++    min-height: 0;
+     padding: 12px;
+-    overflow: hidden;
++    overflow: visible;
+   }
+ 
+   .mat-stamp {
+@@ -724,27 +722,55 @@ input:focus-visible {
+   }
+ 
+   .swatch-track {
+-    grid-row: 5;
+-    grid-template-columns: none;
+-    grid-template-rows: 1fr;
+-    grid-auto-flow: column;
+-    grid-auto-columns: minmax(max-content, 1fr);
++    grid-row: auto;
++    grid-template-columns: repeat(2, minmax(0, 1fr));
++    grid-template-rows: none;
++    grid-auto-flow: row;
++    grid-auto-columns: auto;
+     gap: 8px;
+     width: 100%;
+   }
+ 
++  .paper-swatch {
++    min-width: 0;
++    min-height: 268px;
++  }
++
++  .paper-swatch:last-child { grid-column: 1 / -1; }
++
+   .adjuster-deck {
+-    position: relative;
+-    grid-row: 5;
+-    align-self: end;
+-    z-index: 10;
+-    grid-template-columns: minmax(230px, 1fr) auto minmax(230px, 1fr);
++    position: static;
++    grid-row: auto;
++    grid-template-columns: repeat(2, minmax(0, 1fr));
++    gap: 8px;
+     width: 100%;
+-    margin: 0;
++    margin-top: 14px;
++  }
++
++  .deck-note {
++    grid-column: 1 / -1;
++    grid-row: 1;
++  }
++
++  .adjuster {
++    grid-template-columns: 58px minmax(0, 1fr);
++    min-width: 0;
++    padding: 8px;
++  }
++
++  .knurl {
++    width: 50px;
++    height: 50px;
++  }
++
++  .knurl i {
++    top: 20px;
++    width: 37px;
++    transform-origin: 18px center;
+   }
+ 
+   .release-apron {
+-    grid-row: 6;
++    grid-row: auto;
+     grid-template-columns: minmax(230px, 1fr) auto;
+     width: 100%;
+   }
+@@ -754,7 +780,7 @@ input:focus-visible {
+     text-align: left;
+   }
+ 
+-  .service-hold { grid-row: 4; }
++  .service-hold { grid-row: auto; }
+ }
+ 
+ @media (max-width: 440px) {
+@@ -771,7 +797,7 @@ input:focus-visible {
+   }
+ 
+   .service-mat {
+-    min-height: 720px;
++    min-height: 0;
+     padding: 12px;
+   }
+ 
+@@ -785,15 +811,17 @@ input:focus-visible {
+     height: 29px;
+   }
+ 
+-  .swatch-track { grid-auto-columns: minmax(160px, max-content); }
+-
+   .adjuster-deck {
+-    grid-template-columns: repeat(2, minmax(228px, 1fr));
++    grid-template-columns: minmax(0, 1fr);
+     width: 100%;
+-    margin: 0;
++    margin-top: 14px;
+   }
+ 
+-  .deck-note { display: none; }
++  .deck-note {
++    display: grid;
++    grid-column: 1;
++  }
++  .adjuster-nonDrive { direction: ltr; }
+   .release-apron { grid-template-columns: minmax(0, 1fr); }
+   .release-apron button { width: 100%; }
+   .release-apron > output { grid-column: 1; }
