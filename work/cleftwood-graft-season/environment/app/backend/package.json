@@ -1,0 +1,14 @@
+{
+  "name": "cleftwood-season-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marrowfield grafting-season service for Cleftwood",
+  "license": "UNLICENSED",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

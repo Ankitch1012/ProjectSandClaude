@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cleftwood &mdash; Marrowfield Orchard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="mast">
+      <div class="mast-name">
+        <span class="mast-word">Cleftwood</span>
+        <span class="mast-place">Marrowfield Orchard</span>
+      </div>
+      <div class="mast-meta">
+        <span class="chip" data-testid="season-day" data-day="1">Day 1</span>
+        <span class="chip" data-testid="season-light" data-light="morning">morning</span>
+        <span class="chip" data-testid="graft-count" data-count="0">0 grafts</span>
+        <span class="chip chip-hand" data-testid="hand-name">&mdash;</span>
+      </div>
+    </header>
+
+    <p class="notice" data-testid="notice" hidden></p>
+
+    <main class="season">
+      <section class="visit" data-testid="visit-panel">
+        <div class="visit-empty" data-testid="visit-empty">
+          <h1>The season has not begun</h1>
+          <p>Pick a visit from the season plan to walk the orchard with Ada.</p>
+        </div>
+
+        <article class="visit-body" data-testid="visit-body" hidden>
+          <p class="visit-when" data-testid="visit-when">Day 1 &middot; morning</p>
+          <h1 class="visit-title" data-testid="visit-title"></h1>
+          <p class="visit-setting" data-testid="visit-setting"></p>
+
+          <p class="visit-speaker" data-testid="visit-speaker">Ada Thrale</p>
+          <blockquote class="visit-line" data-testid="visit-line"></blockquote>
+
+          <div class="touches" data-testid="visit-touches">
+            <h2 class="touches-head">This visit works on</h2>
+            <ul class="touch-list" data-testid="touch-list"></ul>
+          </div>
+
+          <div class="choices" data-testid="visit-choices"></div>
+
+          <p class="visit-foot">
+            <button type="button" class="reread" data-testid="reread-visit">Read this visit again</button>
+          </p>
+        </article>
+      </section>
+
+      <aside class="board" data-testid="graft-board">
+        <h2 class="panel-head">The graft board</h2>
+        <ul class="graft-list" data-testid="graft-list"></ul>
+        <p class="board-empty" data-testid="board-empty">No stock has been worked yet.</p>
+      </aside>
+    </main>
+
+    <section class="standings" data-testid="standings">
+      <h2 class="panel-head">How the season stands</h2>
+      <div class="gauges" data-testid="gauge-list"></div>
+    </section>
+
+    <section class="desk">
+      <div class="desk-panel" data-testid="visit-list-panel">
+        <h2 class="panel-head">The season plan</h2>
+        <ul class="visit-list" data-testid="visit-list"></ul>
+      </div>
+
+      <div class="desk-panel" data-testid="record-list-panel">
+        <h2 class="panel-head">How the row can be entered</h2>
+        <ul class="record-list" data-testid="record-list"></ul>
+      </div>
+
+      <div class="desk-panel" data-testid="notebook">
+        <h2 class="panel-head">The season notebook</h2>
+        <div class="conflict" data-testid="save-conflict" hidden>
+          <p class="conflict-head" data-testid="save-conflict-head"></p>
+          <p class="conflict-body" data-testid="save-conflict-body"></p>
+        </div>
+        <form class="page-form" data-testid="page-form">
+          <label class="page-label" for="page-name">Page name</label>
+          <input id="page-name" class="page-input" data-testid="page-name" autocomplete="off" />
+          <button type="submit" class="page-save" data-testid="save-page">Write the season onto this page</button>
+        </form>
+        <ul class="page-list" data-testid="page-list"></ul>
+        <p class="page-empty" data-testid="page-empty">Nothing has been written down yet.</p>
+      </div>
+
+      <div class="desk-panel" data-testid="season-record-panel">
+        <h2 class="panel-head">The season record</h2>
+        <ol class="record-book" data-testid="season-record"></ol>
+      </div>
+    </section>
+
+    <script src="app.js"></script>
+  </body>
+</html>

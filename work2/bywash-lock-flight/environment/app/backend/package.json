@@ -1,0 +1,14 @@
+{
+  "name": "bywash-flight-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marsden flight passage and water account service",
+  "license": "UNLICENSED",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

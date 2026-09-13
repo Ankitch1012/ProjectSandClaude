@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cribstave &middot; devisor's desk</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="deskhead">
+      <div class="brand">
+        <span class="mark">Cribstave</span>
+        <span class="trade">devisor's desk</span>
+      </div>
+      <div class="controls">
+        <label class="control">
+          <span>crib</span>
+          <select data-testid="crib-picker" id="crib-picker"></select>
+        </label>
+        <label class="control">
+          <span>bars</span>
+          <input data-testid="bars" id="bars" max="128" min="2" type="number" value="32" />
+        </label>
+        <button data-testid="check" id="check" type="button">Check the crib</button>
+      </div>
+    </header>
+
+    <main class="desk">
+      <section class="pane crib">
+        <h2>The crib</h2>
+        <textarea
+          aria-label="crib"
+          data-testid="crib-text"
+          id="crib-text"
+          spellcheck="false"
+        ></textarea>
+
+        <div class="stave" data-testid="stave" id="stave">
+          <ol class="gutter" data-testid="gutter" id="gutter"></ol>
+          <div class="source" data-testid="source" id="source"></div>
+        </div>
+      </section>
+
+      <section class="pane report">
+        <h2>What the desk found</h2>
+        <p class="verdict" data-testid="verdict" id="verdict">Nothing checked yet.</p>
+        <ul class="faults" data-testid="faults" id="faults"></ul>
+      </section>
+
+      <section class="pane setpane">
+        <h2>The set</h2>
+        <div class="setgrid" data-testid="setgrid" id="setgrid"></div>
+        <h2 class="second">Phrase by phrase</h2>
+        <ul class="phrases" data-testid="phrases" id="phrases"></ul>
+      </section>
+
+      <section class="pane bookpane">
+        <h2>The figure book</h2>
+        <ul class="book" data-testid="book" id="book"></ul>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

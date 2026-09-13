@@ -1,0 +1,12 @@
+{
+  "name": "foldmark-proof-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FoldMark print-signature proof workstation",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
