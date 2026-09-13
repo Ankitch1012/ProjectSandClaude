@@ -1,0 +1,2508 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/local.config.js",
+      "--reporter=list,json"
+    ],
+    "configFile": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/local.config.js",
+    "rootDir": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "behavior.spec.js",
+      "file": "behavior.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[F2P][D1] A crib whose bar spans are written with an en dash is read instead of being rejected line by line.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 366,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"phrases\": 4,\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"phrases\": 0,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"phrases\": 4,\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"phrases\": 0,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:351:95",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 95,
+                      "line": 351
+                    },
+                    "snippet": "  349 |   const report = await readReport(page);\n  350 |   writeJson('d1-en-dash-sound.json', report);\n> 351 |   expect({ good: report.good, faults: report.faults.length, phrases: report.phrases.length }).toEqual({\n      |                                                                                               ^\n  352 |     good: 'yes',\n  353 |     faults: 0,\n  354 |     phrases: 4"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 95,
+                        "line": 351
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"phrases\": 4,\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"phrases\": 0,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  349 |   const report = await readReport(page);\n  350 |   writeJson('d1-en-dash-sound.json', report);\n> 351 |   expect({ good: report.good, faults: report.faults.length, phrases: report.phrases.length }).toEqual({\n      |                                                                                               ^\n  352 |     good: 'yes',\n  353 |     faults: 0,\n  354 |     phrases: 4\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:351:95"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:34:57.980Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D1-A-crib-wh-3e679-eing-rejected-line-by-line-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 95,
+                    "line": 351
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-22211a60fa6d8cb01c9f",
+          "file": "behavior.spec.js",
+          "line": 344,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] Every phrase of an en-dash crib is listed under the bars it was written against.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 331,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 6\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"1-8\",\u001b[39m\n\u001b[32m-   \"9-16\",\u001b[39m\n\u001b[32m-   \"17-24\",\u001b[39m\n\u001b[32m-   \"25-32\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 6\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"1-8\",\u001b[39m\n\u001b[32m-   \"9-16\",\u001b[39m\n\u001b[32m-   \"17-24\",\u001b[39m\n\u001b[32m-   \"25-32\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:362:55",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 55,
+                      "line": 362
+                    },
+                    "snippet": "  360 |   await writeCrib(page, SOUND_IN_EN_DASHES, 32);\n  361 |   const report = await readReport(page);\n> 362 |   expect(report.phrases.map((phrase) => phrase.span)).toEqual(['1-8', '9-16', '17-24', '25-32']);\n      |                                                       ^\n  363 |   expect(report.phrases.map((phrase) => phrase.needs)).toEqual([\n  364 |     bars('circle 4H round & back'),\n  365 |     bars('dance RH across & LH back'),"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 55,
+                        "line": 362
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 6\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[32m- Array [\u001b[39m\n\u001b[32m-   \"1-8\",\u001b[39m\n\u001b[32m-   \"9-16\",\u001b[39m\n\u001b[32m-   \"17-24\",\u001b[39m\n\u001b[32m-   \"25-32\",\u001b[39m\n\u001b[32m- ]\u001b[39m\n\u001b[31m+ Array []\u001b[39m\n\n  360 |   await writeCrib(page, SOUND_IN_EN_DASHES, 32);\n  361 |   const report = await readReport(page);\n> 362 |   expect(report.phrases.map((phrase) => phrase.span)).toEqual(['1-8', '9-16', '17-24', '25-32']);\n      |                                                       ^\n  363 |   expect(report.phrases.map((phrase) => phrase.needs)).toEqual([\n  364 |     bars('circle 4H round & back'),\n  365 |     bars('dance RH across & LH back'),\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:362:55"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:34:58.783Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D1-Every-phr-d3f64-ars-it-was-written-against-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 55,
+                    "line": 362
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-dda492a332b50c82cb01",
+          "file": "behavior.spec.js",
+          "line": 358,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] A phrase left open at its closing bar runs to the bar before the next phrase opens.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 507,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 8\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": Object {\u001b[39m\n\u001b[32m-     \"gives\": 8,\u001b[39m\n\u001b[32m-     \"line\": 2,\u001b[39m\n\u001b[32m-     \"needs\": 8,\u001b[39m\n\u001b[32m-     \"order\": \"1-2-3-4\",\u001b[39m\n\u001b[32m-     \"span\": \"9-16\",\u001b[39m\n\u001b[32m-   },\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": undefined,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 8\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": Object {\u001b[39m\n\u001b[32m-     \"gives\": 8,\u001b[39m\n\u001b[32m-     \"line\": 2,\u001b[39m\n\u001b[32m-     \"needs\": 8,\u001b[39m\n\u001b[32m-     \"order\": \"1-2-3-4\",\u001b[39m\n\u001b[32m-     \"span\": \"9-16\",\u001b[39m\n\u001b[32m-   },\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": undefined,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:375:60",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 60,
+                      "line": 375
+                    },
+                    "snippet": "  373 |   await writeCrib(page, EN_DASH_WITH_AN_OPEN_SPAN, 32);\n  374 |   const report = await readReport(page);\n> 375 |   expect({ good: report.good, second: report.phrases[1] }).toEqual({\n      |                                                            ^\n  376 |     good: 'yes',\n  377 |     second: { gives: 8, line: 2, needs: bars('dance RH across & LH back'), order: '1-2-3-4', span: '9-16' }\n  378 |   });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 60,
+                        "line": 375
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 8\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": Object {\u001b[39m\n\u001b[32m-     \"gives\": 8,\u001b[39m\n\u001b[32m-     \"line\": 2,\u001b[39m\n\u001b[32m-     \"needs\": 8,\u001b[39m\n\u001b[32m-     \"order\": \"1-2-3-4\",\u001b[39m\n\u001b[32m-     \"span\": \"9-16\",\u001b[39m\n\u001b[32m-   },\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": undefined,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  373 |   await writeCrib(page, EN_DASH_WITH_AN_OPEN_SPAN, 32);\n  374 |   const report = await readReport(page);\n> 375 |   expect({ good: report.good, second: report.phrases[1] }).toEqual({\n      |                                                            ^\n  376 |     good: 'yes',\n  377 |     second: { gives: 8, line: 2, needs: bars('dance RH across & LH back'), order: '1-2-3-4', span: '9-16' }\n  378 |   });\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:375:60"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:34:59.576Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D1-A-phrase--b124d-fore-the-next-phrase-opens-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 60,
+                    "line": 375
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-5336b0f606af138be563",
+          "file": "behavior.spec.js",
+          "line": 371,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D2] A crib whose phrases follow one another bar by bar is passed with nothing said against it.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 345,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:392:63",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 63,
+                      "line": 392
+                    },
+                    "snippet": "  390 |   const report = await readReport(page);\n  391 |   writeJson('d2-contiguous.json', report);\n> 392 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  393 | });\n  394 |\n  395 | test('[F2P][D2] A hole in a dance is reported from the first bar that is actually missing.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 63,
+                        "line": 392
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  390 |   const report = await readReport(page);\n  391 |   writeJson('d2-contiguous.json', report);\n> 392 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  393 | });\n  394 |\n  395 | test('[F2P][D2] A hole in a dance is reported from the first bar that is actually missing.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:392:63"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:00.526Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D2-A-crib-wh-61565-th-nothing-said-against-it-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 63,
+                    "line": 392
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-c91bdfbe79ba94d21b8b",
+          "file": "behavior.spec.js",
+          "line": 385,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D2] A hole in a dance is reported from the first bar that is actually missing.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 350,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   17,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   17,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:399:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 399
+                    },
+                    "snippet": "  397 |   await writeCrib(page, A_HOLE_IN_THE_DANCE, 32);\n  398 |   const report = await readReport(page);\n> 399 |   expect(faultBars(report)).toEqual([17]);\n      |                             ^\n  400 | });\n  401 |\n  402 | test('[F2P][D2] Two phrases that both lay claim to the same bar are reported against that bar.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 399
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   17,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  397 |   await writeCrib(page, A_HOLE_IN_THE_DANCE, 32);\n  398 |   const report = await readReport(page);\n> 399 |   expect(faultBars(report)).toEqual([17]);\n      |                             ^\n  400 | });\n  401 |\n  402 | test('[F2P][D2] Two phrases that both lay claim to the same bar are reported against that bar.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:399:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:01.308Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D2-A-hole-in-a7c98-r-that-is-actually-missing-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 399
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-9e440e873467143c8966",
+          "file": "behavior.spec.js",
+          "line": 395,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D2] Two phrases that both lay claim to the same bar are reported against that bar.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 343,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   16,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   16,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:406:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 406
+                    },
+                    "snippet": "  404 |   await writeCrib(page, ONE_BAR_CLAIMED_TWICE, 23);\n  405 |   const report = await readReport(page);\n> 406 |   expect(faultBars(report)).toEqual([16]);\n      |                             ^\n  407 | });\n  408 |\n  409 | /* ------------------------------------------------------------------ *"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 406
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   16,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  404 |   await writeCrib(page, ONE_BAR_CLAIMED_TWICE, 23);\n  405 |   const report = await readReport(page);\n> 406 |   expect(faultBars(report)).toEqual([16]);\n      |                             ^\n  407 | });\n  408 |\n  409 | /* ------------------------------------------------------------------ *\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:406:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:02.099Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D2-Two-phras-d7c78--reported-against-that-bar-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 406
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-2b9a9ce0152c48b3f728",
+          "file": "behavior.spec.js",
+          "line": 402,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] A phrase carried onto a second line is counted with the figures written above it.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 6,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 344,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"gives\": 8,\u001b[22m\n\u001b[2m    \"line\": 2,\u001b[22m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"needs\": 4,\u001b[39m\n\u001b[2m    \"order\": \"2-1-3-4\",\u001b[22m\n\u001b[2m    \"span\": \"9-16\",\u001b[22m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"gives\": 8,\u001b[22m\n\u001b[2m    \"line\": 2,\u001b[22m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"needs\": 4,\u001b[39m\n\u001b[2m    \"order\": \"2-1-3-4\",\u001b[22m\n\u001b[2m    \"span\": \"9-16\",\u001b[22m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:418:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 418
+                    },
+                    "snippet": "  416 |   const report = await readReport(page);\n  417 |   writeJson('d3-carried.json', report);\n> 418 |   expect(report.phrases[1]).toEqual({\n      |                             ^\n  419 |     gives: 8,\n  420 |     line: 2,\n  421 |     needs: bars('dance RH across') + bars('dance LH across'),"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 418
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"gives\": 8,\u001b[22m\n\u001b[2m    \"line\": 2,\u001b[22m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"needs\": 4,\u001b[39m\n\u001b[2m    \"order\": \"2-1-3-4\",\u001b[22m\n\u001b[2m    \"span\": \"9-16\",\u001b[22m\n\u001b[2m  }\u001b[22m\n\n  416 |   const report = await readReport(page);\n  417 |   writeJson('d3-carried.json', report);\n> 418 |   expect(report.phrases[1]).toEqual({\n      |                             ^\n  419 |     gives: 8,\n  420 |     line: 2,\n  421 |     needs: bars('dance RH across') + bars('dance LH across'),\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:418:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:02.906Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D3-A-phrase--07906-e-figures-written-above-it-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 418
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-2132f5d7e695b753580e",
+          "file": "behavior.spec.js",
+          "line": 413,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] A crib with a carried phrase is passed when the whole phrase fills its bars.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 7,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 343,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m    \"phrases\": 4,\u001b[22m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m    \"phrases\": 4,\u001b[22m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:431:95",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 95,
+                      "line": 431
+                    },
+                    "snippet": "  429 |   await writeCrib(page, CARRIED_OVER_TWO_LINES, 32);\n  430 |   const report = await readReport(page);\n> 431 |   expect({ good: report.good, faults: report.faults.length, phrases: report.phrases.length }).toEqual({\n      |                                                                                               ^\n  432 |     good: 'yes',\n  433 |     faults: 0,\n  434 |     phrases: 4"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 95,
+                        "line": 431
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m    \"phrases\": 4,\u001b[22m\n\u001b[2m  }\u001b[22m\n\n  429 |   await writeCrib(page, CARRIED_OVER_TWO_LINES, 32);\n  430 |   const report = await readReport(page);\n> 431 |   expect({ good: report.good, faults: report.faults.length, phrases: report.phrases.length }).toEqual({\n      |                                                                                               ^\n  432 |     good: 'yes',\n  433 |     faults: 0,\n  434 |     phrases: 4\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:431:95"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:03.687Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D3-A-crib-wi-49b14-hole-phrase-fills-its-bars-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 95,
+                    "line": 431
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-84ffe0801f55c5343ac6",
+          "file": "behavior.spec.js",
+          "line": 427,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] A phrase carried over three lines counts the figures on all three of them.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 8,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 351,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"needs\": 2,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"needs\": 2,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:442:65",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 65,
+                      "line": 442
+                    },
+                    "snippet": "  440 |   await writeCrib(page, CARRIED_OVER_THREE_LINES, 32);\n  441 |   const report = await readReport(page);\n> 442 |   expect({ good: report.good, needs: report.phrases[1].needs }).toEqual({\n      |                                                                 ^\n  443 |     good: 'yes',\n  444 |     needs: bars('dance RH across') + bars('set') + bars('set')\n  445 |   });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 65,
+                        "line": 442
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"needs\": 2,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  440 |   await writeCrib(page, CARRIED_OVER_THREE_LINES, 32);\n  441 |   const report = await readReport(page);\n> 442 |   expect({ good: report.good, needs: report.phrases[1].needs }).toEqual({\n      |                                                                 ^\n  443 |     good: 'yes',\n  444 |     needs: bars('dance RH across') + bars('set') + bars('set')\n  445 |   });\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:442:65"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:04.475Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D3-A-phrase--d88f9-gures-on-all-three-of-them-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 65,
+                    "line": 442
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-c5ef39ccd99ce1ce94f3",
+          "file": "behavior.spec.js",
+          "line": 438,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] A figure the book prints with an ampersand in its name is accepted at its published length.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 9,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 359,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"needs\": 0,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"needs\": 0,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:459:95",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 95,
+                      "line": 459
+                    },
+                    "snippet": "  457 |   const report = await readReport(page);\n  458 |   writeJson('d4-ampersand.json', report);\n> 459 |   expect({ good: report.good, faults: report.faults.length, needs: report.phrases[0].needs }).toEqual({\n      |                                                                                               ^\n  460 |     good: 'yes',\n  461 |     faults: 0,\n  462 |     needs: bars('rights & lefts')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 95,
+                        "line": 459
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"needs\": 8,\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"needs\": 0,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  457 |   const report = await readReport(page);\n  458 |   writeJson('d4-ampersand.json', report);\n> 459 |   expect({ good: report.good, faults: report.faults.length, needs: report.phrases[0].needs }).toEqual({\n      |                                                                                               ^\n  460 |     good: 'yes',\n  461 |     faults: 0,\n  462 |     needs: bars('rights & lefts')\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:459:95"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:05.282Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D4-A-figure--88573-ed-at-its-published-length-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 95,
+                    "line": 459
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-82a06e7b464cf6e2b75f",
+          "file": "behavior.spec.js",
+          "line": 452,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] A figure danced there and back is counted at its full length rather than half of it.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 10,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 339,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"first\": 8,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": 8,\u001b[39m\n\u001b[31m+   \"first\": 4,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": 4,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"first\": 8,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": 8,\u001b[39m\n\u001b[31m+   \"first\": 4,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": 4,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:474:6",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 6,
+                      "line": 474
+                    },
+                    "snippet": "  472 |     first: report.phrases[0].needs,\n  473 |     second: report.phrases[1].needs\n> 474 |   }).toEqual({\n      |      ^\n  475 |     good: 'yes',\n  476 |     first: bars('circle 4H round & back'),\n  477 |     second: bars('dance RH across & LH back')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 6,
+                        "line": 474
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"first\": 8,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": 8,\u001b[39m\n\u001b[31m+   \"first\": 4,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": 4,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  472 |     first: report.phrases[0].needs,\n  473 |     second: report.phrases[1].needs\n> 474 |   }).toEqual({\n      |      ^\n  475 |     good: 'yes',\n  476 |     first: bars('circle 4H round & back'),\n  477 |     second: bars('dance RH across & LH back')\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:474:6"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:06.097Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D4-A-figure--51768-gth-rather-than-half-of-it-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 6,
+                    "line": 474
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-9d747a3e0da30c89d3f1",
+          "file": "behavior.spec.js",
+          "line": 466,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] Two figures written on one line are each read whole, ampersands and all.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 11,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 357,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"first\": 8,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": 8,\u001b[39m\n\u001b[31m+   \"first\": 6,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": 4,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"first\": 8,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": 8,\u001b[39m\n\u001b[31m+   \"first\": 6,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": 4,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:485:98",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 98,
+                      "line": 485
+                    },
+                    "snippet": "  483 |   await writeCrib(page, TWO_FIGURES_ON_ONE_LINE, 32);\n  484 |   const report = await readReport(page);\n> 485 |   expect({ good: report.good, first: report.phrases[0].needs, second: report.phrases[1].needs }).toEqual({\n      |                                                                                                  ^\n  486 |     good: 'yes',\n  487 |     first: bars('set & link') + bars('dance RH across'),\n  488 |     second: bars('dance LH across & RH back')"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 98,
+                        "line": 485
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 3\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"first\": 8,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[32m-   \"second\": 8,\u001b[39m\n\u001b[31m+   \"first\": 6,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[31m+   \"second\": 4,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  483 |   await writeCrib(page, TWO_FIGURES_ON_ONE_LINE, 32);\n  484 |   const report = await readReport(page);\n> 485 |   expect({ good: report.good, first: report.phrases[0].needs, second: report.phrases[1].needs }).toEqual({\n      |                                                                                                  ^\n  486 |     good: 'yes',\n  487 |     first: bars('set & link') + bars('dance RH across'),\n  488 |     second: bars('dance LH across & RH back')\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:485:98"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:06.883Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D4-Two-figur-47477-d-whole-ampersands-and-all-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 98,
+                    "line": 485
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-9d0535cfc7793b74b35a",
+          "file": "behavior.spec.js",
+          "line": 481,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] A figure for two couples standing apart is refused even though their numbers run together.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 12,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 360,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   11,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   11,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:503:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 503
+                    },
+                    "snippet": "  501 |   const report = await readReport(page);\n  502 |   writeJson('d5-apart.json', report);\n> 503 |   expect(faultBars(report)).toEqual([11]);\n      |                             ^\n  504 | });\n  505 |\n  506 | test('[F2P][D5] A figure for two couples standing side by side is allowed even though their numbers do not run together.', async ({"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 503
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   11,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  501 |   const report = await readReport(page);\n  502 |   writeJson('d5-apart.json', report);\n> 503 |   expect(faultBars(report)).toEqual([11]);\n      |                             ^\n  504 | });\n  505 |\n  506 | test('[F2P][D5] A figure for two couples standing side by side is allowed even though their numbers do not run together.', async ({\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:503:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:07.666Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D5-A-figure--200c3-their-numbers-run-together-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 503
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-aee46b197b04690ae4c5",
+          "file": "behavior.spec.js",
+          "line": 496,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] A figure for two couples standing side by side is allowed even though their numbers do not run together.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 13,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 416,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:512:63",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 63,
+                      "line": 512
+                    },
+                    "snippet": "  510 |   await writeCrib(page, SIDE_BY_SIDE_THOUGH_NUMBERED_APART, 32);\n  511 |   const report = await readReport(page);\n> 512 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  513 | });\n  514 |\n  515 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 63,
+                        "line": 512
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  510 |   await writeCrib(page, SIDE_BY_SIDE_THOUGH_NUMBERED_APART, 32);\n  511 |   const report = await readReport(page);\n> 512 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  513 | });\n  514 |\n  515 |\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:512:63"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:08.495Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D5-A-figure--46cd4-umbers-do-not-run-together-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 63,
+                    "line": 512
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-85d0f051045473bdd4a0",
+          "file": "behavior.spec.js",
+          "line": 506,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D6] A figure for the couple at the top is refused once an earlier phrase has cast them down.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 14,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 437,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   11,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   11,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:527:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 527
+                    },
+                    "snippet": "  525 |   const report = await readReport(page);\n  526 |   writeJson('d6-moved-down.json', report);\n> 527 |   expect(faultBars(report)).toEqual([11]);\n      |                             ^\n  528 | });\n  529 |\n  530 | test('[F2P][D6] A figure for the couple at the top is allowed once an earlier phrase has put another couple there.', async ({"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 527
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   11,\u001b[39m\n\u001b[31m+   5,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  525 |   const report = await readReport(page);\n  526 |   writeJson('d6-moved-down.json', report);\n> 527 |   expect(faultBars(report)).toEqual([11]);\n      |                             ^\n  528 | });\n  529 |\n  530 | test('[F2P][D6] A figure for the couple at the top is allowed once an earlier phrase has put another couple there.', async ({\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:527:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:09.426Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D6-A-figure--8a5f8--phrase-has-cast-them-down-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 527
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-e4eacb4f70ea5ae3fbb9",
+          "file": "behavior.spec.js",
+          "line": 520,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D6] A figure for the couple at the top is allowed once an earlier phrase has put another couple there.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 15,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 413,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:536:63",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 63,
+                      "line": 536
+                    },
+                    "snippet": "  534 |   await writeCrib(page, TOP_FIGURE_ONCE_ANOTHER_COUPLE_IS_THERE, 32);\n  535 |   const report = await readReport(page);\n> 536 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  537 | });\n  538 |\n  539 | /* ------------------------------------------------------------------ *"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 63,
+                        "line": 536
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  534 |   await writeCrib(page, TOP_FIGURE_ONCE_ANOTHER_COUPLE_IS_THERE, 32);\n  535 |   const report = await readReport(page);\n> 536 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  537 | });\n  538 |\n  539 | /* ------------------------------------------------------------------ *\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:536:63"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:10.357Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D6-A-figure--112a4-s-put-another-couple-there-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 63,
+                    "line": 536
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-d70d04cbb6525f26f7c1",
+          "file": "behavior.spec.js",
+          "line": 530,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D7] A dance that leaves every couple where they started is refused at its last bar.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 16,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 365,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:548:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 548
+                    },
+                    "snippet": "  546 |   const report = await readReport(page);\n  547 |   writeJson('d7-home-again.json', report);\n> 548 |   expect(faultBars(report)).toEqual([32]);\n      |                             ^\n  549 |   expect(report.phrases[report.phrases.length - 1].order).toBe('1-2-3-4');\n  550 | });\n  551 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 548
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  546 |   const report = await readReport(page);\n  547 |   writeJson('d7-home-again.json', report);\n> 548 |   expect(faultBars(report)).toEqual([32]);\n      |                             ^\n  549 |   expect(report.phrases[report.phrases.length - 1].order).toBe('1-2-3-4');\n  550 | });\n  551 |\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:548:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:11.220Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D7-A-dance-t-5d8b5-is-refused-at-its-last-bar-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 548
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-4086afb5f6904d588cc1",
+          "file": "behavior.spec.js",
+          "line": 543,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D7] A dance that leaves the set in an order it cannot be danced from again is refused.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 17,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 356,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:556:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 556
+                    },
+                    "snippet": "  554 |   await writeCrib(page, THE_SET_LEFT_IN_A_JUMBLE, 32);\n  555 |   const report = await readReport(page);\n> 556 |   expect(faultBars(report)).toEqual([32]);\n      |                             ^\n  557 |   expect(report.phrases[report.phrases.length - 1].order).toBe('1-3-2-4');\n  558 | });\n  559 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 556
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  554 |   await writeCrib(page, THE_SET_LEFT_IN_A_JUMBLE, 32);\n  555 |   const report = await readReport(page);\n> 556 |   expect(faultBars(report)).toEqual([32]);\n      |                             ^\n  557 |   expect(report.phrases[report.phrases.length - 1].order).toBe('1-3-2-4');\n  558 | });\n  559 |\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:556:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:12.045Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D7-A-dance-t-16a0c-nced-from-again-is-refused-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 556
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-f25f7a49f67fedecc9d2",
+          "file": "behavior.spec.js",
+          "line": 552,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D8] Couples the preamble sends across the set and never brings back are reported at the last bar.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 18,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 356,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:571:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 571
+                    },
+                    "snippet": "  569 |   const report = await readReport(page);\n  570 |   writeJson('d8-stranded.json', report);\n> 571 |   expect(faultBars(report)).toEqual([32]);\n      |                             ^\n  572 | });\n  573 |\n  574 | test('[F2P][D8] A crib that brings its crossed couples back to their own side is passed.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 571
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   32,\u001b[39m\n\u001b[31m+   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  569 |   const report = await readReport(page);\n  570 |   writeJson('d8-stranded.json', report);\n> 571 |   expect(faultBars(report)).toEqual([32]);\n      |                             ^\n  572 | });\n  573 |\n  574 | test('[F2P][D8] A crib that brings its crossed couples back to their own side is passed.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:571:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:12.873Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D8-Couples-t-a506c-e-reported-at-the-last-bar-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 571
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-2a8f4fe7403112af2daf",
+          "file": "behavior.spec.js",
+          "line": 564,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D8] A crib that brings its crossed couples back to their own side is passed.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 19,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 329,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:578:63",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 63,
+                      "line": 578
+                    },
+                    "snippet": "  576 |   await writeCrib(page, CROSSED_AND_BROUGHT_HOME, 32);\n  577 |   const report = await readReport(page);\n> 578 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  579 | });\n  580 |\n  581 | test('[F2P][D8] The set diagram shows which couples the preamble put across the dance before bar 1.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 63,
+                        "line": 578
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"faults\": 0,\u001b[39m\n\u001b[32m-   \"good\": \"yes\",\u001b[39m\n\u001b[31m+   \"faults\": 1,\u001b[39m\n\u001b[31m+   \"good\": \"no\",\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  576 |   await writeCrib(page, CROSSED_AND_BROUGHT_HOME, 32);\n  577 |   const report = await readReport(page);\n> 578 |   expect({ good: report.good, faults: report.faults.length }).toEqual({ good: 'yes', faults: 0 });\n      |                                                               ^\n  579 | });\n  580 |\n  581 | test('[F2P][D8] The set diagram shows which couples the preamble put across the dance before bar 1.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:578:63"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:13.688Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D8-A-crib-th-6ee5c-o-their-own-side-is-passed-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 63,
+                    "line": 578
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-3d24822dae0735722618",
+          "file": "behavior.spec.js",
+          "line": 574,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D8] The set diagram shows which couples the preamble put across the dance before bar 1.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 20,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 342,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -10,13 +10,13 @@\u001b[39m\n\u001b[2m      \"side\": \"own\",\u001b[22m\n\u001b[2m    },\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"couple\": 3,\u001b[22m\n\u001b[2m      \"place\": 3,\u001b[22m\n\u001b[32m-     \"side\": \"opposite\",\u001b[39m\n\u001b[31m+     \"side\": \"own\",\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"couple\": 4,\u001b[22m\n\u001b[2m      \"place\": 4,\u001b[22m\n\u001b[32m-     \"side\": \"opposite\",\u001b[39m\n\u001b[31m+     \"side\": \"own\",\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -10,13 +10,13 @@\u001b[39m\n\u001b[2m      \"side\": \"own\",\u001b[22m\n\u001b[2m    },\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"couple\": 3,\u001b[22m\n\u001b[2m      \"place\": 3,\u001b[22m\n\u001b[32m-     \"side\": \"opposite\",\u001b[39m\n\u001b[31m+     \"side\": \"own\",\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"couple\": 4,\u001b[22m\n\u001b[2m      \"place\": 4,\u001b[22m\n\u001b[32m-     \"side\": \"opposite\",\u001b[39m\n\u001b[31m+     \"side\": \"own\",\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:585:25",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 25,
+                      "line": 585
+                    },
+                    "snippet": "  583 |   await writeCrib(page, CROSSED_AND_BROUGHT_HOME, 32);\n  584 |   const report = await readReport(page);\n> 585 |   expect(report.topRow).toEqual([\n      |                         ^\n  586 |     { couple: 1, place: 1, side: 'own' },\n  587 |     { couple: 2, place: 2, side: 'own' },\n  588 |     { couple: 3, place: 3, side: 'opposite' },"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 25,
+                        "line": 585
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -10,13 +10,13 @@\u001b[39m\n\u001b[2m      \"side\": \"own\",\u001b[22m\n\u001b[2m    },\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"couple\": 3,\u001b[22m\n\u001b[2m      \"place\": 3,\u001b[22m\n\u001b[32m-     \"side\": \"opposite\",\u001b[39m\n\u001b[31m+     \"side\": \"own\",\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m    Object {\u001b[22m\n\u001b[2m      \"couple\": 4,\u001b[22m\n\u001b[2m      \"place\": 4,\u001b[22m\n\u001b[32m-     \"side\": \"opposite\",\u001b[39m\n\u001b[31m+     \"side\": \"own\",\u001b[39m\n\u001b[2m    },\u001b[22m\n\u001b[2m  ]\u001b[22m\n\n  583 |   await writeCrib(page, CROSSED_AND_BROUGHT_HOME, 32);\n  584 |   const report = await readReport(page);\n> 585 |   expect(report.topRow).toEqual([\n      |                         ^\n  586 |     { couple: 1, place: 1, side: 'own' },\n  587 |     { couple: 2, place: 2, side: 'own' },\n  588 |     { couple: 3, place: 3, side: 'opposite' },\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:585:25"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:14.478Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D8-The-set-d-cc3bf-oss-the-dance-before-bar-1-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 25,
+                    "line": 585
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-a6e75d75bf64bf7ad6ea",
+          "file": "behavior.spec.js",
+          "line": 581,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D9] A fault in the second figure of a phrase is filed under that figure and not under the phrase.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 21,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 353,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   5,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   5,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:604:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 604
+                    },
+                    "snippet": "  602 |   const report = await readReport(page);\n  603 |   writeJson('d9-second-figure.json', report);\n> 604 |   expect(faultBars(report)).toEqual([1 + bars('dance RH across')]);\n      |                             ^\n  605 | });\n  606 |\n  607 | test('[F2P][D9] A fault in the fourth figure of a phrase is filed under that figure and not under the phrase.', async ({"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 604
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   5,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  602 |   const report = await readReport(page);\n  603 |   writeJson('d9-second-figure.json', report);\n> 604 |   expect(faultBars(report)).toEqual([1 + bars('dance RH across')]);\n      |                             ^\n  605 | });\n  606 |\n  607 | test('[F2P][D9] A fault in the fourth figure of a phrase is filed under that figure and not under the phrase.', async ({\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:604:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:15.267Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D9-A-fault-i-e8075-e-and-not-under-the-phrase-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 604
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-43e2b19e9c0585e51fc0",
+          "file": "behavior.spec.js",
+          "line": 597,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D9] A fault in the fourth figure of a phrase is filed under that figure and not under the phrase.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 22,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 404,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   9,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   9,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:613:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 613
+                    },
+                    "snippet": "  611 |   await writeCrib(page, FOURTH_FIGURE_AT_FAULT, 32);\n  612 |   const report = await readReport(page);\n> 613 |   expect(faultBars(report)).toEqual([1 + bars('set') + bars('dance RH across') + bars('set')]);\n      |                             ^\n  614 | });\n  615 |\n  616 | test('[F2P][D9] A figure a couple has no room to dance is filed under that figure and not under the phrase.', async ({"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 613
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   9,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  611 |   await writeCrib(page, FOURTH_FIGURE_AT_FAULT, 32);\n  612 |   const report = await readReport(page);\n> 613 |   expect(faultBars(report)).toEqual([1 + bars('set') + bars('dance RH across') + bars('set')]);\n      |                             ^\n  614 | });\n  615 |\n  616 | test('[F2P][D9] A figure a couple has no room to dance is filed under that figure and not under the phrase.', async ({\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:613:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:16.069Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D9-A-fault-i-7596c-e-and-not-under-the-phrase-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 613
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-ee8bd09cdc45dadfdaff",
+          "file": "behavior.spec.js",
+          "line": 607,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D9] A figure a couple has no room to dance is filed under that figure and not under the phrase.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 23,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 345,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   5,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   5,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:622:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 622
+                    },
+                    "snippet": "  620 |   await writeCrib(page, NO_ROOM_TO_CAST, 32);\n  621 |   const report = await readReport(page);\n> 622 |   expect(faultBars(report)).toEqual([1 + bars('dance RH across')]);\n      |                             ^\n  623 |   expect(report.faults.map((fault) => fault.line)).toEqual([1]);\n  624 | });\n  625 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 622
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[32m-   5,\u001b[39m\n\u001b[31m+   1,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  620 |   await writeCrib(page, NO_ROOM_TO_CAST, 32);\n  621 |   const report = await readReport(page);\n> 622 |   expect(faultBars(report)).toEqual([1 + bars('dance RH across')]);\n      |                             ^\n  623 |   expect(report.faults.map((fault) => fault.line)).toEqual([1]);\n  624 | });\n  625 |\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:622:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:16.908Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D9-A-figure--b18ae-e-and-not-under-the-phrase-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 622
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-caa6c01dac4effca54ff",
+          "file": "behavior.spec.js",
+          "line": 616,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D10] A crib with more than one thing wrong has more than one fault listed against it.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 24,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 340,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m1\u001b[39m\nReceived:   \u001b[31m1\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m1\u001b[39m\nReceived:   \u001b[31m1\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:635:32",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 32,
+                      "line": 635
+                    },
+                    "snippet": "  633 |   const report = await readReport(page);\n  634 |   writeJson('d10-two-faults.json', report);\n> 635 |   expect(report.faults.length).toBeGreaterThan(1);\n      |                                ^\n  636 | });\n  637 |\n  638 | test('[F2P][D10] Every fault a crib has earned is listed, under the bar each one belongs to.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 32,
+                        "line": 635
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m1\u001b[39m\nReceived:   \u001b[31m1\u001b[39m\n\n  633 |   const report = await readReport(page);\n  634 |   writeJson('d10-two-faults.json', report);\n> 635 |   expect(report.faults.length).toBeGreaterThan(1);\n      |                                ^\n  636 | });\n  637 |\n  638 | test('[F2P][D10] Every fault a crib has earned is listed, under the bar each one belongs to.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:635:32"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:17.710Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D10-A-crib-w-c7621-ne-fault-listed-against-it-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 32,
+                    "line": 635
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-30046593bb09ebbf0b09",
+          "file": "behavior.spec.js",
+          "line": 630,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D10] Every fault a crib has earned is listed, under the bar each one belongs to.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 25,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 350,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    1,\u001b[22m\n\u001b[32m-   9,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    1,\u001b[22m\n\u001b[32m-   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:642:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 642
+                    },
+                    "snippet": "  640 |   await writeCrib(page, TWO_PHRASES_COMING_UP_SHORT, 32);\n  641 |   const report = await readReport(page);\n> 642 |   expect(faultBars(report)).toEqual([1, 9]);\n      |                             ^\n  643 | });\n  644 |\n  645 | test('[F2P][D10] Every line the report finds fault with is marked in the margin of the crib.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 642
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    1,\u001b[22m\n\u001b[32m-   9,\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  640 |   await writeCrib(page, TWO_PHRASES_COMING_UP_SHORT, 32);\n  641 |   const report = await readReport(page);\n> 642 |   expect(faultBars(report)).toEqual([1, 9]);\n      |                             ^\n  643 | });\n  644 |\n  645 | test('[F2P][D10] Every line the report finds fault with is marked in the margin of the crib.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:642:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:18.502Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D10-Every-fa-3749f-he-bar-each-one-belongs-to-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 642
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-c7ce84261c552c9ead39",
+          "file": "behavior.spec.js",
+          "line": 638,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D10] Every line the report finds fault with is marked in the margin of the crib.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 26,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 363,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m1\u001b[39m\nReceived:   \u001b[31m1\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m1\u001b[39m\nReceived:   \u001b[31m1\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:651:24",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 24,
+                      "line": 651
+                    },
+                    "snippet": "  649 |   const named = Array.from(new Set(report.faults.map((fault) => fault.line))).sort((a, b) => a - b);\n  650 |   expect(report.markedLines.sort((a, b) => a - b)).toEqual(named);\n> 651 |   expect(named.length).toBeGreaterThan(1);\n      |                        ^\n  652 | });\n  653 |\n  654 | test('[F2P][D10] The number of faults the desk announces is the number it can show.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 24,
+                        "line": 651
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m1\u001b[39m\nReceived:   \u001b[31m1\u001b[39m\n\n  649 |   const named = Array.from(new Set(report.faults.map((fault) => fault.line))).sort((a, b) => a - b);\n  650 |   expect(report.markedLines.sort((a, b) => a - b)).toEqual(named);\n> 651 |   expect(named.length).toBeGreaterThan(1);\n      |                        ^\n  652 | });\n  653 |\n  654 | test('[F2P][D10] The number of faults the desk announces is the number it can show.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:651:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:19.349Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D10-Every-li-f9bcd--in-the-margin-of-the-crib-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 24,
+                    "line": 651
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-b508eaf6392054aac0b8",
+          "file": "behavior.spec.js",
+          "line": 645,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D10] The number of faults the desk announces is the number it can show.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 27,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 336,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"announced\": 3,\u001b[39m\n\u001b[32m-   \"listed\": 3,\u001b[39m\n\u001b[31m+   \"announced\": 1,\u001b[39m\n\u001b[31m+   \"listed\": 1,\u001b[39m\n\u001b[2m  }\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"announced\": 3,\u001b[39m\n\u001b[32m-   \"listed\": 3,\u001b[39m\n\u001b[31m+   \"announced\": 1,\u001b[39m\n\u001b[31m+   \"listed\": 1,\u001b[39m\n\u001b[2m  }\u001b[22m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:658:73",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 73,
+                      "line": 658
+                    },
+                    "snippet": "  656 |   await writeCrib(page, FAULTS_ON_SEPARATE_LINES, 32);\n  657 |   const report = await readReport(page);\n> 658 |   expect({ announced: report.announced, listed: report.faults.length }).toEqual({ announced: 3, listed: 3 });\n      |                                                                         ^\n  659 | });\n  660 |\n  661 | /* ------------------------------------------------------------------ *"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 73,
+                        "line": 658
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"announced\": 3,\u001b[39m\n\u001b[32m-   \"listed\": 3,\u001b[39m\n\u001b[31m+   \"announced\": 1,\u001b[39m\n\u001b[31m+   \"listed\": 1,\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  656 |   await writeCrib(page, FAULTS_ON_SEPARATE_LINES, 32);\n  657 |   const report = await readReport(page);\n> 658 |   expect({ announced: report.announced, listed: report.faults.length }).toEqual({ announced: 3, listed: 3 });\n      |                                                                         ^\n  659 | });\n  660 |\n  661 | /* ------------------------------------------------------------------ *\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:658:73"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:20.141Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D10-The-numb-a8b59--is-the-number-it-can-show-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 73,
+                    "line": 658
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-3d0944c8b0de59f0bcd9",
+          "file": "behavior.spec.js",
+          "line": 654,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D11] Every number in the margin stands beside the line of the crib it counts.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 28,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 339,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m4\u001b[39m\nReceived:    \u001b[31m54.5\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m4\u001b[39m\nReceived:    \u001b[31m54.5\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:671:29",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 29,
+                      "line": 671
+                    },
+                    "snippet": "  669 |   writeJson('d11-margin.json', margin);\n  670 |   expect(margin.gutterRows).toBe(margin.sourceRows);\n> 671 |   expect(margin.worstDrift).toBeLessThanOrEqual(4);\n      |                             ^\n  672 | });\n  673 |\n  674 | test('[F2P][D11] The margin numbering has not drifted away from the crib by the foot of a long dance.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 29,
+                        "line": 671
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m4\u001b[39m\nReceived:    \u001b[31m54.5\u001b[39m\n\n  669 |   writeJson('d11-margin.json', margin);\n  670 |   expect(margin.gutterRows).toBe(margin.sourceRows);\n> 671 |   expect(margin.worstDrift).toBeLessThanOrEqual(4);\n      |                             ^\n  672 | });\n  673 |\n  674 | test('[F2P][D11] The margin numbering has not drifted away from the crib by the foot of a long dance.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:671:29"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:20.940Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D11-Every-nu-cc1f3-line-of-the-crib-it-counts-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 29,
+                    "line": 671
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-8094bd6e2bd22c0b243b",
+          "file": "behavior.spec.js",
+          "line": 665,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D11] The margin numbering has not drifted away from the crib by the foot of a long dance.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 29,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 363,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m4\u001b[39m\nReceived:    \u001b[31m54.5\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m4\u001b[39m\nReceived:    \u001b[31m54.5\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:679:28",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 28,
+                      "line": 679
+                    },
+                    "snippet": "  677 |   const margin = await measureMargin(page);\n  678 |   expect(margin.gutterRows).toBeGreaterThanOrEqual(9);\n> 679 |   expect(margin.lastDrift).toBeLessThanOrEqual(4);\n      |                            ^\n  680 | });\n  681 |\n  682 | test('[F2P][D11] The margin and the writing beside it are set to the same rhythm.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 28,
+                        "line": 679
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m4\u001b[39m\nReceived:    \u001b[31m54.5\u001b[39m\n\n  677 |   const margin = await measureMargin(page);\n  678 |   expect(margin.gutterRows).toBeGreaterThanOrEqual(9);\n> 679 |   expect(margin.lastDrift).toBeLessThanOrEqual(4);\n      |                            ^\n  680 | });\n  681 |\n  682 | test('[F2P][D11] The margin and the writing beside it are set to the same rhythm.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:679:28"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:21.740Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D11-The-marg-56ef7-y-the-foot-of-a-long-dance-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 28,
+                    "line": 679
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-880c13b94d123d5c4278",
+          "file": "behavior.spec.js",
+          "line": 674,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D11] The margin and the writing beside it are set to the same rhythm.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 30,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 348,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m6.399999999999999\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m6.399999999999999\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:686:69",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 69,
+                      "line": 686
+                    },
+                    "snippet": "  684 |   await writeCrib(page, A_LONG_CRIB_FOR_THE_MARGIN, 32);\n  685 |   const margin = await measureMargin(page);\n> 686 |   expect(Math.abs(margin.gutterRowHeight - margin.sourceRowHeight)).toBeLessThanOrEqual(1);\n      |                                                                     ^\n  687 | });\n  688 |\n  689 | test('[F2P][D11] Each place heading in the set stands over the couple standing in that place.', async ({ page }) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 69,
+                        "line": 686
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m6.399999999999999\u001b[39m\n\n  684 |   await writeCrib(page, A_LONG_CRIB_FOR_THE_MARGIN, 32);\n  685 |   const margin = await measureMargin(page);\n> 686 |   expect(Math.abs(margin.gutterRowHeight - margin.sourceRowHeight)).toBeLessThanOrEqual(1);\n      |                                                                     ^\n  687 | });\n  688 |\n  689 | test('[F2P][D11] Each place heading in the set stands over the couple standing in that place.', async ({ page }) => {\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:686:69"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:22.560Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D11-The-marg-d28b6-are-set-to-the-same-rhythm-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 69,
+                    "line": 686
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-240b485432a5de558853",
+          "file": "behavior.spec.js",
+          "line": 682,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D11] Each place heading in the set stands over the couple standing in that place.",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 31,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 329,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m8\u001b[39m\nReceived:    \u001b[31m391\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m8\u001b[39m\nReceived:    \u001b[31m391\u001b[39m\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:695:26",
+                    "location": {
+                      "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                      "column": 26,
+                      "line": 695
+                    },
+                    "snippet": "  693 |   writeJson('d11-set-headings.json', headings);\n  694 |   expect(headings.headings).toBe(4);\n> 695 |   expect(headings.worst).toBeLessThanOrEqual(8);\n      |                          ^\n  696 | });\n  697 |\n  698 | /* ------------------------------------------------------------------ *"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                        "column": 26,
+                        "line": 695
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m8\u001b[39m\nReceived:    \u001b[31m391\u001b[39m\n\n  693 |   writeJson('d11-set-headings.json', headings);\n  694 |   expect(headings.headings).toBe(4);\n> 695 |   expect(headings.worst).toBeLessThanOrEqual(8);\n      |                          ^\n  696 | });\n  697 |\n  698 | /* ------------------------------------------------------------------ *\n    at /Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js:695:26"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:23.364Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/test-results/behavior--F2P-D11-Each-pla-791dc-ple-standing-in-that-place-/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/cribstave-dance-desk/tests/behavior.spec.js",
+                    "column": 26,
+                    "line": 695
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-462d3582635842e9cce6",
+          "file": "behavior.spec.js",
+          "line": 689,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The desk publishes the figure book with a length against every figure.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 258,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:24.166Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-3c72d7de05a336f9ac9a",
+          "file": "behavior.spec.js",
+          "line": 702,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The crib library offers every dance the desk is holding, the devised one included.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 149,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:24.594Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-21cc81b60915d09b102e",
+          "file": "behavior.spec.js",
+          "line": 715,
+          "column": 1
+        },
+        {
+          "title": "[P2P] Choosing a dance from the library puts its writing into the editor.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 146,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:24.751Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-818efd37198c25f11052",
+          "file": "behavior.spec.js",
+          "line": 726,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The stave sets out one numbered row for every line the devisor wrote.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:24.904Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-242f4e76abc71ac5b76b",
+          "file": "behavior.spec.js",
+          "line": 738,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The stave reprints the crib exactly as it was written, indents and all.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 233,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:25.142Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-7c3e8b6f3cc11a8c269e",
+          "file": "behavior.spec.js",
+          "line": 753,
+          "column": 1
+        },
+        {
+          "title": "[P2P] A figure the book does not contain is named back to the devisor against its own bar.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 226,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:25.383Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-63e3524dbc24823934f2",
+          "file": "behavior.spec.js",
+          "line": 762,
+          "column": 1
+        },
+        {
+          "title": "[P2P] An empty crib is not passed as a dance.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 239,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:25.616Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-445bd6f182ced21f2f9c",
+          "file": "behavior.spec.js",
+          "line": 772,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The set diagram opens with a rank for the top of the dance and adds one for every phrase.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 231,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:25.861Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-5405451d685ea0a47be5",
+          "file": "behavior.spec.js",
+          "line": 784,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The set diagram shows the couples in the places each phrase leaves them.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 234,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:26.100Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-48bf45a3beb7ccc508ec",
+          "file": "behavior.spec.js",
+          "line": 798,
+          "column": 1
+        },
+        {
+          "title": "[P2P] Every phrase is listed with the span it was written under and the bars it asks for.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 218,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:26.341Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-dc230ff6ddcc5d0a58bc",
+          "file": "behavior.spec.js",
+          "line": 811,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The desk reaches its checking service from the address the page was served from.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 32,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 233,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-09T16:35:26.565Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-ba468372c97bf64ea794",
+          "file": "behavior.spec.js",
+          "line": 820,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-09T16:34:57.753Z",
+    "duration": 29098.548,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 32,
+    "flaky": 0
+  }
+}

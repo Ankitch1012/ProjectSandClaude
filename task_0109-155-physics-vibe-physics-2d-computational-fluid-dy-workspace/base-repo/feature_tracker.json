@@ -1,0 +1,10 @@
+[
+  {"name":"Interactive operating-point controls","status":"done"},
+  {"name":"Hydrodynamic telemetry","status":"done"},
+  {"name":"Cavitation flow visualization","status":"done"},
+  {"name":"Preset and keyboard operation","status":"done"},
+  {"name":"Run clock and sample history","status":"done"},
+  {"name":"Saved operating points","status":"done"},
+  {"name":"Responsive instrument strip","status":"done"},
+  {"name":"Built-in solver validation","status":"done"}
+]

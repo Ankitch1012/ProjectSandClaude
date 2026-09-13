@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Countback — Variance Adjudication</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="mast">
+    <div>
+      <span class="eyebrow">Inventory control</span>
+      <h1>COUNTBACK</h1>
+    </div>
+    <div class="shift">
+      <span>Cycle 18</span>
+      <strong>North mezzanine</strong>
+    </div>
+  </header>
+
+  <div class="desk">
+    <nav class="queue" aria-label="Variance queue">
+      <div class="queue-head">
+        <div><span class="eyebrow">Decision queue</span><h2>Count variances</h2></div>
+        <output aria-label="Visible case count">0</output>
+      </div>
+      <div class="filters" role="group" aria-label="Queue filters">
+        <button data-filter="all">ALL</button>
+        <button data-filter="open">OPEN</button>
+        <button data-filter="resolved">RESOLVED</button>
+        <button data-filter="serialized">SERIALIZED</button>
+      </div>
+      <div id="caseList" class="case-list"></div>
+    </nav>
+
+    <main class="workspace">
+      <section class="case-head">
+        <div>
+          <span class="eyebrow">Selected variance</span>
+          <h2><output aria-label="Selected case ID">—</output> · <output aria-label="Selected case label">—</output></h2>
+        </div>
+        <output class="status-pill" aria-label="Case status">—</output>
+      </section>
+
+      <section class="metric-strip" aria-label="Inventory summary">
+        <div><span>On hand</span><output aria-label="On hand total">—</output></div>
+        <div><span>In transit</span><output aria-label="In transit total">—</output></div>
+        <div><span>Available</span><output aria-label="Available total">—</output></div>
+        <div><span>Latest count</span><output aria-label="Latest count total">—</output></div>
+        <div><span>Variance</span><output aria-label="Variance total">—</output></div>
+      </section>
+
+      <section class="sheet" aria-label="Reconciliation sheet">
+        <div class="sheet-head">
+          <div><span class="eyebrow">System side</span><strong>Expected stock</strong></div>
+          <div><span class="eyebrow">Count side</span><strong>Physical evidence</strong></div>
+        </div>
+        <div id="reconciliationRows"></div>
+      </section>
+
+      <section class="evidence" aria-label="Count evidence">
+        <div>
+          <span class="eyebrow">Recount history</span>
+          <output aria-label="Recount history">—</output>
+        </div>
+        <form id="recountForm">
+          <label>Post another count <input aria-label="New recount quantity" type="number" min="0" step="1"></label>
+          <button>POST RECOUNT</button>
+        </form>
+        <div class="serial-block">
+          <span class="eyebrow">Serial evidence</span>
+          <output aria-label="Serial scan coverage">Not required</output>
+          <button id="scanSerial">SCAN MISSING SERIAL</button>
+        </div>
+      </section>
+
+      <section class="audit" aria-label="Decision audit">
+        <span class="eyebrow">Last decision</span>
+        <output aria-label="Decision summary">No decision recorded</output>
+      </section>
+
+      <section class="decision-dock" aria-label="Decision controls">
+        <div>
+          <span class="eyebrow">Adjudicate selected case</span>
+          <strong>Use the evidence, not the queue position.</strong>
+        </div>
+        <div class="decision-actions">
+          <button id="linkTranspose">LINK TRANSPOSE</button>
+          <button id="adjust">ADJUST</button>
+          <button id="hold">HOLD</button>
+          <button id="undo">UNDO</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

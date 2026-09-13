@@ -1,0 +1,41 @@
+schema_version = "1.1"
+
+[task]
+name = "sand/cribstave-dance-desk"
+description = "Cribstave is a desk for checking a Scottish country dance crib: the devisor writes the dance out phrase by phrase, each line opening with the bars it covers, and the desk reads the notation, walks the four couples through every figure, and reports what is wrong against the line and bar it was written on. It currently passes nothing. Well-formed cribs are told bars are missing that are plainly written, real gaps are blamed on the wrong bar and duplicated bars pass unremarked, figures printed in the desk's own book are refused or counted at half their length, spans written with an en dash are not read at all, a phrase carried onto a second line loses the figures above it, and the walk has no grip on where the couples are standing, so legal figures are refused, illegal ones pass, dances that never hand the set on are approved, and couples sent across the set are never brought home. Faults are filed under the bar the phrase opens on instead of the figure at fault, the report shows only the first of them, and on screen the margin numbering has drifted out of step with the lines it counts while the set diagram's place headings have slipped off the couples standing in them."
+authors = [{ name = "Ankit Chauhan", email = "ankit.chauhan@example.com" }]
+keywords = ["notation", "parsing", "validation", "state-machine", "layout", "full-stack"]
+
+[metadata]
+category = "web-application"
+task_family = "notation-checker"
+source_repo = "cribstave"
+base_commit = "19281a3986b8f76749d145885ecada6f1f6e04f7"
+fail_to_pass_count = 32
+pass_to_pass_count = 11
+skipped_meta_files = []
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[verifier.env]
+
+[agent]
+timeout_sec = 1800.0
+user = "root"
+
+[solution]
+
+[solution.env]
+
+[environment]
+build_timeout_sec = 1200.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+gpu_types = []
+allow_internet = true
+
+[environment.env]

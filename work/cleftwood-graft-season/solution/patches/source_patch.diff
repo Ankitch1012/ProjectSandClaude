@@ -1,0 +1,573 @@
+diff --git a/backend/lib/interpret.js b/backend/lib/interpret.js
+index c6c88dc..80e4d59 100644
+--- a/backend/lib/interpret.js
++++ b/backend/lib/interpret.js
+@@ -24,16 +24,13 @@ function foldSeason(orderedEntries) {
+ 
+     const held = cards.get(stock);
+ 
+-    if (entry.act === 'bound') {
+-      cards.set(stock, board.newCard(stock, entry.visit));
+-      standingsLib.applyAct(standings, 'bound');
+-      return;
+-    }
+-
+-    if (entry.act === 'rewrapped') {
++    if (entry.act === 'bound' || entry.act === 'rewrapped') {
+       if (held) {
+         board.rewrapCard(held);
+         standingsLib.applyAct(standings, 'rewrapped');
++      } else {
++        cards.set(stock, board.newCard(stock, entry.visit));
++        standingsLib.applyAct(standings, 'bound');
+       }
+       return;
+     }
+@@ -42,6 +39,12 @@ function foldSeason(orderedEntries) {
+       return;
+     }
+ 
++    if (entry.act === 'released') {
++      const released = board.releaseCard(held);
++      standingsLib.applyAct(standings, 'released', { mended: released.mended });
++      return;
++    }
++
+     if (entry.act === 'cut-back') {
+       board.cutBackCard(held);
+       standingsLib.applyAct(standings, 'cut-back');
+@@ -59,7 +62,7 @@ function foldSeason(orderedEntries) {
+     current[card.stock] = { state: card.state, hold: card.hold };
+   });
+ 
+-  return { board: cardList, current, standings: standingsLib.onScale(standings) };
++  return { board: cardList, current, standings };
+ }
+ 
+ function stateOf(current, stock) {
+diff --git a/backend/lib/notebook.js b/backend/lib/notebook.js
+index 72a65bb..a3c7de0 100644
+--- a/backend/lib/notebook.js
++++ b/backend/lib/notebook.js
+@@ -1,5 +1,8 @@
+ 'use strict';
+ 
++const recordBook = require('./record-book');
++const season = require('./season');
++
+ // Pages of the season notebook. Saving writes the season onto a page and moves
+ // that page on a revision; loading brings it back off the paper. A window may
+ // only write onto the revision of the page it took up, so a page another window
+@@ -22,10 +25,12 @@ function heldRevision(store, pageId) {
+   return page ? page.revision : 0;
+ }
+ 
+-// The revision of the page this window is working from.
+-function takenUpAt(store, session, pageId) {
+-  const page = store.pages.get(pageId);
+-  return page ? page.revision : 0;
++// The revision of the page this window took up, by writing it or by bringing
++// it back. A window that has not taken this page up has nothing to write onto.
++function takenUpAt(session, pageId) {
++  return Object.prototype.hasOwnProperty.call(session.basedOn, pageId)
++    ? session.basedOn[pageId]
++    : 0;
+ }
+ 
+ function seasonOnPaper(session) {
+@@ -35,7 +40,8 @@ function seasonOnPaper(session) {
+     currentVisit: session.currentVisit,
+     played: session.played.slice(),
+     choices: Object.assign({}, session.choices),
+-    entries: session.entries.slice()
++    entries: session.entries.slice(),
++    nextOrder: session.nextOrder
+   };
+ }
+ 
+@@ -46,7 +52,7 @@ function savePage(store, session, options) {
+   }
+ 
+   const standing = heldRevision(store, pageId);
+-  const workingFrom = takenUpAt(store, session, pageId);
++  const workingFrom = takenUpAt(session, pageId);
+ 
+   if (standing !== workingFrom) {
+     session.conflict = {
+@@ -83,13 +89,26 @@ function loadPage(store, session, pageId) {
+     return { error: 'no-such-page', status: 404 };
+   }
+ 
+-  Object.assign(session, JSON.parse(page.snapshot));
++  const paper = JSON.parse(page.snapshot);
++
++  session.day = paper.day;
++  session.light = paper.light;
++  session.currentVisit = paper.currentVisit;
++  session.played = (paper.played || []).slice();
++  session.choices = Object.assign({}, paper.choices || {});
++  session.entries = recordBook.ordered(paper.entries || []);
++  session.nextOrder = Math.max(
++    paper.nextOrder || 1,
++    recordBook.nextOrderAfter(session.entries)
++  );
+ 
+   session.basedOn[page.id] = page.revision;
+   session.basePage = page.id;
+   session.baseRevision = page.revision;
+   session.conflict = null;
+ 
++  season.refresh(session);
++
+   return { ok: true, page };
+ }
+ 
+diff --git a/backend/lib/record-book.js b/backend/lib/record-book.js
+index 30c0bd6..b91e49e 100644
+--- a/backend/lib/record-book.js
++++ b/backend/lib/record-book.js
+@@ -11,7 +11,7 @@ function makeEntry(session, { visit, act, stock }) {
+   const order = session.nextOrder || 1;
+   session.nextOrder = order + 1;
+   return {
+-    order: String(order),
++    order,
+     day: session.day,
+     light: session.light,
+     visit: visit || null,
+@@ -38,7 +38,7 @@ function ordered(entries) {
+       (a, b) =>
+         (a.day - b.day)
+         || (lightRank(a.light) - lightRank(b.light))
+-        || (a.order > b.order ? 1 : -1)
++        || (orderOf(a) - orderOf(b))
+     );
+ }
+ 
+diff --git a/backend/lib/records.js b/backend/lib/records.js
+index 81be436..7f74a36 100644
+--- a/backend/lib/records.js
++++ b/backend/lib/records.js
+@@ -32,28 +32,10 @@ function meetsRecord(view, requirement) {
+   }
+ }
+ 
+-const settled = new Map();
+-
+-function settledKey(session, recordId) {
+-  return `${session.id}::${recordId}`;
+-}
+-
+-function eligibleRecords(session, view) {
+-  return RECORDS.filter((record) => {
+-    const key = settledKey(session, record.id);
+-    if (settled.has(key)) {
+-      return settled.get(key);
+-    }
+-    const open = (record.requires || []).every((requirement) => meetsRecord(view, requirement));
+-    if (open) {
+-      settled.set(key, true);
+-    }
+-    return open;
+-  }).map((record) => record.id);
+-}
+-
+-function forgetSettled() {
+-  settled.clear();
++function eligibleRecords(view) {
++  return RECORDS.filter((record) =>
++    (record.requires || []).every((requirement) => meetsRecord(view, requirement))
++  ).map((record) => record.id);
+ }
+ 
+-module.exports = { eligibleRecords, forgetSettled, meetsRecord };
++module.exports = { eligibleRecords, meetsRecord };
+diff --git a/backend/lib/season.js b/backend/lib/season.js
+index 29aaac8..353ae70 100644
+--- a/backend/lib/season.js
++++ b/backend/lib/season.js
+@@ -30,10 +30,8 @@ function newSession(id) {
+     baseRevision: 0,
+     basedOn: {},
+     conflict: null,
+-    plan: [],
+     season: null
+   };
+-  settlePlan(session);
+   refresh(session);
+   return session;
+ }
+@@ -52,20 +50,12 @@ function derive(session) {
+     standings: folded.standings
+   };
+ 
+-  season.open = session.plan || [];
+-  season.ways = eligibleRecords(session, season);
+-
+-  return season;
+-}
+-
+-// The plan is settled when the season moves, which is when a visit is written
+-// up. Reading the season back again does not change what is open.
+-function settlePlan(session) {
+-  const season = session.season || derive(session);
+-  session.plan = VISITS.filter(
++  season.open = VISITS.filter(
+     (visit) => !session.played.includes(visit.id) && satisfied(season, visit.requires)
+   ).map((visit) => visit.id);
+-  return session.plan;
++  season.ways = eligibleRecords(season);
++
++  return season;
+ }
+ 
+ // Called whenever the record has been written to, so that nothing downstream is
+@@ -100,12 +90,11 @@ function applyEffect(session, visit, effect) {
+   const worked = seasonOf(session).current[stock] || null;
+ 
+   if (effect.act === 'graft') {
+-    const here = workedAt(session, visit.id);
+     recordBook.append(
+       session,
+       recordBook.makeEntry(session, {
+         visit: visit.id,
+-        act: here[stock] ? 'rewrapped' : 'bound',
++        act: worked ? 'rewrapped' : 'bound',
+         stock
+       })
+     );
+@@ -117,25 +106,7 @@ function applyEffect(session, visit, effect) {
+     return;
+   }
+ 
+-  if (effect.act === 'cutback') {
+-    // The line that recorded the binding becomes the line that records the
+-    // stock being cut back, so the record carries one act per stock.
+-    const binding = session.entries.find(
+-      (entry) => entry.stock === stock && entry.act === 'bound'
+-    );
+-    if (binding) {
+-      binding.act = 'cut-back';
+-    } else {
+-      recordBook.append(
+-        session,
+-        recordBook.makeEntry(session, { visit: visit.id, act: 'cut-back', stock })
+-      );
+-    }
+-    refresh(session);
+-    return;
+-  }
+-
+-  const act = { release: 'released', leave: 'left' }[effect.act];
++  const act = { release: 'released', cutback: 'cut-back', leave: 'left' }[effect.act];
+   if (!act) {
+     return;
+   }
+@@ -149,7 +120,7 @@ function enterVisit(session, visitId) {
+   if (!visit) {
+     return { error: 'no-such-visit', status: 404 };
+   }
+-  if (!session.played.includes(visitId) && !session.plan.includes(visitId)) {
++  if (!session.played.includes(visitId) && !satisfied(seasonOf(session), visit.requires)) {
+     return { error: 'visit-not-open', status: 409 };
+   }
+   session.currentVisit = visitId;
+@@ -169,7 +140,10 @@ function completeVisit(session, visitId, optionId, options) {
+ 
+   const season = seasonOf(session);
+ 
+-  if (!forced && !session.plan.includes(visitId) && !session.played.includes(visitId)) {
++  if (!forced && session.played.includes(visitId)) {
++    return { error: 'visit-already-walked', status: 409 };
++  }
++  if (!forced && !satisfied(season, visit.requires)) {
+     return { error: 'visit-not-open', status: 409 };
+   }
+   if (!forced && option.showWhen && !satisfied(season, option.showWhen)) {
+@@ -179,8 +153,6 @@ function completeVisit(session, visitId, optionId, options) {
+   if (!session.played.includes(visitId)) {
+     session.played.push(visitId);
+   }
+-  settlePlan(session);
+-
+   session.day = Math.max(session.day, visit.day);
+   session.light = visit.light;
+   session.currentVisit = visitId;
+@@ -212,6 +184,26 @@ function rereadVisit(session, visitId) {
+   return { ok: true, visit };
+ }
+ 
++// Turning back to a visit that has already been walked reads it again. It is
++// noted in the record as a reading and it changes nothing else: the season does
++// not move, no stock is worked, and nothing is charged to the standings.
++function rereadVisit(session, visitId) {
++  const visit = visitById(visitId);
++  if (!visit) {
++    return { error: 'no-such-visit', status: 404 };
++  }
++  if (!session.played.includes(visitId)) {
++    return { error: 'visit-not-walked', status: 409 };
++  }
++  recordBook.append(
++    session,
++    recordBook.makeEntry(session, { visit: visitId, act: 're-read', stock: null })
++  );
++  session.currentVisit = visitId;
++  refresh(session);
++  return { ok: true, visit };
++}
++
+ function optionTakenAt(session, visitId) {
+   return session.choices[visitId] || null;
+ }
+@@ -326,7 +318,7 @@ function render(session, season, extras) {
+ 
+ module.exports = {
+   applyEffect,
+-  settlePlan,
++  rereadVisit,
+   workedAt,
+   completeVisit,
+   derive,
+diff --git a/backend/lib/standings.js b/backend/lib/standings.js
+index ead5a5d..0bab617 100644
+--- a/backend/lib/standings.js
++++ b/backend/lib/standings.js
+@@ -7,7 +7,7 @@ const DELTAS = {
+   bound: { canopy: 2, standing: 1 },
+   rewrapped: { canopy: 1 },
+   released: { standing: 3, canopy: 1 },
+-  'cut-back': { standing: -4 },
++  'cut-back': { standing: -4, deadwood: 3 },
+   left: { deadwood: 1 }
+ };
+ 
+@@ -34,7 +34,7 @@ function apply(standings, delta) {
+     if (!Object.prototype.hasOwnProperty.call(standings, field)) {
+       return;
+     }
+-    standings[field] += delta[field];
++    standings[field] = clamp(standings[field] + delta[field]);
+   });
+   return standings;
+ }
+@@ -47,13 +47,4 @@ function applyAct(standings, act, options) {
+   return standings;
+ }
+ 
+-// The three standings are kept on a nought-to-twenty scale.
+-function onScale(standings) {
+-  return {
+-    canopy: clamp(standings.canopy),
+-    standing: clamp(standings.standing),
+-    deadwood: clamp(standings.deadwood)
+-  };
+-}
+-
+-module.exports = { DELTAS, MEND_RELIEF, apply, applyAct, blank, clamp, onScale };
++module.exports = { DELTAS, MEND_RELIEF, apply, applyAct, blank, clamp };
+diff --git a/backend/server.js b/backend/server.js
+index 3cb6028..abb0bbf 100644
+--- a/backend/server.js
++++ b/backend/server.js
+@@ -174,10 +174,27 @@ async function route(req, res, url) {
+       return;
+     }
+ 
++    if (method === 'POST' && action === 'reread') {
++      const body = await readBody(req);
++      const outcome = season.rereadVisit(session, body.visitId);
++      if (outcome.error) {
++        failed(res, outcome);
++        return;
++      }
++      send(res, 200, handView(session));
++      return;
++    }
++
+     if (method === 'POST' && action === 'pages') {
+       const body = await readBody(req);
+       const outcome = notebook.savePage(store, session, body);
+       if (outcome.error) {
++        // A refused save still reports the season back, so the window that was
++        // working from an older revision can say so.
++        if (outcome.status === 409) {
++          send(res, 409, Object.assign({ error: outcome.error }, handView(session)));
++          return;
++        }
+         failed(res, outcome);
+         return;
+       }
+diff --git a/frontend/public/app.js b/frontend/public/app.js
+index c277992..8f06dfa 100644
+--- a/frontend/public/app.js
++++ b/frontend/public/app.js
+@@ -392,6 +392,36 @@ function renderPages(view) {
+   pick('page-empty').hidden = view.pages.length > 0;
+ }
+ 
++function renderConflict(view) {
++  const banner = pick('save-conflict');
++  const conflict = view.conflict;
++
++  if (!conflict) {
++    banner.hidden = true;
++    banner.removeAttribute('data-page');
++    banner.removeAttribute('data-page-revision');
++    banner.removeAttribute('data-based-on-revision');
++    text(pick('save-conflict-head'), '');
++    text(pick('save-conflict-body'), '');
++    return;
++  }
++
++  banner.hidden = false;
++  banner.setAttribute('data-page', conflict.pageId);
++  banner.setAttribute('data-page-revision', String(conflict.pageRevision));
++  banner.setAttribute('data-based-on-revision', String(conflict.basedOnRevision));
++  text(
++    pick('save-conflict-head'),
++    `The page \u201c${conflict.pageId}\u201d was not written over.`
++  );
++  text(
++    pick('save-conflict-body'),
++    `You took it up at revision ${conflict.basedOnRevision} and it now stands at revision `
++      + `${conflict.pageRevision}. What is on the page has been kept. Bring the page back to `
++      + 'work from what is there now.'
++  );
++}
++
+ function renderSeasonRecord(view) {
+   const list = pick('season-record');
+   clear(list);
+@@ -422,6 +452,7 @@ function render(view) {
+   renderVisitList(view);
+   renderRecords(view);
+   renderPages(view);
++  renderConflict(view);
+   renderSeasonRecord(view);
+ }
+ 
+@@ -446,21 +477,24 @@ function choose(visitId, optionId) {
+   return guard(() => post(`/hands/${encodeURIComponent(HAND)}/choose`, { visitId, optionId }));
+ }
+ 
+-// Walk a visit that has already been played back through, so the panel shows
+-// what was said and what was chosen that day.
++// Turn back to a visit that has already been walked and read it again. It is a
++// reading, not a second day of work, so nothing about the season moves.
+ function reread(visitId) {
+-  const visit = latest && latest.visits.find((row) => row.id === visitId);
+-  const taken = visit ? visit.taken : null;
+-  if (!taken) {
+-    return enter(visitId);
+-  }
+-  return guard(() => post(`/hands/${encodeURIComponent(HAND)}/choose`, { visitId, optionId: taken }));
++  return guard(() => post(`/hands/${encodeURIComponent(HAND)}/reread`, { visitId }));
+ }
+ 
+-function savePage(pageId) {
+-  return guard(() =>
+-    post(`/hands/${encodeURIComponent(HAND)}/pages`, { pageId, label: pageId })
+-  );
++async function savePage(pageId) {
++  try {
++    say('');
++    render(await post(`/hands/${encodeURIComponent(HAND)}/pages`, { pageId, label: pageId }));
++  } catch (error) {
++    if (error.code === 'page-moved-on' && error.payload) {
++      say('');
++      render(error.payload);
++      return;
++    }
++    say(error.message || 'Something went wrong in the orchard.');
++  }
+ }
+ 
+ function loadPage(pageId) {
+diff --git a/frontend/public/styles.css b/frontend/public/styles.css
+index d8691c9..c306174 100644
+--- a/frontend/public/styles.css
++++ b/frontend/public/styles.css
+@@ -531,56 +531,53 @@ h2 {
+ 
+ /* --- narrower windows --------------------------------------------------- */
+ 
++/* The visit is what the window is for, so in a narrow window it keeps the full
++   width and everything the season is measured by falls in underneath it. */
+ @media (max-width: 1100px) {
+   .season {
+     grid-template-columns: minmax(0, 1fr);
+   }
+ 
+   .board {
+-    height: calc(100vh - 96px);
+-    left: 0;
+     max-height: none;
+-    position: fixed;
+-    top: 96px;
+-    width: 322px;
+-    z-index: 40;
++    position: static;
+   }
+ 
+-  .visit-line {
+-    max-height: 54px;
+-    overflow: hidden;
++  .graft-list {
++    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+   }
+ 
+-  .choices {
+-    display: block;
+-    height: 104px;
+-    position: relative;
++  .visit-title {
++    font-size: 1.5rem;
+   }
+ 
+-  .choice {
+-    position: absolute;
+-    right: 0;
+-    left: 0;
++  .visit-line {
++    font-size: 1.1rem;
+   }
+ 
+-  .choice:nth-of-type(1) {
+-    top: 0;
++  .desk {
++    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+   }
++}
+ 
+-  .choice:nth-of-type(2) {
+-    top: 26px;
++@media (max-width: 640px) {
++  .mast {
++    align-items: flex-start;
++    flex-direction: column;
++    gap: 10px;
+   }
+ 
+-  .choice:nth-of-type(3) {
+-    top: 52px;
++  .season,
++  .desk {
++    padding-left: 14px;
++    padding-right: 14px;
+   }
+ 
+   .standings {
+-    bottom: 0;
+-    left: 0;
+-    margin: 0;
+-    position: fixed;
+-    right: 0;
+-    z-index: 50;
++    margin: 0 14px;
++  }
++
++  .gauges {
++    grid-template-columns: minmax(0, 1fr);
+   }
+ }

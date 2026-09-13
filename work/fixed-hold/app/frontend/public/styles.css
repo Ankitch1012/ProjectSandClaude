@@ -1,0 +1,577 @@
+:root {
+  --parchment: #f4eedd;
+  --panel: #fffdf6;
+  --ink: #23301d;
+  --ink-soft: #5d6653;
+  --leaf: #3d6b39;
+  --leaf-deep: #2a4c28;
+  --bark: #7d6a4f;
+  --cut: #8d3a27;
+  --rule: #d8ceb4;
+  --shadow: 0 1px 2px rgba(35, 48, 29, 0.08), 0 8px 24px rgba(35, 48, 29, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background:
+    radial-gradient(circle at 12% -10%, rgba(61, 107, 57, 0.12), transparent 45%),
+    var(--parchment);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.panel-head {
+  border-bottom: 1px solid var(--rule);
+  color: var(--leaf-deep);
+  font-size: 0.82rem;
+  letter-spacing: 0.09em;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  text-transform: uppercase;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.mast {
+  align-items: center;
+  background: linear-gradient(180deg, var(--leaf-deep), var(--leaf));
+  color: #f3f0e2;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 14px 22px;
+}
+
+.mast-name {
+  align-items: baseline;
+  display: flex;
+  gap: 12px;
+}
+
+.mast-word {
+  font-size: 1.5rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.mast-place {
+  color: rgba(243, 240, 226, 0.72);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.mast-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: rgba(255, 253, 246, 0.16);
+  border: 1px solid rgba(255, 253, 246, 0.28);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  padding: 3px 12px;
+  white-space: nowrap;
+}
+
+.chip-hand {
+  background: rgba(255, 253, 246, 0.9);
+  color: var(--leaf-deep);
+}
+
+.notice {
+  background: #fdf3ea;
+  border-left: 4px solid var(--cut);
+  color: var(--cut);
+  margin: 14px 22px 0;
+  padding: 10px 14px;
+}
+
+/* --- season: the visit, and the board beside it -------------------------- */
+
+.season {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  padding: 18px 22px;
+}
+
+.visit,
+.board,
+.standings,
+.desk-panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+
+.visit {
+  min-height: 420px;
+}
+
+.visit-empty h1 {
+  font-size: 1.3rem;
+}
+
+.visit-empty p {
+  color: var(--ink-soft);
+}
+
+.visit-when {
+  color: var(--bark);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.visit-title {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.visit-setting {
+  color: var(--ink-soft);
+  margin: 0 0 18px;
+  max-width: 62ch;
+}
+
+.visit-speaker {
+  color: var(--leaf-deep);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.visit-line {
+  border-left: 3px solid var(--leaf);
+  font-size: 1.2rem;
+  line-height: 1.55;
+  margin: 0 0 20px;
+  max-width: 60ch;
+  padding: 4px 0 4px 16px;
+}
+
+.touches {
+  background: #f7f4e8;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+}
+
+.touches-head {
+  color: var(--bark);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.touch-list {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.touch {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.touch-label {
+  flex: 1 1 14rem;
+}
+
+.touch-state,
+.touch-hold {
+  border-radius: 999px;
+  font-size: 0.78rem;
+  padding: 1px 10px;
+}
+
+.touch-state {
+  background: #e6ecdd;
+  color: var(--leaf-deep);
+}
+
+.touch-state-cut-back {
+  background: #f4e0da;
+  color: var(--cut);
+}
+
+.touch-hold {
+  background: #efe7d3;
+  color: var(--bark);
+}
+
+.choices {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.choice {
+  background: var(--panel);
+  border: 1px solid var(--leaf);
+  border-radius: 8px;
+  color: var(--leaf-deep);
+  cursor: pointer;
+  font: inherit;
+  padding: 12px 16px;
+  text-align: left;
+  transition: background 120ms ease, transform 120ms ease;
+  width: 100%;
+}
+
+.choice:hover {
+  background: #eef3e7;
+}
+
+.choice[data-taken="true"] {
+  border-left-width: 5px;
+}
+
+.visit-foot {
+  margin: 0;
+}
+
+.reread {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 7px 14px;
+}
+
+/* --- the graft board ---------------------------------------------------- */
+
+.board {
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  position: sticky;
+  top: 18px;
+}
+
+.graft-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.graft {
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--leaf);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.graft-cut-back {
+  border-left-color: var(--cut);
+}
+
+.graft-label {
+  font-weight: 600;
+  margin: 0;
+}
+
+.graft-scion {
+  color: var(--bark);
+  font-size: 0.84rem;
+  font-style: italic;
+  margin: 0 0 6px;
+}
+
+.graft-line {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.graft-state,
+.graft-hold {
+  border-radius: 999px;
+  font-size: 0.78rem;
+  padding: 1px 10px;
+}
+
+.graft-state {
+  background: #e6ecdd;
+  color: var(--leaf-deep);
+}
+
+.graft-cut-back .graft-state {
+  background: #f4e0da;
+  color: var(--cut);
+}
+
+.graft-hold {
+  background: #efe7d3;
+  color: var(--bark);
+}
+
+.graft-history {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.board-empty,
+.page-empty {
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0;
+}
+
+/* --- standings ---------------------------------------------------------- */
+
+.standings {
+  margin: 0 22px;
+}
+
+.gauges {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gauge {
+  display: grid;
+  gap: 4px;
+}
+
+.gauge-label {
+  color: var(--leaf-deep);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.gauge-amount {
+  font-size: 1.05rem;
+}
+
+.gauge-bar {
+  background: #e7e1cd;
+  border-radius: 999px;
+  display: block;
+  height: 9px;
+  overflow: hidden;
+}
+
+.gauge-fill {
+  background: linear-gradient(90deg, var(--leaf), var(--leaf-deep));
+  display: block;
+  height: 100%;
+}
+
+/* --- the desk ----------------------------------------------------------- */
+
+.desk {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 18px 22px 32px;
+}
+
+.visit-list,
+.record-list,
+.page-list {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.visit-row,
+.record-row,
+.page-row {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.visit-row-open {
+  border-left: 4px solid var(--leaf);
+}
+
+.visit-row-done {
+  background: #f7f4e8;
+}
+
+.visit-row-locked {
+  color: var(--ink-soft);
+}
+
+.visit-row-head,
+.record-title,
+.page-row-head {
+  margin: 0 0 6px;
+}
+
+.visit-row-why,
+.record-blurb,
+.record-mark {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  margin: 0 0 4px;
+}
+
+.record-row-open {
+  border-left: 4px solid var(--leaf);
+}
+
+.record-row-open .record-mark {
+  color: var(--leaf-deep);
+}
+
+.visit-open,
+.page-load,
+.page-save {
+  background: var(--leaf);
+  border: none;
+  border-radius: 7px;
+  color: #f7f5ea;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 7px 13px;
+}
+
+.page-form {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.page-label {
+  color: var(--bark);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-input {
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  font: inherit;
+  padding: 8px 10px;
+}
+
+.record-book {
+  color: var(--ink-soft);
+  display: grid;
+  font-size: 0.88rem;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.conflict {
+  background: #fdf1e9;
+  border: 1px solid #e0b9a8;
+  border-left: 4px solid var(--cut);
+  border-radius: 8px;
+  margin-bottom: 14px;
+  padding: 10px 13px;
+}
+
+.conflict-head {
+  color: var(--cut);
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.conflict-body {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+/* --- narrower windows --------------------------------------------------- */
+
+/* The visit is what the window is for, so in a narrow window it keeps the full
+   width and everything the season is measured by falls in underneath it. */
+@media (max-width: 1100px) {
+  .season {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .board {
+    max-height: none;
+    position: static;
+  }
+
+  .graft-list {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .visit-title {
+    font-size: 1.5rem;
+  }
+
+  .visit-line {
+    font-size: 1.1rem;
+  }
+
+  .desk {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mast {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .season,
+  .desk {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .standings {
+    margin: 0 14px;
+  }
+
+  .gauges {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

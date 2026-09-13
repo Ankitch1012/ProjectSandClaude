@@ -1,0 +1,41 @@
+schema_version = "1.1"
+
+[task]
+name = "<namespace>/<task-slug>"
+description = "<one-paragraph blurb: what is broken, across which layers, from the user's point of view>"
+authors = [{ name = "<author>", email = "<author@example.com>" }]
+keywords = []
+
+[metadata]
+category = "<category>"
+task_family = "<family>"
+source_repo = "<app>"
+base_commit = "<sha>"
+fail_to_pass_count = 0
+pass_to_pass_count = 0
+skipped_meta_files = []
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[verifier.env]
+
+[agent]
+timeout_sec = 1800.0
+user = "root"
+
+[solution]
+
+[solution.env]
+
+[environment]
+build_timeout_sec = 1200.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+gpu_types = []
+allow_internet = true
+
+[environment.env]

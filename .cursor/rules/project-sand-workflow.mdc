@@ -1,0 +1,325 @@
+---
+description: Project Sand (AfterQuery) operating rules — the difficulty/correctness/fairness triad, the "too similar" novelty stop, intake order, claim budget, easiness/nop/oracle proof order, submit checklist
+alwaysApply: true
+---
+
+# Project Sand — workflow
+
+The user is an expert on experts.afterquery.com. Three things decide whether a
+submission survives, and they are not equally forgiving: **difficulty,
+correctness, fairness.** Correct-and-fair but easy comes back for hardening.
+Hard-because-vague is rejected outright. Assume every task is too easy until
+the defect itself proves otherwise.
+
+## Standing mode — Import only
+
+The user has chosen self-designed **Import** tasks as the default for all future
+work. Do not ask A/B, claim queue tasks, or emit the Mode A intake list unless
+the user explicitly reverses this decision and requests queue work. The Mode A
+material below is retained only as legacy reference for an explicitly returned
+queue task.
+
+## Legacy reference: two modes
+
+**A — Claim from the queue.** A pre-built package (broken app + instruction +
+tests + reference patch) that must be made correct, clear, and hard enough. It
+lives in a browser workspace, but **Tools → Local editing → Download archive**
+exports the whole thing as a `.tar` the user hands over. Always work from that
+archive rather than pasted snippets — it makes the repos readable, editable and
+locally runnable. Only fall back to paste-and-hand-back-text if no archive is
+available. Queue packages are templates: they have not been cleared for
+difficulty or novelty, so substantial redesign is expected rather than polish.
+Only one queue task can be active at a time.
+
+**B — Self-design and import.** The expert builds the whole package from the
+downloaded template, archives it, and uploads through the **Import** tab. Those
+files can live in this workspace, so the agent reads, edits, and runs `harbor`
+directly. Prefer this mode when choosing freely because it gives control over
+originality and difficulty from the start. Packaging rules live in the
+self-design rule.
+
+If no origin is stated, use Mode B and request the newest downloaded import
+template.
+
+In either mode, treat the instruction, broken app and images, verifier, and
+reference solution as one contract. A change to one must be reconciled with all
+the others before submission.
+
+## Novelty — "too similar" is a hard stop
+
+The platform rejects packages that resemble one already approved or in review,
+and that verdict is not negotiable by polishing. A noun-swap does not clear it:
+renaming a game to a different game, recoloring the shell, or rewriting the
+tests against the same shape all still read as the same task.
+
+Clearing it means changing **the domain primitive, the scenario, the bug
+families, and the layout** together. When a task comes back as too similar,
+treat the current package as spent and rebuild those four, rather than
+negotiating with the diff.
+
+## Mode A — intake order
+
+On the first message of a session — even a bare "hello" or a mention of a new
+task — reply with this full numbered list, so the user can start collecting
+everything at once. Do not paraphrase it down to one or two items.
+
+1. `instruction.md` — plain text, not a screenshot.
+2. Every problem image: `broken.png`, `target.png`, and any extra broken shots.
+   Newer packages keep them in `environment/problem_assets/`.
+3. The app tree — `environment/` on newer packages, `base-repo` plus
+   `reference/` on older ones.
+4. The verifier: the spec files under `tests/` (older: `reference/tests/`) and
+   `config.json` for the `fail_to_pass` / `pass_to_pass` name lists. Ignore
+   `boot.sh`, `parser.py`, `playwright.config.js`, `run_script.sh`, `test.sh`
+   unless test names are not being parsed.
+5. Base repo source — a small JS + CSS pair on simple packages, more when the
+   defects span backend and frontend. Ask for every file a described symptom
+   could plausibly route through, not just the one it surfaces in.
+6. Fixed / `solution/` source, to confirm the reference patch covers every
+   symptom.
+
+Say items 1 and 2 are enough to begin and the rest can follow while analysis
+starts. State the 60-minute claim and the three-run verification cap up front,
+and that every fail-to-pass test will be traced against both base and fixed
+source before a run is spent.
+
+Then work the package in this order: scout and perform the novelty/easiness
+audit · redesign or release · change the base and fixed/solution sides together
+· confirm the base really is broken through interaction · confirm the fixed
+state resolves every symptom through interaction · rewrite the instruction ·
+harden the verifier · check and retake images · only then verify.
+
+## Queue templates must be rebuilt
+
+Do not stop at repairing or rewording the supplied defect. During the easiness
+audit, identify one coherent user workflow and introduce independent defect
+families whose causes require tracing across the system. Put the visible
+symptom and root cause in different places where the architecture supports it,
+span frontend and backend when both exist, and include an objectively broken
+layout rather than a cosmetic change.
+
+Edit both sides together: plant the behavior in the base repo and implement the
+corresponding genuine fix in the fixed repo or solution. Every added symptom
+must be represented consistently in the instruction, screenshots where
+visible, verifier, and reference patch. If the package cannot be reconciled
+honestly within the claim window, release it; when project chat is available,
+report an irreparably poor queue template so it can be pulled.
+
+## Mode A — working from the downloaded archive
+
+The user downloads the workspace `.tar` and hands it over. Extract it into a
+folder **named after the tar file**, work there, repack, hand it back for
+**Tools → Local editing → Upload archive**. Four rules that are not obvious and
+each cost a rejected upload when broken:
+
+- **The archive is bound to the claim it came from.** `.sand-workspace.json`
+  carries a `workingSnapshotId`. Uploading an archive built from an earlier
+  claim's download fails with *"Archive was downloaded from a previous claim —
+  re-download the workspace and re-apply your changes."* On every new claim or
+  returned task, have the user download a **fresh** archive first, then graft the
+  edited `base-repo`, `fixed-repo`, `instruction.md` and `tests/` onto it and
+  keep the fresh `.sand-workspace.json`. Uploading also advances the snapshot, so
+  a second upload needs another fresh download.
+- **Images must not travel in the archive.** Any `.png` inside is rejected with
+  *"instruction images change through the image and screenshot tools, not archive
+  uploads."* Pack everything except the images folder, and have the user replace
+  `broken.png` / `target.png` through the SCREENSHOTS uploader in the Files panel.
+- **The in-workspace Verification check goes dead** once the app environment
+  changes: *"You changed the app environment, so this check can't run against
+  your edits. The full QA pipeline verifies them after you submit."* So the local
+  run below is the only gate before submission — do not skip it.
+- **Uploading does not update the Instructions editor reliably.** Confirm the
+  instruction text on the page, and hand over the full replacement text to paste
+  when it has not taken.
+
+### Local verification recipe (queue tasks have no harbor package)
+
+`harbor` needs a `my-task` package layout that queue archives do not have. Drive
+the spec directly instead:
+
+- Serve both repos on separate ports. Start them as **persistent background
+  shells**; a server launched as `(cmd &)` inside a normal call dies with the
+  call and every test then fails for the wrong reason.
+- Install once: `npm i -D @playwright/test` in a scratch dir, and use
+  `use: { channel: 'chrome' }` to borrow the system Chrome instead of waiting on
+  the chromium download.
+- Point a config at the package's `reference/tests`, symlink the scratch
+  `node_modules` into it so `require('@playwright/test')` resolves.
+- Gate: **every `[F2P]` fails and every `[P2P]` passes against base**, and
+  **everything passes against fixed, twice.** Then extract the repacked tar to a
+  clean directory and run the whole gate again from *that*, so the thing being
+  uploaded is what was proved.
+
+## Before claiming
+
+The queue offers **Preview** next to **Claim**. Previewing does not start the
+60-minute timer, so scout there first: read the instruction, look at every
+screenshot, and check whether the app actually runs. Only claim once the scope
+is understood. Remind the user of this whenever they are about to take a task.
+
+The queue unlocks only after its comprehension quiz. A claim starts the
+60-minute timer immediately; the timer and policy shown inside that workspace
+are authoritative for its lifetime. Release or expiry closes that working
+snapshot while preserving the audit trail. A later claimant starts from the
+accepted base, not from another expert's unfinished edits.
+
+When available, review current project-chat tips for policy changes and known
+platform incidents before committing to a claim; the active workspace's timer
+and policy still take precedence.
+
+## Step zero: can the app even run?
+
+The first thing to establish is whether the base repo preview actually runs —
+click the primary action and see if the app responds. This decides the whole
+screenshot strategy, so finding out late is expensive.
+
+If the app does not run in the preview, say so plainly and switch to the
+substitute: read the full source, hand-trace the defect, and treat the
+verification result ("tests failed on the unfixed app and passed with the
+reference fix") as the empirical proof that the bug reproduces. Tell the user to
+give the reviewer this reason if manual launch or a retaken screenshot is
+questioned.
+
+## Budget and verification
+
+- A claim runs 60 min. Each platform Verification Check adds ~30 min.
+- **Three verification runs per claim, maximum.** After the last one further
+  edits cannot be rechecked: submit as-is or release. Run out and the task is
+  released automatically.
+Prove the pack in this order, and do not reorder it: **easiness audit first,
+then nop = 0, then oracle = 1 twice.** Difficulty work rewrites tests and
+sometimes the defect itself, so any green run taken before the audit is void.
+Oracle runs twice because a suite that passes once and flakes once is a suite
+that will fail in review.
+
+- If the package can be pulled into this workspace, run the gate locally first.
+  Local runs are faster and cost no platform attempt:
+  - `harbor run -p ./my-task -a nop` — the nop agent applies nothing. Every
+    `fail_to_pass` test must FAIL, every `pass_to_pass` test must PASS, and
+    `logs/verifier/reward.txt` must read `0`. A `1` means the bug is already
+    fixed at the base commit, or the tests are not exercising it.
+  - `harbor run -p ./my-task -a oracle` — applies `solution/solve.sh` first.
+    Every `fail_to_pass` ∪ `pass_to_pass` test must PASS and `reward.txt` must
+    read `1`. A failure means `git apply` rejected the patch (context lines
+    drifted from the base commit), the fix is incomplete, or the names in
+    `config.json` do not match what `parser.py` prints.
+  - `harbor view ./jobs` — interactive stdout, stderr, parser output and reward
+    per run. Use it whenever oracle fails.
+- When local runs are impossible, hand-trace every fail-to-pass test line by
+  line against both the base and the fixed source before spending a platform
+  run.
+- If the platform Verification Check remains enabled, run it only after the
+  local gate. If editing the environment disables it, do not treat that as a
+  package failure; submission QA is then the platform-side verification.
+- A failed run means fixing the underlying inconsistency — base repo, patch,
+  instruction, tests, declared names, or expected UI state. Never work around
+  the verifier.
+
+## Platform gotchas (learned the hard way)
+
+- The live preview iframe is **sandboxed without `allow-same-origin`**. Any app
+  that touches `localStorage` at module top level throws immediately and never
+  runs — the preview shows a dead title screen and "Replace from Live preview"
+  captures nothing useful. Opening in a new tab does not help; same sandbox.
+- The instruction editor is WYSIWYG. Undo can corrupt image nodes into
+  "image unavailable" placeholders, and Save then fails silently. Fix by
+  deleting the corrupted nodes, or reload the page to drop unsaved edits.
+- The Instructions tab edits `instruction.md` itself, so pasting there is a
+  complete substitute for re-uploading when only the instruction changed.
+- Keep a blank line after each embedded image or the following caption is
+  absorbed into the image paragraph.
+- The optional `VERIFIER_EXPLANATION.md` is worth writing — reviewers read it
+  instead of the spec. "Check against tests" validates it against the suite and
+  has its own small credit budget, separate from fix attempts.
+- Delete `UNVERIFIED.md` / `warning.md` if present.
+- Newer packages use `environment/` (with `environment/problem_assets/`),
+  `tests/` and `solution/`; older ones use `base-repo`, `fixed-repo` and
+  `reference/tests`. Both still appear — read the tree before assuming.
+
+## Images — the task should need them
+
+Every package needs at least one real visual, and the images have to carry
+information the instruction alone does not. A reviewer should be unable to
+solve the layout half of the task without looking at them.
+
+- `broken.png` shows the described defect in the state the agent will find it;
+  `target.png` shows the fixed state.
+- **Add more than one broken image** whenever a second visual defect is not
+  visible in the first shot. Give each distinct layout failure an evidentiary
+  view unless it is already unmistakably visible in another.
+- If an image is wrong, retake it from the launch tools first. Deleting is the
+  last resort, and then only the wrong one — keep the target.
+
+## The submit checklist
+
+The platform unlocks each item only once the file it refers to has been opened:
+
+1. Instruction is clear, correct, rewritten in fresh words, and leak-free.
+2. Problem images match the described behavior.
+3. The fixed repository resolves the described issue.
+4. The verifier tests check the described behavior.
+
+Beyond the four: base reproduces the defect · a valid alternative
+implementation would still pass · both repos launched and interacted with ·
+easiness audit clean · nop = 0 · oracle = 1 on two consecutive runs · nothing
+in the package resembles a task already approved or in review ·
+`UNVERIFIED.md` and `warning.md` deleted · no secrets,
+credentials, or unrelated personal information anywhere in the package · no
+file left with unsaved changes. Automated checks prove validity; manual use of
+both states is what proves that the task is actually correct.
+
+## After submitting
+
+Automated QA runs first, then a difficulty probe (10 runs against a
+state-of-the-art agent), then human review. Hardening is the work, not the retry.
+A reviewer flag escalates to an administrator rather than simply reopening the
+active claim.
+
+**Two budgets, counted separately.**
+
+- **Automated QA returns: 3 fix attempts.** An attempt is spent only when a
+  check the user was *already told about* fails again — the first report of any
+  new issue is free.
+- **Too-easy returns: a separate 3 hardening attempts**, each with a fresh
+  window. After that a queue task returns to the queue and cannot be reclaimed.
+- **Human reviewer returns cost nothing** from either budget and arrive with
+  structured feedback describing the issue, expected correction, and rework
+  level.
+
+The full difficulty finding is measured before human review and informs the
+reviewer; it does not create an extra hardening retry beyond the pre-review
+easiness budget.
+
+Using the third counted automated attempt does not close the line immediately;
+the next repeat failure does. At that point a queue task is requeued and cannot
+be reclaimed by the same expert, while an imported task goes to administrator
+review. Too-easy attempts remain separate from this count. Treat the counter
+shown on the returned task as the source of truth for the remaining budget.
+
+On the progress strip, an **amber** pause is an automatic retry and a **grey**
+pause (including "Additional review") means a person has it — neither needs
+action.
+
+- **Returned queue task:** it appears in **Needs your fix**. *Resume fix*
+  restores the prior edits under a fresh claim window and current policy;
+  *Release* requeues it.
+- **Returned imported task:** use *Download package → Upload fixed version* and
+  repair it offline. The replacement may be `.zip`, `.tar.gz`, or `.tgz`; an
+  upload that fails to process can be uploaded again. A processed replacement
+  restarts automated checks on the same task. *Release* permanently closes this
+  imported task because there is no other claimant.
+- **Either origin:** *Flag as unfixable* retires a genuinely unsalvageable
+  package for everyone. The reason and repeated unjustified use are audited, so
+  use it honestly and rarely.
+
+Releasing a returned task removes it from the expert's outstanding workload.
+
+## Standing
+
+The first three completed tasks are capped for work awaiting review. Bootcamp
+status requires one task through QA and allows two completed tasks until it is
+satisfied. Clean reviews unlock full access; repeated fixes can pause or remove
+access.
+
+If something is genuinely unclear, say so instead of guessing. Releasing a task
+is cheaper than a false submission.

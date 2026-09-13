@@ -1,0 +1,55 @@
+{
+  "announced": 4,
+  "good": "no",
+  "faults": [
+    {
+      "bar": null,
+      "line": 1,
+      "says": "this line has no bar span"
+    },
+    {
+      "bar": null,
+      "line": 2,
+      "says": "this line has no bar span"
+    },
+    {
+      "bar": null,
+      "line": 3,
+      "says": "this line has no bar span"
+    },
+    {
+      "bar": null,
+      "line": 4,
+      "says": "this line has no bar span"
+    }
+  ],
+  "markedLines": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "phrases": [],
+  "topRow": [
+    {
+      "couple": 1,
+      "place": 1,
+      "side": "own"
+    },
+    {
+      "couple": 2,
+      "place": 2,
+      "side": "own"
+    },
+    {
+      "couple": 3,
+      "place": 3,
+      "side": "own"
+    },
+    {
+      "couple": 4,
+      "place": 4,
+      "side": "own"
+    }
+  ]
+}

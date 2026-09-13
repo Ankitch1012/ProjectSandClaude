@@ -1,0 +1,41 @@
+schema_version = "1.1"
+
+[task]
+name = "afterquery/rifflepair-leafpack-contrast"
+description = "An intermittent-stream researcher cannot trust RifflePair because stage quality, estimated water contact, recovery chemistry, control normalization, bag eligibility, paired-anchor compatibility, reach aggregation, spatial selection, and responsive map geometry disagree."
+authors = [{ name = "RifflePair Task Author", email = "author@local.invalid" }]
+keywords = ["stream-ecology", "leaf-pack", "hydroperiod", "paired-analysis"]
+
+[metadata]
+category = "full-stack"
+task_family = "scientific-web-application"
+source_repo = "rifflepair-leafpack-contrast"
+base_commit = "dabe7f280326e6eb326e475a63d4544c86f1327d"
+fail_to_pass_count = 44
+pass_to_pass_count = 6
+skipped_meta_files = []
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[verifier.env]
+
+[agent]
+timeout_sec = 1800.0
+user = "root"
+
+[solution]
+
+[solution.env]
+
+[environment]
+build_timeout_sec = 1200.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+gpu_types = []
+allow_internet = true
+
+[environment.env]

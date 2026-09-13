@@ -1,0 +1,14 @@
+{
+  "name": "cribstave-desk-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reads a Scottish country dance crib, dances it through, and reports what is wrong with it",
+  "license": "UNLICENSED",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

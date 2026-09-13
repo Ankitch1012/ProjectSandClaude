@@ -1,0 +1,419 @@
+diff --git a/backend/lib/geometry.js b/backend/lib/geometry.js
+index d313fce..94aafb1 100644
+--- a/backend/lib/geometry.js
++++ b/backend/lib/geometry.js
+@@ -19,26 +19,22 @@ function orientedSheet(sheetName, orientation) {
+   return { width: source.width, height: source.height };
+ }
+ 
+-function firstAssignedPage(imposition) {
+-  const firstSheet = imposition.sheets[0];
+-  const firstSlot = firstSheet && firstSheet.front[0];
+-  return firstSlot && Number.isFinite(firstSlot.page) ? firstSlot.page : 0;
+-}
+-
+-function markerPlan(state, imposition, sheet) {
+-  const assignmentKey = JSON.stringify(state.assignments || {});
+-  const cacheKey = `${state.settings.orientation}:${assignmentKey}`;
++function markerPlan(state, sheet) {
++  const cacheKey = [
++    state.settings.sheet,
++    state.settings.orientation,
++    state.settings.fold
++  ].join(':');
+   if (markerCache.has(cacheKey)) {
+     return clone(markerCache.get(cacheKey));
+   }
+ 
+-  const pageNudge = firstAssignedPage(imposition) % 2 === 0 ? 2 : -2;
+   const foldXs = state.settings.fold === 'parallel'
+     ? [sheet.width * 0.25, sheet.width * 0.75]
+     : [sheet.width * 0.5];
+   const cuts = [
+-    { id: 'cut-left', xMm: 18 + pageNudge, edge: 'left' },
+-    { id: 'cut-right', xMm: sheet.width - 18 + pageNudge, edge: 'right' }
++    { id: 'cut-left', xMm: 18, edge: 'left' },
++    { id: 'cut-right', xMm: sheet.width - 18, edge: 'right' }
+   ];
+   const folds = foldXs.map((xMm, index) => ({
+     id: `fold-${index + 1}`,
+@@ -58,7 +54,7 @@ function buildGeometry(state, imposition) {
+   const gutter = 10;
+   const trimWidth = (sheet.width - (marginX * 2) - gutter) / 2;
+   const trimHeight = sheet.height - (marginY * 2);
+-  const markers = markerPlan(state, imposition, sheet);
++  const markers = markerPlan(state, sheet);
+ 
+   return {
+     sheet: {
+diff --git a/backend/lib/job-store.js b/backend/lib/job-store.js
+index 7e350af..c15c447 100644
+--- a/backend/lib/job-store.js
++++ b/backend/lib/job-store.js
+@@ -48,7 +48,7 @@ function createJob() {
+     revision: 12,
+     state,
+     proofSnapshot: buildProof(state),
+-    lastValidatedRevision: 11,
++    lastValidatedRevision: 12,
+     releasedRevision: null,
+     nextOrdinal: 2,
+     operations: [
+@@ -77,7 +77,8 @@ function serialise(source) {
+     proof: source.proofSnapshot,
+     operations: source.operations,
+     release: {
+-      eligible: Boolean(source.lastValidatedRevision),
++      eligible: source.proofSnapshot.validation.valid
++        && source.lastValidatedRevision === source.revision,
+       validatedRevision: source.lastValidatedRevision,
+       releasedRevision: source.releasedRevision
+     }
+@@ -109,16 +110,26 @@ function saveJob(id, payload) {
+   if (!job) {
+     resetJob();
+   }
++  if (Number(payload.expectedRevision) !== job.revision) {
++    return {
++      status: 409,
++      body: {
++        error: `Revision R${job.revision} was saved by another session.`,
++        currentRevision: job.revision
++      }
++    };
++  }
+ 
+   const previousRevision = job.revision;
+   const nextState = normaliseState(payload.state);
+-  const previousProof = clone(job.proofSnapshot);
++  const nextProof = buildProof(nextState);
+   const operations = Array.isArray(payload.operations) ? payload.operations : [];
+ 
+   job.state = nextState;
+   job.revision += 1;
+-  job.proofSnapshot = previousProof;
+-  job.lastValidatedRevision = previousProof.validation.valid ? previousRevision : null;
++  job.proofSnapshot = nextProof;
++  job.lastValidatedRevision = nextProof.validation.valid ? job.revision : null;
++  job.releasedRevision = null;
+ 
+   operations.forEach((operation, index) => {
+     job.operations.push({
+@@ -131,24 +142,31 @@ function saveJob(id, payload) {
+   job.nextOrdinal += operations.length;
+   job.operations.sort((left, right) => (
+     left.logicalTime - right.logicalTime
+-    || left.label.localeCompare(right.label)
++    || left.ordinal - right.ordinal
+   ));
+ 
+   return { status: 200, body: serialise(job) };
+ }
+ 
+-function releaseJob(id) {
++function releaseJob(id, payload) {
+   if (id !== JOB_ID) {
+     return { status: 404, body: { error: 'Print job not found.' } };
+   }
+   if (!job) {
+     resetJob();
+   }
+-  if (!job.lastValidatedRevision) {
+-    return { status: 409, body: { error: 'No validated revision is available for release.' } };
++  const requestedRevision = Number(payload && payload.revision);
++  const isCurrent = requestedRevision === job.revision;
++  const isValidated = job.proofSnapshot.validation.valid
++    && job.lastValidatedRevision === job.revision;
++  if (!isCurrent || !isValidated) {
++    return {
++      status: 409,
++      body: { error: 'Only the current saved and validated revision can be released.' }
++    };
+   }
+ 
+-  job.releasedRevision = job.lastValidatedRevision;
++  job.releasedRevision = job.revision;
+   return { status: 200, body: serialise(job) };
+ }
+ 
+diff --git a/backend/lib/proof.js b/backend/lib/proof.js
+index 4a05b70..0b831fe 100644
+--- a/backend/lib/proof.js
++++ b/backend/lib/proof.js
+@@ -17,6 +17,7 @@ function cacheKey(state) {
+     sheet: state.settings.sheet,
+     orientation: state.settings.orientation,
+     fold: state.settings.fold,
++    bleed: state.settings.bleed,
+     assignments: state.assignments || {}
+   });
+ }
+diff --git a/backend/lib/signatures.js b/backend/lib/signatures.js
+index 177141f..bec1b41 100644
+--- a/backend/lib/signatures.js
++++ b/backend/lib/signatures.js
+@@ -52,12 +52,12 @@ function buildImposition(state) {
+         signature: signatureIndex + 1,
+         sheet: sheetIndex + 1,
+         front: [
+-          slot(signatureIndex, sheetIndex, 'front', 'left', frontInner, assignments),
+-          slot(signatureIndex, sheetIndex, 'front', 'right', frontOuter, assignments)
++          slot(signatureIndex, sheetIndex, 'front', 'left', frontOuter, assignments),
++          slot(signatureIndex, sheetIndex, 'front', 'right', frontInner, assignments)
+         ],
+         back: [
+-          slot(signatureIndex, sheetIndex, 'back', 'left', backOuter, assignments),
+-          slot(signatureIndex, sheetIndex, 'back', 'right', backInner, assignments)
++          slot(signatureIndex, sheetIndex, 'back', 'left', backInner, assignments),
++          slot(signatureIndex, sheetIndex, 'back', 'right', backOuter, assignments)
+         ]
+       });
+     }
+@@ -65,7 +65,7 @@ function buildImposition(state) {
+ 
+   return {
+     binding,
+-    duplexTurn: orientation === 'landscape' ? 'long-edge' : 'long-edge',
++    duplexTurn: orientation === 'landscape' ? 'long-edge' : 'short-edge',
+     signatureCount: ranges.length,
+     sheets
+   };
+diff --git a/frontend/public/app.js b/frontend/public/app.js
+index 34435cc..4985cee 100644
+--- a/frontend/public/app.js
++++ b/frontend/public/app.js
+@@ -177,6 +177,10 @@ function mmPercent(value, total) {
+   return `${((value / total) * 100).toFixed(4)}%`;
+ }
+ 
++function regionPercent(value, total) {
++  return `${((value / total) * 100).toFixed(4)}%`;
++}
++
+ function makeMarker(marker, geometry, kind) {
+   const line = document.createElement('span');
+   line.className = `sheet-guide sheet-guide-${kind}`;
+@@ -206,16 +210,16 @@ function makePageSlot(slot, region, geometry, surface) {
+   const bleed = document.createElement('span');
+   bleed.className = 'bleed-boundary';
+   bleed.setAttribute('aria-label', `Bleed boundary ${geometry.bleedMm} mm`);
+-  bleed.style.left = mmPercent(
++  bleed.style.left = regionPercent(
+     region.bleedBox.xMm - region.xMm,
+-    geometry.sheet.widthMm
++    region.widthMm
+   );
+-  bleed.style.top = mmPercent(
++  bleed.style.top = regionPercent(
+     region.bleedBox.yMm - region.yMm,
+-    geometry.sheet.heightMm
++    region.heightMm
+   );
+-  bleed.style.width = mmPercent(region.bleedBox.widthMm, geometry.sheet.widthMm);
+-  bleed.style.height = mmPercent(region.bleedBox.heightMm, geometry.sheet.heightMm);
++  bleed.style.width = regionPercent(region.bleedBox.widthMm, region.widthMm);
++  bleed.style.height = regionPercent(region.bleedBox.heightMm, region.heightMm);
+ 
+   const folio = document.createElement('strong');
+   folio.className = 'page-number';
+@@ -341,7 +345,10 @@ function renderStatus() {
+   elements.releaseNote.textContent = model.server.release.releasedRevision
+     ? `Released revision R${model.server.release.releasedRevision}.`
+     : 'Release uses the validated revision shown above.';
+-  elements.releaseProof.disabled = !model.server.release.eligible;
++  elements.releaseProof.disabled = !model.server.release.eligible
++    || model.dirty
++    || model.needsRegeneration
++    || !model.proof.validation.valid;
+   elements.saveRevision.disabled = model.needsRegeneration;
+ }
+ 
+@@ -479,8 +486,11 @@ async function releaseProof() {
+ }
+ 
+ controlOperations.forEach((_, control) => {
+-  control.addEventListener('change', handleControlChange);
++  if (control !== elements.bleed) {
++    control.addEventListener('change', handleControlChange);
++  }
+ });
++elements.bleed.addEventListener('input', handleControlChange);
+ elements.regenerate.addEventListener('click', regenerate);
+ elements.swapPages.addEventListener('click', swapPages);
+ elements.clearSlot.addEventListener('click', clearFirstSlot);
+diff --git a/frontend/public/styles.css b/frontend/public/styles.css
+index dd9d62d..69c8a7a 100644
+--- a/frontend/public/styles.css
++++ b/frontend/public/styles.css
+@@ -174,7 +174,9 @@ button:disabled {
+ .workstation {
+   display: grid;
+   gap: 16px;
+-  grid-template-columns: 254px minmax(760px, 1fr);
++  grid-template-columns: 238px minmax(0, 1fr) 276px;
++  margin: 0 auto;
++  max-width: 1600px;
+   min-height: calc(100vh - 82px);
+   padding: 18px;
+   position: relative;
+@@ -358,7 +360,7 @@ button:focus-visible {
+ }
+ 
+ .proof-workspace {
+-  min-width: 760px;
++  min-width: 0;
+   overflow: hidden;
+   padding: 22px;
+   position: relative;
+@@ -366,17 +368,11 @@ button:focus-visible {
+ 
+ .proof-toolbar {
+   align-items: center;
+-  background: rgba(251, 252, 250, 0.96);
+-  border: 1px solid #cdd6d2;
+-  box-shadow: 0 14px 32px rgba(14, 31, 36, 0.19);
+   display: flex;
+   justify-content: space-between;
+-  left: 118px;
+-  padding: 12px 15px;
+-  position: absolute;
+-  top: 82px;
+-  width: 520px;
+-  z-index: 8;
++  min-height: 48px;
++  position: relative;
++  z-index: 1;
+ }
+ 
+ .proof-toolbar h2 {
+@@ -458,10 +454,10 @@ button:focus-visible {
+   border-radius: 5px;
+   display: grid;
+   gap: 15px;
+-  grid-template-columns: repeat(2, minmax(420px, 1fr));
+-  min-height: 510px;
++  grid-template-columns: repeat(2, minmax(0, 1fr));
++  min-height: 390px;
+   overflow: hidden;
+-  padding: 54px 20px 20px;
++  padding: 20px;
+ }
+ 
+ .loading-message {
+@@ -476,7 +472,7 @@ button:focus-visible {
+     linear-gradient(135deg, var(--paper), var(--paper-deep));
+   border: 1px solid #d2cbb9;
+   box-shadow: var(--shadow);
+-  min-width: 420px;
++  min-width: 0;
+   overflow: visible;
+   position: relative;
+ }
+@@ -665,14 +661,12 @@ button:focus-visible {
+ }
+ 
+ .validation-rail {
+-  max-height: calc(100vh - 118px);
+-  overflow: hidden;
++  align-self: start;
++  max-height: none;
++  overflow: visible;
+   padding: 18px;
+-  position: absolute;
+-  right: 18px;
+-  top: 94px;
+-  width: 410px;
+-  z-index: 12;
++  position: static;
++  width: auto;
+ }
+ 
+ .validation-card {
+@@ -850,25 +844,77 @@ button:focus-visible {
+   border-left-color: var(--lime);
+ }
+ 
+-@media (max-width: 900px) {
++@media (max-width: 1100px) {
++  .workstation {
++    grid-template-columns: 230px minmax(0, 1fr);
++  }
++
++  .validation-rail {
++    grid-column: 1 / -1;
++  }
++}
++
++@media (max-width: 800px) {
+   .topbar {
+-    grid-template-columns: 250px 540px auto;
+-    min-width: 1080px;
++    gap: 10px 18px;
++    grid-template-columns: 1fr auto;
++    padding: 12px 16px;
++  }
++
++  .brand small {
++    display: none;
++  }
++
++  .job-heading {
++    grid-column: 1 / -1;
++    grid-row: 2;
++  }
++
++  .job-heading h1 {
++    font-size: 17px;
+   }
+ 
+   .workstation {
+-    grid-template-columns: 250px 810px;
+-    min-width: 1080px;
++    grid-template-columns: minmax(0, 1fr);
++    padding: 12px;
+   }
+ 
++  .control-panel,
++  .proof-workspace,
+   .validation-rail {
+-    position: fixed;
+-    right: -54px;
+-    top: 102px;
+-    width: 430px;
++    grid-column: 1;
+   }
+ 
+   .proof-stage {
+-    grid-template-columns: repeat(2, 430px);
++    gap: 10px;
++    grid-template-columns: repeat(2, minmax(0, 1fr));
++    min-height: 300px;
++    padding: 14px;
++  }
++
++  .proof-metrics {
++    gap: 10px;
++    grid-template-columns: repeat(2, minmax(0, 1fr));
++  }
++
++  .page-number {
++    font-size: clamp(16px, 5vw, 27px);
++  }
++}
++
++@media (max-width: 540px) {
++  .proof-stage {
++    grid-template-columns: 1fr;
++  }
++
++  .proof-footer {
++    grid-template-columns: 1fr;
++  }
++
++  .proof-seal {
++    align-items: flex-start;
++    border-left: 0;
++    border-top: 1px solid var(--line);
++    padding: 12px 0 0;
+   }
+ }

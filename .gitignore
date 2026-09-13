@@ -1,0 +1,46 @@
+# Dependencies and build output
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+**/test-results/
+**/playwright-report/
+
+# Generated verification output
+jobs/
+**/.local*/
+**/.compare*/
+**/.final*/
+**/.harden*/
+**/.ledger*/
+**/.pivot*/
+**/.ui-check*/
+**/.verify*/
+**/logs/
+*.log
+
+# Disposable solver and byte-check workspaces
+blind-probe*/
+partial-fix-probe*/
+final-byte-check*/
+final-upload-byte-check*/
+reel-paper-bench/
+
+# Raw/intermediate downloads and archives
+*.tar
+*.tgz
+*.tar.gz
+*.zip
+!cribstave-dance-desk.tar.gz
+!seat-spring-survey.tar.gz
+!sandwich-4e718574-9109-4db7-92b0-3614ab91c56c-verification-review-fixed.tar.gz
+
+# Local metadata and secrets
+**/.git/
+.DS_Store
+**/.DS_Store
+.env
+.env.*
+!.env.example
+*.pem
+*.key

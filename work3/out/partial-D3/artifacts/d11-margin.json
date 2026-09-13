@@ -1,0 +1,19 @@
+{
+  "drift": [
+    -3.2,
+    -9.6,
+    -16,
+    -22.4,
+    -28.8,
+    -35.2,
+    -41.6,
+    -48,
+    -54.5
+  ],
+  "gutterRows": 9,
+  "gutterRowHeight": 21.6,
+  "lastDrift": 54.5,
+  "sourceRowHeight": 28,
+  "sourceRows": 9,
+  "worstDrift": 54.5
+}

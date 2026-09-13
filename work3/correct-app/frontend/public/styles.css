@@ -1,0 +1,363 @@
+:root {
+  --paper: #f6f2e9;
+  --paper-edge: #e6dfd0;
+  --ink: #23201c;
+  --ink-soft: #6d675d;
+  --rule: #d5cdbb;
+  --heather: #5c4a7a;
+  --heather-soft: #ece7f3;
+  --fault: #9c3320;
+  --fault-soft: #f7e4de;
+  --sound: #2f6b44;
+  --row: 1.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #efe9dc;
+  color: var(--ink);
+  font-family: "Iowan Old Style", Palatino, Georgia, serif;
+  margin: 0;
+  padding: 0 0 2rem;
+}
+
+.deskhead {
+  align-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+}
+
+.brand {
+  align-items: baseline;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.mark {
+  font-size: 1.35rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.trade {
+  color: #b9b0a0;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.control {
+  align-items: center;
+  color: #cfc7b8;
+  display: flex;
+  font-size: 0.78rem;
+  gap: 0.4rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.control select,
+.control input {
+  background: var(--paper);
+  border: 1px solid #45403a;
+  border-radius: 2px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.45rem;
+}
+
+.control input {
+  width: 4.5rem;
+}
+
+#check {
+  background: var(--heather);
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  padding: 0.45rem 1.1rem;
+}
+
+#check:hover {
+  background: #6d5990;
+}
+
+.desk {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-areas:
+    "crib set"
+    "report book";
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  margin: 1.25rem auto 0;
+  max-width: 1400px;
+  padding: 0 1.5rem;
+}
+
+.pane {
+  background: var(--paper);
+  border: 1px solid var(--paper-edge);
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(35, 32, 28, 0.07);
+  min-width: 0;
+  padding: 1rem 1.15rem 1.15rem;
+}
+
+.crib {
+  grid-area: crib;
+}
+
+.report {
+  grid-area: report;
+}
+
+.setpane {
+  grid-area: set;
+}
+
+.bookpane {
+  grid-area: book;
+}
+
+.pane h2 {
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.pane h2.second {
+  margin-top: 1.35rem;
+}
+
+#crib-text {
+  background: #fffdf8;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink);
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  min-height: 9.5rem;
+  padding: 0.6rem 0.7rem;
+  resize: vertical;
+  width: 100%;
+}
+
+/* The written crib, with the devisor's line numbering down the margin. */
+.stave {
+  background: #fffdf8;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  display: grid;
+  grid-template-columns: 2.9rem minmax(0, 1fr);
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.gutter,
+.source {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.gutter {
+  background: #f1ece0;
+  border-right: 1px solid var(--rule);
+  list-style: none;
+}
+
+.source {
+  overflow-x: auto;
+}
+
+.gutterline,
+.sourceline {
+  height: var(--row);
+  line-height: var(--row);
+}
+
+.gutterline {
+  color: var(--ink-soft);
+  padding-right: 0.55rem;
+  text-align: right;
+}
+
+.sourceline {
+  padding-left: 0.7rem;
+  white-space: pre;
+}
+
+.gutterline.faulted {
+  background: var(--fault);
+  color: #fff;
+  font-weight: 700;
+}
+
+.sourceline.faulted {
+  background: var(--fault-soft);
+  box-shadow: inset 2px 0 0 var(--fault);
+}
+
+.verdict {
+  font-size: 1rem;
+  margin: 0 0 0.85rem;
+}
+
+.verdict[data-good='yes'] {
+  color: var(--sound);
+}
+
+.verdict[data-good='no'] {
+  color: var(--fault);
+}
+
+.faults {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fault {
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 0.15rem 0.9rem;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  padding: 0.5rem 0;
+}
+
+.faultwhere {
+  color: var(--fault);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  padding-top: 0.12rem;
+}
+
+.faultsays {
+  min-width: 0;
+}
+
+/* Where the couples stand, a rank for the top of the dance and one for the
+   close of every phrase. */
+.setrow {
+  align-items: center;
+  display: grid;
+  gap: 0.4rem;
+  grid-template-columns: 5.25rem repeat(4, minmax(0, 1fr));
+  padding: 0.2rem 0;
+}
+
+.setrow.head {
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0.3rem;
+  padding-bottom: 0.4rem;
+}
+
+.setlabel {
+  color: var(--ink-soft);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.76rem;
+  text-align: right;
+}
+
+.place {
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.token {
+  background: var(--heather-soft);
+  border: 1px solid #d8d0e6;
+  border-radius: 2px;
+  color: var(--heather);
+  font-size: 0.9rem;
+  padding: 0.22rem 0;
+  text-align: center;
+}
+
+.token.crossed {
+  background: #fdf3dd;
+  border-color: #e6d6ac;
+  color: #7a5c17;
+}
+
+.phrases,
+.book {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.phrase {
+  border-top: 1px solid var(--rule);
+  display: grid;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  gap: 0.75rem;
+  grid-template-columns: 4.5rem minmax(0, 1fr) 5rem;
+  padding: 0.32rem 0;
+}
+
+.phraseorder {
+  color: var(--heather);
+  text-align: right;
+}
+
+.bookpane {
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.bookline {
+  border-top: 1px solid var(--rule);
+  display: grid;
+  font-size: 0.85rem;
+  gap: 0.5rem;
+  grid-template-columns: minmax(0, 1fr) 4rem;
+  padding: 0.26rem 0;
+}
+
+.bookbars {
+  color: var(--ink-soft);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.76rem;
+  text-align: right;
+}
+
+@media (max-width: 980px) {
+  .desk {
+    grid-template-areas:
+      "crib"
+      "report"
+      "set"
+      "book";
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

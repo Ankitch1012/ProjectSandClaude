@@ -1,0 +1,204 @@
+---
+description: Project Sand rules for rewriting instruction.md symptom-only, planting orthogonal backend+frontend defects, sizing and hardening the test suite, objective UI-quality tests, and keeping the reference patch honest
+alwaysApply: true
+---
+
+# Project Sand — instruction and test authoring
+
+## instruction.md
+
+Rewriting it in fresh words is **mandatory** — an unchanged or lightly
+paraphrased instruction gets the task returned.
+
+This is the solving agent's only written prompt. The agent may inspect the
+environment source, while verifier and solution assets remain protected, so
+the contract must be complete without disclosing protected details or assuming
+the source is hidden.
+
+Aim for **simple, specific, short**. Short paragraphs with line breaks, no wall
+of text, no dumped config or stack traces.
+
+- **Symptom only.** Describe what a user observes and nothing else. Never name
+  a file, function, variable, signature, or algorithm; never give pseudocode;
+  never name the bug or gesture at where it lives.
+- **State the posted rules in English.** The app's own rules — scoring, limits,
+  lifecycle, what each control promises — belong in the instruction as plain
+  prose, because that is what makes the expected behavior precise without
+  leaking the cause. The agent is told what the app promises, never why it
+  breaks that promise.
+- Be concrete enough to be testable: "the counter advances 1, 2, 3, 4 with no
+  gaps", not "level progression should work". Name the inputs and the expected
+  outputs.
+- **No BROKEN labels anywhere.** Not in the instruction, not as a comment or
+  marker in the shipped source, not in a filename or CSS class. Read the base
+  source for giveaway comments before submitting — a planted `// BROKEN` or
+  `// TODO: fix` collapses the whole task to a search.
+- **Every instruction must include a UI/layout claim** that makes the app
+  objectively better for its own domain — not decoration. Cut-off text,
+  overlapping controls, an element escaping its container, unreadable
+  contrast, a control stack with no spacing. "Move the button 2px left" is not
+  a UI claim; bad → objectively good is.
+- Reference the images in one brief sentence each, saying at a high level what
+  is wrong or right in them: "As you can see, the game words trail off the
+  screen." Not a paragraph, not a pixel description.
+- **Do not write the model's diagnosis for it.** This is the single most common
+  reason a package comes back as too easy. Never state how many defects there
+  are, never number them, never give a per-defect heading, never hand over the
+  arithmetic ("$512,000 − $320,000 should read $188,000"), and never enumerate
+  which screens are affected. State the rule the app promises and that it is
+  broken; let the agent find the count, the locations and the cause. The
+  register to aim for is "a single press does not correspond to a single edit",
+  not "pressing undo once removes two accounts instead of one".
+- Map every claim to at least one test before submitting. A claim with no test
+  behind it must be trimmed or reworded — and if a test is deleted late (for
+  example because it reached into internals), go back and fix the claim it was
+  covering.
+
+A model of the register and the mix — behavior defects plus a layout defect,
+plainly observed:
+
+> When I play this game, after 3 points scored, the fourth and fifth points
+> aren't added to the score. The bonus point isn't added when I press the space
+> bar and the up key together, even though the instructions say it should.
+> Lastly, the game screen is cut off, the buttons overlap, and the words run off
+> the edge. As you can see, the game words trail off the screen.
+
+## Difficulty comes from the defect
+
+Ambiguity is not difficulty; it is a rejection. State the expected behavior
+precisely and put the difficulty in the defects.
+
+**Keep one coherent user problem while making its root causes orthogonal, and
+spread them across backend and frontend.** Several independent defect families
+serving the same product contract beat repeated manifestations of one shallow
+bug, because a partial fix then leaves most of the suite red. Do not bolt on
+unrelated product requirements merely to inflate difficulty. What real depth
+looks like in practice:
+
+- The fail site is not the fix site — the symptom surfaces in one layer, the
+  cause lives in another.
+- One route calling the wrong helper while its siblings call the right one.
+- A lifecycle the UI ignores: draft versus published, archived versus active,
+  optimistic state that never reconciles.
+- Subtle invariants: off-by-one, boundary conditions, ordering, encoding, or a
+  race with a deterministically observable outcome.
+- A contract, type, or configuration change that must be reconciled across
+  several legitimate call sites.
+- A small feature that only integrates correctly if the existing architecture
+  is understood.
+- Objective UI/layout defects — front-end correctness is genuinely hard for
+  agents and counts as a defect family in its own right.
+
+Anti-patterns that read as one bug wearing four hats, and get graded that way:
+every defect living in the same engine file, or the same wrong constant copied
+across four call sites. Fixing one teaches the agent all the others.
+
+The agent solving this can read the whole codebase instantly. Anything it can
+find by searching for the symptom string is too easy.
+
+Difficulty is investigative depth, not patch size: a small reference patch can
+be valid when finding and validating it requires understanding the system.
+
+## The verifier
+
+**A thin suite is a rejection.** The platform enforces a hard gate — at least
+**6 `[F2P]` and 2 `[P2P]`, 8 minimum, with no maximum** — and blocks submission
+below it. Untagged tests count toward neither number and duplicate titles are
+rejected outright. Treat the gate as the floor of the floor: aim well past it,
+because a suite that merely clears 8 reads as thin. Padding is not coverage:
+near-duplicate assertions, checks of constants or source text, and guards that
+silently pass when their subject is missing are invalid. Every instruction
+claim needs a test, plus edge cases, plus UI bounds, plus pass-to-pass
+regressions.
+
+- Keep the existing `PREAMBLE`, `boot()`, and the `[F2P]` / `[P2P]` title
+  prefixes exactly — the harness parses them.
+- Where the downloaded package schema contains `fail_to_pass` /
+  `pass_to_pass` name lists, they must match runner output character for
+  character. Modern Import templates omit those lists and use tagged parser
+  output plus exact `task.toml` counts instead. Never invent a root config file.
+- Fail-to-pass must fail on base and pass on fixed; pass-to-pass must pass on
+  both. Failures must come from the planted bug, never from setup, timeouts, or
+  a missing element that was never part of the defect.
+- Every test must execute the user-visible code path it claims to cover.
+  Checking that a file exists or that a string appears in source verifies
+  nothing.
+- Test behavior, not implementation. **Never read app internals** — debug hooks
+  such as `window.__game` (`.L`, `.warp()`, `.pts`, `.speed`) get flagged by
+  automated review as coupling the suite to internals. Never grep the source,
+  assert on private helper names, require particular imports, or depend on
+  internal call order. A correct solution structured differently must pass.
+- Deterministic *outcomes*, not necessarily deterministic data. Randomised
+  fixtures are fine — the official template's own seeder uses `Math.random` —
+  provided the seeder records what it generated in `fixture.json` and every
+  assertion is derived from that fixture instead of a hardcoded literal. What
+  must never vary between runs is whether a test passes. No network calls, no
+  shared mutable state, no dependence on test order.
+- A container starts fresh for a run, but tests within that run share a
+  process. Each test must establish and clean up its own state.
+- Full-sentence test names, never truncated mid-phrase.
+- Prefer returning a diagnostic object from `page.evaluate` and asserting with
+  `toEqual`, so a failure shows what differed.
+- Include at least one test that interleaves interactions (for example continue
+  and restart alternating) so a partial fix cannot pass.
+
+### Aim for frontier depth, not Harbor-green
+
+Harbor going green proves the pack is wired correctly. It says nothing about
+difficulty, and a task tuned only until the runner is happy lands too easy.
+
+The bar to design against: an agent that half-fixes the task, or that collapses
+several defects into one plausible-looking change, still leaves **most of the
+fail-to-pass suite red**. Sanity-check this by hand — take the most likely
+partial fix an agent would write, trace it through the suite, and count what
+turns green. If a single edit clears most of the suite, the defects are not
+orthogonal enough yet.
+
+### Cover UI quality objectively
+
+Assert bounds, not pixels — an element inside its container with a sane gap,
+two controls that do not overlap, text that is not clipped:
+
+```javascript
+const g = document.querySelector('.hud-glass').getBoundingClientRect();
+const s = document.getElementById('stage').getBoundingClientRect();
+return {
+  gapTop: Number((g.top - s.top).toFixed(1)),   // expect >= 4 and <= 40
+  inside: g.bottom <= s.bottom + 0.5 && g.left >= s.left - 0.5 && g.right <= s.right + 0.5,
+};
+```
+
+Pick bounds wide enough that any reasonable implementation passes and narrow
+enough that the broken layout fails. The rule for every UI assertion: it must
+not dock a valid solution, and it must not let an invalid one through.
+
+## The screenshot standard
+
+Automated QA checks the images, and weak ones return an otherwise-good task.
+
+- `broken.png` must show the defect **in the pixels**, in the state the agent
+  will find it, and must be embedded in `instruction.md`.
+- `target.png` is **optional**. Ship it only if it earns its place, embed it too,
+  and make it **measurably different** from the broken shot — near-identical
+  pairs are auto-rejected. It must use the same scenario, viewport, and
+  application state as the broken image so the change is directly comparable.
+  Deleting a target that adds nothing is allowed.
+- An image must carry information the prose does not. One that merely restates
+  the text is a common return reason.
+- Every visual problem described needs visible evidence. Add another broken
+  image whenever one view cannot show the next distinct layout failure; do not
+  pad the package with duplicate angles. Prefer defect sets where several
+  failures are photographable, and check whether the queue workspace exposes
+  extra screenshot slots before relying on them.
+- The visual change must move from objectively defective to professionally
+  shippable for the product's domain. Tiny cosmetic nudges do not qualify.
+
+## Reference patch
+
+It must remain the thing that makes the failing tests pass. If the bug or the
+tests widen, widen the patch. Confirm by reading the fixed source — never
+assume it already covers every symptom in the instruction. The patch has to
+solve the behavior, not hardcode around the tests or bypass the verifier, and
+`solution/solve.sh` must apply cleanly against the base commit. The fixed state
+should be the most professional version of the application that can reasonably
+be shipped, not merely the minimum pixels needed for a test.

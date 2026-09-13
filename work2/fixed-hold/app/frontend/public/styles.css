@@ -1,0 +1,470 @@
+:root {
+  --paper: #eef1f2;
+  --panel: #ffffff;
+  --ink: #1d2a30;
+  --ink-soft: #5a6a72;
+  --slate: #37505c;
+  --slate-deep: #23343d;
+  --water: #3f7d8c;
+  --water-pale: #cfe2e6;
+  --brick: #8a5a44;
+  --alarm: #9c3a2c;
+  --rule: #c9d3d7;
+  --shadow: 0 1px 2px rgba(29, 42, 48, 0.08), 0 8px 24px rgba(29, 42, 48, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Charter", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.panel-head {
+  border-bottom: 1px solid var(--rule);
+  color: var(--slate-deep);
+  font-size: 0.8rem;
+  letter-spacing: 0.09em;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  text-transform: uppercase;
+}
+
+/* --- masthead ------------------------------------------------------------ */
+
+.mast {
+  align-items: center;
+  background: linear-gradient(180deg, var(--slate-deep), var(--slate));
+  color: #eff3f4;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 14px 22px;
+}
+
+.mast-name {
+  align-items: baseline;
+  display: flex;
+  gap: 12px;
+}
+
+.mast-word {
+  font-size: 1.5rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.mast-place {
+  color: rgba(239, 243, 244, 0.74);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.mast-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  padding: 3px 12px;
+  white-space: nowrap;
+}
+
+.notice {
+  background: #fbeeeb;
+  border-left: 4px solid var(--alarm);
+  color: var(--alarm);
+  margin: 14px 22px 0;
+  padding: 10px 14px;
+}
+
+/* --- the yard: the elevation, and the plan beside it --------------------- */
+
+.yard {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  padding: 18px 22px;
+}
+
+.elevation,
+.plan,
+.account,
+.desk-panel {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+}
+
+.stage {
+  background: linear-gradient(180deg, #f7fafb, #e9eff1);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  height: 520px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stage-rungs {
+  height: 100%;
+  position: relative;
+}
+
+.pound {
+  align-items: center;
+  background: var(--water-pale);
+  border-top: 2px solid var(--water);
+  display: flex;
+  gap: 10px;
+  height: 22px;
+  left: 0;
+  padding: 0 10px;
+  position: absolute;
+  right: 0;
+}
+
+.pound-low {
+  background: #f6ded9;
+  border-top-color: var(--alarm);
+}
+
+.pound-label {
+  color: var(--slate-deep);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.pound {
+  z-index: 1;
+}
+
+.pound-low .pound-label {
+  color: var(--alarm);
+}
+
+.chamber {
+  background: #fdfefe;
+  border: 2px solid var(--slate);
+  border-radius: 3px;
+  left: 34%;
+  position: absolute;
+  right: 8%;
+  z-index: 2;
+}
+
+.chamber-water {
+  background: linear-gradient(180deg, var(--water), #2f6470);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.chamber-name {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 3px;
+  color: var(--slate-deep);
+  font-size: 0.82rem;
+  font-weight: 600;
+  left: 8px;
+  padding: 0 6px;
+  position: absolute;
+  top: 5px;
+  white-space: nowrap;
+}
+
+.chamber-gates {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 3px;
+  bottom: 5px;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  left: 8px;
+  padding: 0 6px;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.chamber[data-boat="true"] {
+  border-color: var(--brick);
+}
+
+.boat-mark {
+  background: var(--brick);
+  border-radius: 3px;
+  color: #fdf6f2;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 1px 8px;
+  position: absolute;
+  right: 10px;
+  text-transform: uppercase;
+  top: 5px;
+}
+
+.pound .boat-mark {
+  position: static;
+}
+
+/* --- the plan ----------------------------------------------------------- */
+
+.composer {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.composer-label {
+  color: var(--brick);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.composer select {
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  font: inherit;
+  padding: 7px 9px;
+}
+
+.composer-add,
+.plan-tool {
+  background: var(--slate);
+  border: none;
+  border-radius: 7px;
+  color: #f1f5f6;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 8px 13px;
+}
+
+.plan-tool {
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+.plan-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.refusal {
+  background: #fbeeeb;
+  border-left: 4px solid var(--alarm);
+  border-radius: 6px;
+  color: var(--alarm);
+  font-size: 0.88rem;
+  margin: 0 0 12px;
+  padding: 9px 12px;
+}
+
+.steps {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.step {
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--water);
+  border-radius: 6px;
+  display: grid;
+  font-size: 0.88rem;
+  gap: 2px;
+  padding: 7px 10px;
+}
+
+.step-refused {
+  border-left-color: var(--alarm);
+}
+
+.step-why {
+  color: var(--alarm);
+  font-size: 0.8rem;
+}
+
+.steps-empty,
+.worked-empty {
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0;
+}
+
+/* --- the water account -------------------------------------------------- */
+
+.account {
+  margin: 0 22px;
+}
+
+.gauges {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+
+.gauge {
+  display: grid;
+  gap: 3px;
+}
+
+.gauge-name {
+  color: var(--slate-deep);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.gauge-figure {
+  font-size: 0.88rem;
+}
+
+.gauge-bar {
+  background: #dee6e9;
+  border-radius: 999px;
+  display: block;
+  height: 9px;
+  overflow: hidden;
+}
+
+.gauge-fill {
+  background: linear-gradient(90deg, var(--water), var(--slate));
+  display: block;
+  height: 100%;
+}
+
+.gauge-low .gauge-fill {
+  background: var(--alarm);
+}
+
+.gauge-mark {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.gauge-low .gauge-mark {
+  color: var(--alarm);
+}
+
+.ledger {
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding-top: 12px;
+}
+
+.ledger-figure,
+.ledger-balance {
+  font-size: 0.88rem;
+}
+
+.ledger-balance {
+  font-weight: 600;
+}
+
+.ledger-balance[data-balances="false"] {
+  color: var(--alarm);
+}
+
+/* --- the desk ----------------------------------------------------------- */
+
+.desk {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  padding: 18px 22px 32px;
+}
+
+.gauge-list,
+.worked-list {
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.passage-line {
+  margin: 0 0 8px;
+}
+
+/* --- narrower windows --------------------------------------------------- */
+
+/* The elevation is what the window is for, so in a narrow window it keeps the
+   full width and the plan falls in underneath it. */
+@media (max-width: 1100px) {
+  .yard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stage {
+    height: 560px;
+  }
+
+  .chamber {
+    left: 40%;
+    right: 6%;
+  }
+
+  .steps {
+    max-height: none;
+  }
+
+  .gauges {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mast {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .yard,
+  .desk {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .account {
+    margin: 0 14px;
+  }
+}

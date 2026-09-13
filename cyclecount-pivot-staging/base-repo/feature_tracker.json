@@ -1,0 +1,9 @@
+[
+  {"name":"Variance decision queue","status":"done"},
+  {"name":"Expected-versus-counted reconciliation sheet","status":"done"},
+  {"name":"Recount history and supersession","status":"done"},
+  {"name":"Adjacent-bin transposition linking","status":"done"},
+  {"name":"Serialized adjustment evidence","status":"done"},
+  {"name":"Durable decisions and undo","status":"done"},
+  {"name":"Responsive decision dock","status":"done"}
+]

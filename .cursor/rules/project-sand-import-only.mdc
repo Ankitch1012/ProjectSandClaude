@@ -1,0 +1,45 @@
+---
+description: Standing Project Sand policy — build only original self-designed Import packages and require evidence for every review gate
+alwaysApply: true
+---
+
+# Project Sand — Import only
+
+- Use **Self-design → Import** only. Do not claim or rehabilitate queue tasks
+  unless the user explicitly reverses this standing decision.
+- Begin from the newest downloaded task template. Its tree and `task.toml`
+  defaults are authoritative; never invent queue-only files such as a root
+  `config.json`.
+- Build original code. The primitive, scenario, defect families, and visual
+  shell must all be new. A noun swap, recolor, or renamed prior task is spent.
+- Before implementation, search public overlap and run a novelty/adversarial
+  design audit. Any material similarity finding requires a full pivot.
+
+## Mandatory gate order
+
+1. **Intake:** exact template, expected files, executable scripts, no junk.
+2. **Originality:** new four-axis design and no public/corpus-shaped clone.
+3. **Structure:** template-conformant tree and untouched timeout defaults.
+4. **Build:** container boots backend and frontend through `launch.sh`.
+5. **Change:** base visibly reproduces every planted symptom.
+6. **Writing:** natural user request, app-specific, complete, no diagnosis.
+7. **Verification review:** every claim has observable coverage; valid
+   alternatives pass; no exact incidental wording, source reads, private hooks,
+   CSS-class implementation checks, vacuous guards, or race-prone assertions.
+8. **Package:** normalized `.tar.gz`, root ownership, no xattrs/PAX metadata,
+   `.git`, `node_modules`, `.DS_Store`, secrets, or extra root files.
+9. **Baseline:** every F2P fails, every P2P passes, Harbor reward `0`.
+10. **Solution:** patch applies to clean base; all tests pass; Harbor reward `1`
+    twice consecutively.
+11. **Difficulty:** a blind solver cannot clear the suite; one likely partial
+    fix leaves most F2P red; final adversarial audit says submit-ready.
+
+Never upload on confidence alone. Extract the final tarball to a clean folder
+and repeat the gate against the exact bytes being handed over.
+
+For returned imports, start from **Download package**, preserve its generated
+`task.toml` and root shape, repair offline, then use **Upload fixed version**.
+Do not Release or Flag unless the package is genuinely unsalvageable.
+
+Reusable cross-folder build instructions live in
+`PROJECT_SAND_IMPORT_MASTER_PROMPT.md`.

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#13232a" />
+  <title>FoldMark — Print Signature Proofing Workstation</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-frame">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="FoldMark home">
+        <span class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span>
+          <strong>FoldMark</strong>
+          <small>Signature proofing workstation</small>
+        </span>
+      </a>
+
+      <div class="job-heading">
+        <span class="eyebrow">ACTIVE PRINT JOB</span>
+        <h1 id="job-name">Loading print job…</h1>
+      </div>
+
+      <div class="revision-cluster" aria-label="Current revision">
+        <span id="save-state" class="save-state">Loading</span>
+        <strong id="revision-badge">R—</strong>
+      </div>
+    </header>
+
+    <main class="workstation">
+      <aside class="control-panel" aria-label="Proof controls">
+        <div class="panel-heading">
+          <span class="step-number">01</span>
+          <div>
+            <p class="eyebrow">PRESS SETUP</p>
+            <h2>Signature controls</h2>
+          </div>
+        </div>
+
+        <div class="control-stack">
+          <label>
+            <span>Page count</span>
+            <select id="page-count">
+              <option value="16">16 pages</option>
+              <option value="8">8 pages</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Binding</span>
+            <select id="binding">
+              <option value="saddle">Saddle stitch</option>
+              <option value="section-sewn">Section sewn · 8-page sections</option>
+            </select>
+          </label>
+
+          <div class="control-row">
+            <label>
+              <span>Paper</span>
+              <select id="sheet-size">
+                <option value="SRA3">SRA3</option>
+                <option value="A3">A3</option>
+              </select>
+            </label>
+            <label>
+              <span>Orientation</span>
+              <select id="orientation">
+                <option value="landscape">Landscape</option>
+                <option value="portrait">Portrait</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="control-row">
+            <label>
+              <span>Fold plan</span>
+              <select id="fold-plan">
+                <option value="center">Center fold</option>
+                <option value="parallel">Parallel quarter folds</option>
+              </select>
+            </label>
+            <label>
+              <span>Bleed (mm)</span>
+              <input id="bleed" type="number" min="0" max="12" step="0.5" value="3" />
+            </label>
+          </div>
+        </div>
+
+        <section class="assignment-editor" aria-labelledby="assignment-title">
+          <div class="subheading">
+            <div>
+              <p class="eyebrow">SLOT OVERRIDE</p>
+              <h3 id="assignment-title">Page assignment</h3>
+            </div>
+            <span class="permission-chip">Permitted</span>
+          </div>
+          <label>
+            <span>First physical slot</span>
+            <select id="slot-a"></select>
+          </label>
+          <label>
+            <span>Second physical slot</span>
+            <select id="slot-b"></select>
+          </label>
+          <div class="assignment-actions">
+            <button id="swap-pages" class="button button-quiet" type="button">Swap pages</button>
+            <button id="clear-slot" class="button button-quiet" type="button">Leave first slot blank</button>
+          </div>
+        </section>
+
+        <button id="regenerate" class="button button-primary" type="button">
+          <span>Regenerate proof</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+      </aside>
+
+      <section class="proof-workspace" aria-label="Signature proof workspace">
+        <header class="proof-toolbar">
+          <div>
+            <p class="eyebrow">PHYSICAL SIGNATURE PROOF</p>
+            <h2 id="signature-heading">Signature 1 · Sheet 1</h2>
+          </div>
+          <div class="sheet-navigation" aria-label="Sheet navigation">
+            <button id="previous-sheet" class="icon-button" type="button" aria-label="Previous sheet">←</button>
+            <span id="sheet-position">1 / 4</span>
+            <button id="next-sheet" class="icon-button" type="button" aria-label="Next sheet">→</button>
+          </div>
+        </header>
+
+        <div class="surface-key" aria-label="Proof legend">
+          <span><i class="key-trim"></i>Trim</span>
+          <span><i class="key-bleed"></i>Bleed</span>
+          <span><i class="key-fold"></i>Fold</span>
+          <span><i class="key-cut"></i>Cut</span>
+        </div>
+
+        <div id="proof-stage" class="proof-stage" aria-live="polite">
+          <p class="loading-message">Calculating physical sheets…</p>
+        </div>
+
+        <footer class="proof-footer">
+          <dl class="proof-metrics" aria-label="Current proof geometry">
+            <div>
+              <dt>Sheet</dt>
+              <dd id="metric-sheet">—</dd>
+            </div>
+            <div>
+              <dt>Duplex turn</dt>
+              <dd id="metric-duplex">—</dd>
+            </div>
+            <div>
+              <dt>Bleed boundary</dt>
+              <dd id="metric-bleed">—</dd>
+            </div>
+            <div>
+              <dt>Fold positions</dt>
+              <dd id="metric-fold">—</dd>
+            </div>
+          </dl>
+          <div class="proof-seal" aria-label="Proof seal">
+            <span>PROOF SEAL</span>
+            <strong id="proof-fingerprint">—</strong>
+          </div>
+        </footer>
+      </section>
+
+      <aside class="validation-rail" aria-label="Validation and release">
+        <div class="panel-heading">
+          <span class="step-number">02</span>
+          <div>
+            <p class="eyebrow">PRODUCTION GATE</p>
+            <h2>Validation</h2>
+          </div>
+        </div>
+
+        <section id="validation-card" class="validation-card" aria-live="polite">
+          <div class="validation-icon" aria-hidden="true">✓</div>
+          <div>
+            <span id="validation-kicker">Checking proof</span>
+            <strong id="validation-status">Please wait</strong>
+          </div>
+        </section>
+        <ul id="validation-issues" class="validation-issues"></ul>
+
+        <section class="revision-ledger" aria-labelledby="ledger-title">
+          <div class="subheading">
+            <div>
+              <p class="eyebrow">SAME-CYCLE ORDER</p>
+              <h3 id="ledger-title">Revision ledger</h3>
+            </div>
+          </div>
+          <ol id="operation-list"></ol>
+        </section>
+
+        <div class="release-summary">
+          <span>Release target</span>
+          <strong id="release-target">Current revision</strong>
+          <small id="release-note">Save a valid proof before production release.</small>
+        </div>
+
+        <div class="rail-actions">
+          <button id="save-revision" class="button button-secondary" type="button">Save revision</button>
+          <button id="reopen-job" class="button button-quiet" type="button">Reopen saved job</button>
+          <button id="release-proof" class="button button-release" type="button">Release for production</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

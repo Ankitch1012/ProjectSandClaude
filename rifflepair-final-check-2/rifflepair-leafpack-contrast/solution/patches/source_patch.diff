@@ -1,0 +1,783 @@
+diff --git a/backend/analysis.py b/backend/analysis.py
+index 494b294..0ca45e4 100644
+--- a/backend/analysis.py
++++ b/backend/analysis.py
+@@ -10,11 +10,30 @@ def bag_result(study, bag):
+         bag["retrieval"],
+         float(bag["threshold"]),
+     )
+-    chemistry = mass_loss(bag, study["controls"])
+-    eligible = bag["disposition"] in ("intact", "disturbed", "lost")
+-    eligible = eligible and chemistry["valid"]
+-    if hydro["minutes"] is None:
+-        hydro = {**hydro, "minutes": 0.0}
++    chemistry = (
++        {
++            "recovered_afdm": None,
++            "control_ratio": None,
++            "initial_afdm": None,
++            "proportional_loss": None,
++            "valid": False,
++            "reason": "lost recovery has no usable laboratory mass",
++        }
++        if bag["disposition"] == "lost"
++        else mass_loss(bag, study["controls"])
++    )
++    eligible = (
++        bag["disposition"] == "intact"
++        and chemistry["valid"]
++        and hydro["minutes"] is not None
++    )
++    reason = None
++    if bag["disposition"] != "intact":
++        reason = f"{bag['disposition']} recovery is excluded"
++    elif hydro["minutes"] is None:
++        reason = hydro["reason"]
++    elif not chemistry["valid"]:
++        reason = chemistry["reason"]
+     return {
+         "bag_id": bag["id"],
+         "mesh": bag["mesh"],
+@@ -23,7 +42,7 @@ def bag_result(study, bag):
+         "hydroperiod_estimated": hydro["estimated"],
+         "mass": chemistry,
+         "eligible": eligible,
+-        "reason": None if eligible else chemistry["reason"],
++        "reason": reason,
+     }
+ 
+ 
+@@ -44,7 +63,7 @@ def analyze(study):
+                 coarse["mass"]["proportional_loss"]
+                 - fine["mass"]["proportional_loss"]
+             )
+-            contrast = max(0.0, round(raw_contrast, 6))
++            contrast = round(raw_contrast, 6)
+         pairs.append({
+             "anchor_id": pairing["anchor_id"],
+             "compatible": pairing["compatible"],
+@@ -56,16 +75,10 @@ def analyze(study):
+         })
+ 
+     eligible_pairs = [item for item in pairs if item["eligible"]]
+-    weighted_sum = 0.0
+-    total_weight = 0.0
+-    for item in eligible_pairs:
+-        weight = (
+-            item["coarse"]["mass"]["initial_afdm"]
+-            + item["fine"]["mass"]["initial_afdm"]
+-        )
+-        weighted_sum += item["contrast"] * weight
+-        total_weight += weight
+-    mean = 0.0 if total_weight == 0 else weighted_sum / total_weight
++    mean = (
++        sum(item["contrast"] for item in eligible_pairs) / len(eligible_pairs)
++        if eligible_pairs else None
++    )
+ 
+     return {
+         "case": study.get("case", "study"),
+@@ -75,8 +88,8 @@ def analyze(study):
+         },
+         "pairs": pairs,
+         "summary": {
+-            "mean_contrast": round(mean, 6),
+-            "n": len(eligible_pairs) * 2,
+-            "available": True,
++            "mean_contrast": round(mean, 6) if mean is not None else None,
++            "n": len(eligible_pairs),
++            "available": bool(eligible_pairs),
+         },
+     }
+diff --git a/backend/chemistry.py b/backend/chemistry.py
+index 03f0ec4..b2ecf37 100644
+--- a/backend/chemistry.py
++++ b/backend/chemistry.py
+@@ -1,9 +1,11 @@
+ def recovered_afdm(measurement):
+     if not measurement:
+-        return {"value": 0.0, "valid": True, "reason": None}
++        return {"value": None, "valid": False, "reason": "recovery mass is unavailable"}
+     dry = float(measurement["dry_gross"]) - float(measurement["dry_tare"])
+-    ash = float(measurement["ash_gross"])
+-    value = max(0.0, dry - ash)
++    ash = float(measurement["ash_gross"]) - float(measurement["ash_tare"])
++    if dry <= 0 or ash < 0 or ash > dry:
++        return {"value": None, "valid": False, "reason": "recovery masses fail quality checks"}
++    value = dry - ash
+     return {"value": round(value, 4), "valid": True, "reason": None}
+ 
+ 
+@@ -11,25 +13,34 @@ def matching_controls(bag, controls):
+     return [
+         item for item in controls
+         if item["site"] == bag["site"]
++        and item["batch"] == bag["batch"]
+         and item["species"] == bag["species"]
++        and item["mesh"] == bag["mesh"]
++        and item["cohort"] == bag["cohort"]
+     ]
+ 
+ 
+ def control_ratio(bag, controls):
+-    matches = matching_controls(bag, controls)
+-    if not matches:
+-        return {"value": 1.0, "valid": True, "reason": None}
++    by_id = {}
++    for item in controls:
++        by_id.setdefault(item["id"], []).append(item)
+ 
+-    total_recovered = 0.0
+-    total_loaded = 0.0
+-    for item in matches:
++    ratios = []
++    for records in by_id.values():
++        if any(record != records[0] for record in records[1:]):
++            continue
++        item = records[0]
++        if item not in matching_controls(bag, [item]):
++            continue
+         recovered = recovered_afdm(item.get("recovery"))
+-        total_recovered += recovered["value"]
+-        total_loaded += float(item.get("loaded_mass", 0.0))
+-    if total_loaded <= 0:
+-        return {"value": 1.0, "valid": True, "reason": None}
++        loaded = float(item.get("loaded_mass", 0.0))
++        if not recovered["valid"] or loaded <= 0:
++            continue
++        ratios.append(recovered["value"] / loaded)
++    if not ratios:
++        return {"value": None, "valid": False, "reason": "matching controls fail quality checks"}
+     return {
+-        "value": round(total_recovered / total_loaded, 6),
++        "value": round(sum(ratios) / len(ratios), 6),
+         "valid": True,
+         "reason": None,
+     }
+@@ -38,15 +49,17 @@ def control_ratio(bag, controls):
+ def mass_loss(bag, controls):
+     recovered = recovered_afdm(bag.get("recovery"))
+     ratio = control_ratio(bag, controls)
+-    initial = float(bag.get("loaded_mass", 0.0)) * ratio["value"]
+-    if initial <= 0:
+-        initial = 1.0
+-    loss = 1.0 - (recovered["value"] / initial)
++    loaded = float(bag.get("loaded_mass", 0.0))
++    initial = loaded * ratio["value"] if ratio["valid"] else None
++    valid = recovered["valid"] and ratio["valid"] and initial is not None and initial > 0
++    loss = 1.0 - (recovered["value"] / initial) if valid else None
+     return {
+         "recovered_afdm": recovered["value"],
+         "control_ratio": ratio["value"],
+-        "initial_afdm": round(initial, 4),
+-        "proportional_loss": round(loss, 6),
+-        "valid": recovered["valid"] and ratio["valid"],
+-        "reason": recovered["reason"] or ratio["reason"],
++        "initial_afdm": round(initial, 4) if initial is not None else None,
++        "proportional_loss": round(loss, 6) if loss is not None else None,
++        "valid": valid,
++        "reason": recovered["reason"] or ratio["reason"] or (
++            "corrected initial AFDM must be positive" if not valid else None
++        ),
+     }
+diff --git a/backend/pairs.py b/backend/pairs.py
+index 11746cc..0ac4b0c 100644
+--- a/backend/pairs.py
++++ b/backend/pairs.py
+@@ -1,27 +1,77 @@
++from collections import Counter, defaultdict
++
++from stage import parse_time
++
++
+ def pair_bags(study):
+-    bags = study["bags"]
++    grouped = defaultdict(list)
++    bag_id_counts = Counter(item["id"] for item in study["bags"])
++    replicate_anchors = defaultdict(set)
++    for item in study["bags"]:
++        key = (
++            item["anchor_id"],
++            item["site"],
++            item["batch"],
++            item["species"],
++            item["cohort"],
++            item["replicate"],
++        )
++        grouped[key].append(item)
++        replicate_key = (
++            item["site"],
++            item["batch"],
++            item["species"],
++            item["cohort"],
++            item["replicate"],
++        )
++        replicate_anchors[replicate_key].add(item["anchor_id"])
++
+     pairs = []
+-    for index in range(0, len(bags), 2):
+-        members = bags[index:index + 2]
+-        if len(members) < 2:
+-            pairs.append({
+-                "anchor_id": members[0]["anchor_id"],
+-                "coarse": members[0] if members[0]["mesh"] == "coarse" else None,
+-                "fine": members[0] if members[0]["mesh"] == "fine" else None,
+-                "compatible": False,
+-                "reason": "mate is missing",
+-            })
+-            continue
+-        coarse = next((item for item in members if item["mesh"] == "coarse"), None)
+-        fine = next((item for item in members if item["mesh"] == "fine"), None)
++    precision = float(study["elevation_precision"])
++    for anchor in study["anchors"]:
++        groups = [
++            members for key, members in grouped.items()
++            if key[0] == anchor["id"]
++        ]
++        members = groups[0] if len(groups) == 1 else []
++        coarse_members = [item for item in members if item["mesh"] == "coarse"]
++        fine_members = [item for item in members if item["mesh"] == "fine"]
++        coarse = coarse_members[0] if len(coarse_members) == 1 else None
++        fine = fine_members[0] if len(fine_members) == 1 else None
++        same_elevation = bool(coarse and fine and (
++            round(float(coarse["elevation"]) / precision)
++            == round(float(fine["elevation"]) / precision)
++        ))
++        same_window = bool(coarse and fine and (
++            parse_time(coarse["deployment"]) == parse_time(fine["deployment"])
++            and parse_time(coarse["retrieval"]) == parse_time(fine["retrieval"])
++        ))
++        distinct_bags = bool(
++            coarse and fine
++            and coarse["id"] != fine["id"]
++            and bag_id_counts[coarse["id"]] == 1
++            and bag_id_counts[fine["id"]] == 1
++        )
++        replicate_key = (
++            coarse["site"],
++            coarse["batch"],
++            coarse["species"],
++            coarse["cohort"],
++            coarse["replicate"],
++        ) if coarse else None
++        unique_anchor_replicate = bool(
++            replicate_key
++            and len(replicate_anchors[replicate_key]) == 1
++        )
+         compatible = bool(
+             coarse and fine
+-            and coarse["elevation"] == fine["elevation"]
+-            and coarse["deployment"] == fine["deployment"]
+-            and coarse["retrieval"] == fine["retrieval"]
++            and same_elevation
++            and same_window
++            and distinct_bags
++            and unique_anchor_replicate
+         )
+         pairs.append({
+-            "anchor_id": members[0]["anchor_id"],
++            "anchor_id": anchor["id"],
+             "coarse": coarse,
+             "fine": fine,
+             "compatible": compatible,
+diff --git a/backend/stage.py b/backend/stage.py
+index 8a50b46..414d158 100644
+--- a/backend/stage.py
++++ b/backend/stage.py
+@@ -10,45 +10,94 @@ def parse_time(value):
+ 
+ def prepare_stage(study):
+     grouped = {}
++    invalid_times = []
+     for reading in study["stage"]:
+         if not reading.get("valid", True):
++            invalid_times.append(parse_time(reading["time"]))
+             continue
+         time = parse_time(reading["time"])
+-        corrected = float(reading["level"]) - float(reading.get("datum_offset", 0.0))
+-        grouped[time] = corrected
++        corrected = float(reading["level"]) + float(reading.get("datum_offset", 0.0))
++        grouped.setdefault(time, []).append(corrected)
+ 
+-    points = sorted(grouped.items(), key=lambda item: item[0])
+-    gap_limit = float(study["gap_limit_minutes"])
++    points = []
+     issues = []
++    duplicate_conflicts = []
++    for time, values in grouped.items():
++        if any(abs(value - values[0]) > 1e-9 for value in values[1:]):
++            issues.append("duplicate stage timestamps disagree")
++            duplicate_conflicts.append(time)
++        else:
++            points.append((time, values[0]))
++    points.sort(key=lambda item: item[0])
++    gap_limit = float(study["gap_limit_minutes"])
++    gaps = []
+     for left, right in zip(points, points[1:]):
+         minutes = (right[0] - left[0]).total_seconds() / 60.0
+-        if minutes >= gap_limit:
++        if minutes > gap_limit:
+             issues.append("stage observations exceed the usable gap limit")
+-    return {"points": points, "issues": issues}
++            gaps.append((left[0], right[0], minutes))
++    if invalid_times:
++        issues.append("invalid stage readings break coverage")
++    return {
++        "points": points,
++        "issues": issues,
++        "duplicate_conflicts": duplicate_conflicts,
++        "invalid_times": invalid_times,
++        "gaps": gaps,
++    }
++
++
++def level_at(left, right, moment):
++    span = (right[0] - left[0]).total_seconds()
++    if span == 0:
++        return left[1]
++    fraction = (moment - left[0]).total_seconds() / span
++    return left[1] + (right[1] - left[1]) * fraction
++
++
++def wet_part(minutes, left_level, right_level, threshold):
++    if left_level >= threshold and right_level >= threshold:
++        return minutes
++    if left_level < threshold and right_level < threshold:
++        return 0.0
++    fraction = (threshold - left_level) / (right_level - left_level)
++    if left_level < threshold:
++        return minutes * (1.0 - fraction)
++    return minutes * fraction
+ 
+ 
+ def estimate_wet_minutes(study, deployment, retrieval, threshold):
+     prepared = prepare_stage(study)
+-    if prepared["issues"]:
+-        return {"minutes": None, "estimated": True, "reason": prepared["issues"][0]}
+-
+     start = parse_time(deployment)
+     finish = parse_time(retrieval)
+     points = prepared["points"]
+     if not points or start >= finish:
+         return {"minutes": None, "estimated": True, "reason": "window is unavailable"}
+ 
+-    if start < points[0][0]:
+-        points = [(start, points[0][1]), *points]
+-    if finish > points[-1][0]:
+-        points = [*points, (finish, points[-1][1])]
++    if start < points[0][0] or finish > points[-1][0]:
++        return {
++            "minutes": None,
++            "estimated": True,
++            "reason": "valid readings do not bracket the complete deployment window",
++        }
++    if any(start <= time <= finish for time in prepared["duplicate_conflicts"]):
++        return {"minutes": None, "estimated": True, "reason": "duplicate stage readings conflict"}
++    if any(start <= time < finish for time in prepared["invalid_times"]):
++        return {"minutes": None, "estimated": True, "reason": "invalid stage reading breaks coverage"}
++    if any(left < finish and right > start for left, right, _ in prepared["gaps"]):
++        return {"minutes": None, "estimated": True, "reason": "stage gap exceeds the usable limit"}
+ 
+     wet = 0.0
+     for left, right in zip(points, points[1:]):
+         if right[0] <= start or left[0] >= finish:
+             continue
+-        segment_minutes = (right[0] - left[0]).total_seconds() / 60.0
+-        if left[1] >= threshold and right[1] >= threshold:
+-            wet += round(segment_minutes)
++        clipped_start = max(left[0], start)
++        clipped_finish = min(right[0], finish)
++        if clipped_start >= clipped_finish:
++            continue
++        left_level = level_at(left, right, clipped_start)
++        right_level = level_at(left, right, clipped_finish)
++        minutes = (clipped_finish - clipped_start).total_seconds() / 60.0
++        wet += wet_part(minutes, left_level, right_level, threshold)
+ 
+     return {"minutes": round(wet, 1), "estimated": True, "reason": None}
+diff --git a/frontend/public/app.js b/frontend/public/app.js
+index 8bed23c..fb4c580 100644
+--- a/frontend/public/app.js
++++ b/frontend/public/app.js
+@@ -13,6 +13,7 @@ const ui = {
+   ashTare: document.querySelector('#ash-tare'),
+   bagMesh: document.querySelector('#bag-mesh'),
+   channelMap: document.querySelector('#channel-map'),
++  channelSvg: document.querySelector('#channel-svg'),
+   coarseAfdm: document.querySelector('#coarse-afdm'),
+   coarseLoss: document.querySelector('#coarse-loss'),
+   datum: document.querySelector('#datum'),
+@@ -39,10 +40,9 @@ const ui = {
+ 
+ const model = {
+   analysis: null,
+-  cachedMapWidth: null,
+   filter: 'all',
+   selectedBagMesh: 'coarse',
+-  selectedIndex: 0,
++  selectedId: 'A1',
+   study: null
+ };
+ 
+@@ -100,9 +100,7 @@ function visibleAnchors() {
+ 
+ function selectedAnchor() {
+   const visible = visibleAnchors();
+-  if (!visible.length) return null;
+-  if (model.selectedIndex >= visible.length) model.selectedIndex = 0;
+-  return visible[model.selectedIndex];
++  return visible.find((anchor) => anchor.id === model.selectedId) || null;
+ }
+ 
+ function mapPoint(anchor) {
+@@ -152,12 +150,9 @@ function renderAnchors() {
+   });
+   ui.anchorGlyphs.replaceChildren(...glyphs);
+ 
+-  if (model.cachedMapWidth === null) {
+-    model.cachedMapWidth = ui.channelMap.clientWidth;
+-  }
+-  const width = model.cachedMapWidth || 1200;
+-  const height = width * (430 / 1200);
+-  const targets = model.study.anchors.map((anchor, index) => {
++  const width = ui.channelSvg.clientWidth;
++  const height = ui.channelSvg.clientHeight;
++  const targets = model.study.anchors.map((anchor) => {
+     const point = mapPoint(anchor);
+     const button = document.createElement('button');
+     button.type = 'button';
+@@ -167,7 +162,7 @@ function renderAnchors() {
+     button.style.left = `${(point.x / 1200) * width - 30}px`;
+     button.style.top = `${(point.y / 430) * height - 74}px`;
+     button.addEventListener('click', () => {
+-      model.selectedIndex = index;
++      model.selectedId = anchor.id;
+       render();
+     });
+     return button;
+@@ -200,8 +195,12 @@ function renderSelected() {
+   ui.pairContrast.textContent = pair ? formatPercent(pair.contrast) : 'Unavailable';
+   ui.coarseLoss.textContent = pair && pair.coarse ? formatPercent(pair.coarse.mass.proportional_loss) : 'Unavailable';
+   ui.fineLoss.textContent = pair && pair.fine ? formatPercent(pair.fine.mass.proportional_loss) : 'Unavailable';
+-  ui.coarseAfdm.textContent = pair && pair.coarse ? `AFDM ${pair.coarse.mass.recovered_afdm.toFixed(2)} g` : 'AFDM unavailable';
+-  ui.fineAfdm.textContent = pair && pair.fine ? `AFDM ${pair.fine.mass.recovered_afdm.toFixed(2)} g` : 'AFDM unavailable';
++  ui.coarseAfdm.textContent = pair && pair.coarse && pair.coarse.mass.valid
++    ? `AFDM ${pair.coarse.mass.recovered_afdm.toFixed(2)} g · control ${pair.coarse.mass.control_ratio.toFixed(3)} · initial ${pair.coarse.mass.initial_afdm.toFixed(2)} g`
++    : 'AFDM unavailable';
++  ui.fineAfdm.textContent = pair && pair.fine && pair.fine.mass.valid
++    ? `AFDM ${pair.fine.mass.recovered_afdm.toFixed(2)} g · control ${pair.fine.mass.control_ratio.toFixed(3)} · initial ${pair.fine.mass.initial_afdm.toFixed(2)} g`
++    : 'AFDM unavailable';
+   ui.pairReason.textContent = pair && pair.eligible
+     ? 'Colocated pair contributes one equal-weight contrast to the reach.'
+     : ((pair && (pair.reason || pair.coarse?.reason || pair.fine?.reason)) || 'Pair is unavailable.');
+@@ -239,12 +238,16 @@ function renderSummary() {
+ }
+ 
+ function renderAnchorSelect() {
+-  ui.anchorSelect.replaceChildren(...model.study.anchors.map((anchor) => {
++  const placeholder = document.createElement('option');
++  placeholder.value = '';
++  placeholder.textContent = 'No visible anchor selected';
++  const options = visibleAnchors().map((anchor) => {
+     const option = document.createElement('option');
+     option.value = anchor.id;
+     option.textContent = `Anchor ${anchor.id} · x ${anchor.x.toFixed(0)} m`;
+     return option;
+-  }));
++  });
++  ui.anchorSelect.replaceChildren(placeholder, ...options);
+   const anchor = selectedAnchor();
+   ui.anchorSelect.value = anchor ? anchor.id : '';
+ }
+@@ -290,6 +293,9 @@ async function analyzeReach() {
+     });
+     model.study = clone(result.study);
+     model.analysis = result.analysis;
++    if (!visibleAnchors().some((anchor) => anchor.id === model.selectedId)) {
++      model.selectedId = null;
++    }
+     render();
+     showNotice('Estimated hydroperiod and paired recovery updated.', 'success');
+   } catch (error) {
+@@ -305,7 +311,6 @@ async function load() {
+     const result = await request('/study');
+     model.study = clone(result.study);
+     model.analysis = result.analysis;
+-    model.cachedMapWidth = ui.channelMap.clientWidth;
+     render();
+   } catch (error) {
+     showNotice(error.message, 'error');
+@@ -313,8 +318,7 @@ async function load() {
+ }
+ 
+ ui.anchorSelect.addEventListener('change', () => {
+-  const index = visibleAnchors().findIndex((anchor) => anchor.id === ui.anchorSelect.value);
+-  model.selectedIndex = Math.max(0, index);
++  model.selectedId = ui.anchorSelect.value || null;
+   render();
+ });
+ 
+@@ -325,9 +329,16 @@ ui.bagMesh.addEventListener('change', () => {
+ 
+ ui.filter.addEventListener('change', () => {
+   model.filter = ui.filter.value;
++  if (!visibleAnchors().some((anchor) => anchor.id === model.selectedId)) {
++    model.selectedId = null;
++  }
+   render();
+ });
+ 
+ ui.analyze.addEventListener('click', analyzeReach);
+ 
++new ResizeObserver(() => {
++  if (model.study) renderAnchors();
++}).observe(ui.channelMap);
++
+ load();
+diff --git a/frontend/public/styles.css b/frontend/public/styles.css
+index 1de7520..195119c 100644
+--- a/frontend/public/styles.css
++++ b/frontend/public/styles.css
+@@ -129,7 +129,9 @@ button:disabled {
+ }
+ 
+ .field-sheet {
+-  min-width: 1180px;
++  margin: 0 auto;
++  max-width: 1580px;
++  min-width: 0;
+   padding: 16px 20px 28px;
+ }
+ 
+@@ -177,6 +179,8 @@ button:disabled {
+ 
+ .channel-map {
+   background: var(--deep);
++  display: grid;
++  grid-template-columns: minmax(0, 1fr) 230px;
+   height: 430px;
+   overflow: hidden;
+   position: relative;
+@@ -185,8 +189,8 @@ button:disabled {
+ #channel-svg {
+   display: block;
+   height: 430px;
+-  min-width: 1200px;
+-  width: 1200px;
++  min-width: 0;
++  width: 100%;
+ }
+ 
+ .elevation-ruler line {
+@@ -200,9 +204,12 @@ button:disabled {
+ }
+ 
+ .anchor-targets {
+-  inset: 0;
++  bottom: 0;
++  left: 0;
+   pointer-events: none;
+   position: absolute;
++  right: 230px;
++  top: 0;
+ }
+ 
+ .anchor-target {
+@@ -229,21 +236,12 @@ button:disabled {
+   border: 2px solid #829683;
+   color: white;
+   padding: 14px;
+-  position: absolute;
+-  right: 18px;
+-  top: 174px;
+-  width: 270px;
+-  z-index: 8;
+-}
+-
+-.filter-shoal::before {
+-  border-color: transparent #486358 transparent transparent;
+-  border-style: solid;
+-  border-width: 28px 36px 28px 0;
+-  content: "";
+-  left: -36px;
+-  position: absolute;
+-  top: 34px;
++  align-self: stretch;
++  grid-column: 2;
++  padding: 18px;
++  position: static;
++  width: auto;
++  z-index: 2;
+ }
+ 
+ .filter-shoal label {
+@@ -273,6 +271,10 @@ button:disabled {
+ }
+ 
+ .gravel-apron {
++  display: grid;
++  gap: 12px;
++  grid-template-columns: minmax(340px, 1.15fr) minmax(390px, 1.35fr) minmax(220px, 0.7fr);
++  margin-top: 12px;
+   min-height: 320px;
+   position: relative;
+ }
+@@ -289,12 +291,9 @@ button:disabled {
+     var(--tag);
+   background-size: 100% 25px;
+   border: 1px solid var(--tag-line);
+-  left: 8%;
+   padding: 16px 18px;
+-  position: absolute;
+-  top: -176px;
+-  width: 520px;
+-  z-index: 11;
++  position: static;
++  width: auto;
+ }
+ 
+ .tag-hole {
+@@ -387,12 +386,9 @@ button:disabled {
+ .sample-controls {
+   background: #264b4a;
+   color: white;
+-  left: 42%;
+   padding: 16px;
+-  position: absolute;
+-  top: -112px;
+-  width: 520px;
+-  z-index: 13;
++  position: static;
++  width: auto;
+ }
+ 
+ .control-line,
+@@ -449,11 +445,8 @@ button:disabled {
+     #717567;
+   color: white;
+   padding: 18px;
+-  position: absolute;
+-  right: 0;
+-  top: -230px;
+-  width: 260px;
+-  z-index: 12;
++  position: static;
++  width: auto;
+ }
+ 
+ .stone-value {
+@@ -526,22 +519,106 @@ button:focus-visible {
+   border-left-color: var(--amber);
+ }
+ 
+-@media (max-width: 800px) {
+-  .field-header,
++@media (max-width: 900px) {
++  .field-header {
++    gap: 8px 16px;
++    grid-template-columns: 1fr auto;
++    padding: 10px 14px;
++  }
++
++  .identity small {
++    display: none;
++  }
++
++  .study-title {
++    grid-column: 1 / -1;
++    grid-row: 2;
++  }
++
+   .field-sheet {
+-    min-width: 1180px;
++    padding: 10px;
++  }
++
++  .channel-map {
++    grid-template-columns: minmax(0, 1fr);
++    grid-template-rows: 360px auto;
++    height: auto;
++  }
++
++  #channel-svg {
++    grid-column: 1;
++    grid-row: 1;
++    height: 360px;
++  }
++
++  .anchor-targets {
++    bottom: auto;
++    height: 360px;
++    right: 0;
++  }
++
++  .filter-shoal {
++    grid-column: 1;
++    grid-row: 2;
++  }
++
++  .gravel-apron {
++    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+   }
+ 
+   .recovery-tag {
+-    left: 90px;
++    grid-column: 1 / -1;
++  }
++
++  .reach-stone {
++    min-height: 180px;
++  }
++}
++
++@media (max-width: 520px) {
++  .field-header {
++    grid-template-columns: 1fr;
++  }
++
++  .datum-chip {
++    border-left: 0;
++    text-align: left;
+   }
+ 
+-  .sample-controls {
+-    left: 520px;
++  .channel-heading {
++    align-items: flex-start;
++    gap: 8px;
+   }
+ 
++  .stage-quality {
++    max-width: 130px;
++  }
++
++  .gravel-apron {
++    grid-template-columns: minmax(0, 1fr);
++  }
++
++  .recovery-tag,
++  .sample-controls,
+   .reach-stone {
+-    left: 900px;
+-    right: auto;
++    grid-column: 1;
++  }
++
++  .tag-grid,
++  .mass-grid {
++    grid-template-columns: repeat(2, 1fr);
++  }
++
++  .control-line {
++    grid-template-columns: 1fr;
++  }
++
++  .recovery-tag header {
++    align-items: flex-start;
++    gap: 8px;
++  }
++
++  .recovery-tag select {
++    max-width: 150px;
+   }
+ }

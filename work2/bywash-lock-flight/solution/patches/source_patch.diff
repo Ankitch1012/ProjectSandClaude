@@ -1,0 +1,209 @@
+diff --git a/backend/lib/interlocks.js b/backend/lib/interlocks.js
+index 4113ad8..4b2bdec 100644
+--- a/backend/lib/interlocks.js
++++ b/backend/lib/interlocks.js
+@@ -1,6 +1,6 @@
+ 'use strict';
+ 
+-const { DATUMS, chamberById, riseInches, surfaceOf } = require('./flight');
++const { chamberById, riseInches, surfaceOf } = require('./flight');
+ 
+ // A gate may be opened only when the water each side of it stands at the same
+ // level, and only when both paddles on its chamber are down.
+@@ -12,13 +12,14 @@ function gateMayOpen(chambers, chamberId, end) {
+   }
+ 
+   const inside = surfaceOf(chambers, { kind: 'chamber', id: chamberId });
+-  const beyond = end === 'head'
+-    ? DATUMS.chambers[chamberId].head
+-    : DATUMS.chambers[chamberId].tail;
++  const beyond = surfaceOf(chambers, end === 'head' ? chamber.above : chamber.below);
+ 
+   if (inside !== beyond) {
+     return { ok: false, reason: 'water-not-level' };
+   }
++  if (state.headPaddle === 'raised' || state.tailPaddle === 'raised') {
++    return { ok: false, reason: 'paddle-still-raised' };
++  }
+   return { ok: true };
+ }
+ 
+@@ -32,8 +33,7 @@ function paddleMayRaise(chambers, chamberId, end) {
+     return { ok: false, reason: 'no-such-chamber' };
+   }
+ 
+-  const nearGate = end === 'head' ? state.headGate : state.tailGate;
+-  if (nearGate === 'open') {
++  if (state.headGate === 'open' || state.tailGate === 'open') {
+     return { ok: false, reason: 'gate-still-open' };
+   }
+ 
+diff --git a/backend/lib/passage.js b/backend/lib/passage.js
+index 361cdb6..5c6a2ef 100644
+--- a/backend/lib/passage.js
++++ b/backend/lib/passage.js
+@@ -87,9 +87,6 @@ function applyStep(state, step) {
+       return allowed;
+     }
+     held[gateKey] = 'open';
+-    if (end === 'head' && state.worked.indexOf(chamber.id) === -1) {
+-      state.worked.push(chamber.id);
+-    }
+     return { ok: true };
+   }
+ 
+@@ -143,7 +140,14 @@ function moveBoat(state, direction) {
+     return { ok: false, reason: 'gate-shut' };
+   }
+ 
++  const leaving = state.boat;
+   state.boat = LADDER[target];
++
++  // A chamber is worked once the boat is out of it.
++  if (leaving.kind === 'chamber' && state.worked.indexOf(leaving.id) === -1) {
++    state.worked.push(leaving.id);
++  }
++
+   return { ok: true };
+ }
+ 
+@@ -155,6 +159,16 @@ function evaluate(plan) {
+   let refusal = null;
+ 
+   for (let index = 0; index < plan.length; index += 1) {
++    if (refusal) {
++      steps.push({
++        at: index,
++        chamber: plan[index].chamber || null,
++        operation: plan[index].operation,
++        worked: false,
++        reason: 'after-a-refusal'
++      });
++      continue;
++    }
+     const outcome = applyStep(state, plan[index]);
+     steps.push({
+       at: index,
+diff --git a/backend/lib/pounds.js b/backend/lib/pounds.js
+index 3664a63..2b0a24f 100644
+--- a/backend/lib/pounds.js
++++ b/backend/lib/pounds.js
+@@ -21,21 +21,12 @@ function moveWater(account, from, to, cuFt) {
+     account[from.id].drawn += cuFt;
+   }
+   if (to && to.kind === 'pound' && account[to.id]) {
+-    account[to.id].delivered += 0;
++    account[to.id].delivered += cuFt;
+   }
+ }
+ 
+ function chargeFill(account, chamber) {
+-  const drawnFrom = chamber.above.kind === 'chamber'
+-    ? feedingPound(chamber)
+-    : chamber.below;
+-  moveWater(account, drawnFrom, { kind: 'chamber', id: chamber.id }, lockfulCuFt(chamber));
+-}
+-
+-// The pound that feeds a staircase stands above the upper chamber of the pair.
+-function feedingPound(chamber) {
+-  const above = chamberById(chamber.above.id);
+-  return above ? above.above : chamber.above;
++  moveWater(account, chamber.above, { kind: 'chamber', id: chamber.id }, lockfulCuFt(chamber));
+ }
+ 
+ function chargeEmpty(account, chamber) {
+diff --git a/backend/lib/water.js b/backend/lib/water.js
+index 4afd8c3..ac23f3a 100644
+--- a/backend/lib/water.js
++++ b/backend/lib/water.js
+@@ -7,7 +7,7 @@ const { INCHES_PER_FOOT, riseInches } = require('./flight');
+ // brought to feet before the two are multiplied and the answer comes out in
+ // cubic feet.
+ function lockfulCuFt(chamber) {
+-  return chamber.areaSqFt * riseInches(chamber);
++  return (chamber.areaSqFt * riseInches(chamber)) / INCHES_PER_FOOT;
+ }
+ 
+ // What a volume of water does to the level of a pound, in inches.
+@@ -32,7 +32,7 @@ function withinBand(pound, drawnIn) {
+   if (!pound || !pound.banded) {
+     return true;
+   }
+-  return round2(drawnIn) < pound.permittedDrawIn;
++  return round2(drawnIn) <= pound.permittedDrawIn;
+ }
+ 
+ function round2(value) {
+diff --git a/frontend/public/styles.css b/frontend/public/styles.css
+index 46b16f7..27fcfcf 100644
+--- a/frontend/public/styles.css
++++ b/frontend/public/styles.css
+@@ -426,44 +426,45 @@ h2 {
+ 
+ /* --- narrower windows --------------------------------------------------- */
+ 
++/* The elevation is what the window is for, so in a narrow window it keeps the
++   full width and the plan falls in underneath it. */
+ @media (max-width: 1100px) {
+   .yard {
+     grid-template-columns: minmax(0, 1fr);
+   }
+ 
+   .stage {
+-    height: 230px;
++    height: 560px;
+   }
+ 
+   .chamber {
+-    left: 20%;
+-    min-height: 74px;
+-    right: 4%;
++    left: 40%;
++    right: 6%;
+   }
+ 
+-  .chamber-name {
+-    background: none;
+-    max-width: 92px;
+-    overflow: hidden;
+-    padding: 0;
++  .steps {
++    max-height: none;
+   }
+ 
+-  .plan {
+-    left: 12px;
+-    max-height: 62vh;
+-    overflow: hidden;
+-    position: fixed;
+-    top: 120px;
+-    width: 340px;
+-    z-index: 40;
++  .gauges {
++    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
++  }
++}
++
++@media (max-width: 640px) {
++  .mast {
++    align-items: flex-start;
++    flex-direction: column;
++    gap: 10px;
++  }
++
++  .yard,
++  .desk {
++    padding-left: 14px;
++    padding-right: 14px;
+   }
+ 
+   .account {
+-    bottom: 0;
+-    left: 0;
+-    margin: 0;
+-    position: fixed;
+-    right: 0;
+-    z-index: 50;
++    margin: 0 14px;
+   }
+ }

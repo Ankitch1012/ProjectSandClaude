@@ -1,0 +1,449 @@
+diff --git a/backend/course-model.js b/backend/course-model.js
+index 4a7d328..27fb363 100644
+--- a/backend/course-model.js
++++ b/backend/course-model.js
+@@ -20,40 +20,22 @@ function buildSegments(record, course) {
+ 
+ function decodeFindings(record) {
+   return (record.initial.courseFindings || [])
+-    .filter((entry) => entry.code)
+-    .map((entry) => ({ ...entry, state: entry.code ? 'affected' : 'clear' }));
++    .filter((entry) => entry.code !== null && entry.code !== undefined)
++    .map((entry) => ({ ...entry, state: entry.code === 1 ? 'affected' : 'clear' }));
+ }
+ 
+-function classifyAxis(record, course) {
+-  const first = pointFor(record, course.points[0]);
+-  const last = pointFor(record, course.points[course.points.length - 1]);
+-  const angle = Math.atan2(last.y - first.y, last.x - first.x) * 180 / Math.PI;
+-  const folded = ((angle % 180) + 180) % 180;
+-  if (folded < 25 || folded > 155) return 'crosswise';
+-  if (folded > 65 && folded < 115) return 'lengthwise';
+-  return folded < 90 ? 'falling' : 'rising';
++function classifyAxis(_record, course) {
++  return course.axis;
+ }
+ 
+ function canonicalCourse(course) {
+-  const endpoints = [course.points[0], course.points[course.points.length - 1]].sort();
+-  return `${endpoints[0]}:${endpoints[1]}:${course.axis}`;
++  return course.id;
+ }
+ 
+ function anchorStatus(record, course) {
+-  const xs = record.frame.map(([x]) => x);
+-  const ys = record.frame.map(([, y]) => y);
+-  const bounds = {
+-    left: Math.min(...xs),
+-    right: Math.max(...xs),
+-    top: Math.min(...ys),
+-    bottom: Math.max(...ys),
+-  };
++  const anchors = new Set(record.anchors.map((entry) => entry.id));
+   return [course.points[0], course.points[course.points.length - 1]].every((id) => {
+-    const point = pointFor(record, id);
+-    return point && (
+-      point.x === bounds.left || point.x === bounds.right
+-      || point.y === bounds.top || point.y === bounds.bottom
+-    );
++    return anchors.has(id);
+   });
+ }
+ 
+@@ -72,9 +54,10 @@ function courseViews(record, survey) {
+       classifiedAxis: classifyAxis(record, course),
+       segments: segments.map((segment) => ({
+         ...segment,
+-        affected: survey.affectedSegments.has(segment.id),
++        affected,
+       })),
+       affected,
++      affectedSpanCount: affected ? segments.length : 0,
+     };
+   });
+ }
+diff --git a/backend/frame-policy.js b/backend/frame-policy.js
+index 71f2193..f948768 100644
+--- a/backend/frame-policy.js
++++ b/backend/frame-policy.js
+@@ -1,9 +1,19 @@
+-function frontStatus(_record, courses) {
++function frontStatus(record, courses) {
+   const count = courses.filter((course) => course.frontSupport).length;
++  if (record.edgePolicy.type === 'wire-edge') {
++    const evidence = record.edgeEvidence?.find(
++      (entry) => entry.id === record.edgePolicy.wireEvidence,
++    );
++    return {
++      complete: evidence?.value === true,
++      observed: evidence?.value === true ? 1 : 0,
++      required: 1,
++    };
++  }
+   return {
+-    complete: count >= 2,
++    complete: count >= record.edgePolicy.requiredFrontCourses,
+     observed: count,
+-    required: 2,
++    required: record.edgePolicy.requiredFrontCourses,
+   };
+ }
+ 
+diff --git a/backend/network-model.js b/backend/network-model.js
+index 58acfda..e364897 100644
+--- a/backend/network-model.js
++++ b/backend/network-model.js
+@@ -1,15 +1,5 @@
+ function crossingGroups(record) {
+-  const parent = new Map(record.courses.map((course) => [course.id, course.id]));
+-  const root = (id) => {
+-    let current = id;
+-    while (parent.get(current) !== current) current = parent.get(current);
+-    return current;
+-  };
+-  for (const crossing of record.crossings) {
+-    const [first, ...rest] = crossing.courseIds;
+-    for (const next of rest) parent.set(root(next), root(first));
+-  }
+-  return new Set(record.courses.map((course) => root(course.id))).size;
++  return new Set(record.courses.map((course) => course.id)).size;
+ }
+ 
+ module.exports = { crossingGroups };
+diff --git a/backend/server.js b/backend/server.js
+index 4ed6fbc..013c3d2 100644
+--- a/backend/server.js
++++ b/backend/server.js
+@@ -70,7 +70,7 @@ app.post('/api/replacement', (req, res) => {
+     res.status(400).json({ error: 'Choose a recorded coil and a documented comparison profile.' });
+     return;
+   }
+-  proposeReplacement(survey, coilId, replacementId);
++  proposeReplacement(survey, record, coilId, replacementId);
+   sendSurvey(res, survey);
+ });
+ 
+diff --git a/backend/spring-model.js b/backend/spring-model.js
+index 12597b1..781dfef 100644
+--- a/backend/spring-model.js
++++ b/backend/spring-model.js
+@@ -1,6 +1,7 @@
+ function profileMatch(coil, replacement) {
+   if (!replacement) return null;
+-  return coil.profile.freeHeightMm === replacement.profile.freeHeightMm;
++  return ['form', 'freeHeightMm', 'wireGaugeMm', 'topDiameterMm', 'bottomDiameterMm', 'turns']
++    .every((field) => coil.profile[field] === replacement.profile[field]);
+ }
+ 
+ function coilViews(record, survey, courses) {
+@@ -12,16 +13,18 @@ function coilViews(record, survey, courses) {
+     const inspected = incident.filter((course) => (
+       survey.contactEvidence[`${coil.id}:${course.id}`] === true
+     )).length;
++    const axes = new Set(incident.map((course) => course.classifiedAxis));
++    const requiredAxes = ['crosswise', 'lengthwise', 'falling', 'rising'];
+     return {
+       ...coil,
+-      axes: incident.map((course) => course.classifiedAxis),
+-      complete: incident.length >= 4,
++      axes: Array.from(axes),
++      complete: requiredAxes.every((axis) => axes.has(axis)),
+       contactCount: incident.length,
+-      inspectedContacts: replacement ? incident.length : inspected,
+-      needsReinspection: 0,
++      inspectedContacts: inspected,
++      needsReinspection: replacement ? incident.length - inspected : 0,
+       profileMatch: profileMatch(coil, replacement),
+       webbingStatus: webbing?.status ?? null,
+-      excluded: webbing?.status === 2,
++      excluded: false,
+     };
+   });
+ }
+diff --git a/backend/survey-state.js b/backend/survey-state.js
+index 44881af..c328455 100644
+--- a/backend/survey-state.js
++++ b/backend/survey-state.js
+@@ -13,23 +13,21 @@ function createSurvey(record) {
+ }
+ 
+ function markSegment(survey, record, segmentId, state) {
+-  if (state === 'affected') {
+-    survey.affectedSegments.add(segmentId);
+-    const course = record.courses.find((entry) => (
+-      buildSegments(record, entry).some((segment) => segment.id === segmentId)
+-    ));
+-    const crossing = record.crossings.find((entry) => entry.courseIds.includes(course?.id));
+-    const neighborId = crossing?.courseIds.find((id) => id !== course?.id);
+-    const neighbor = record.courses.find((entry) => entry.id === neighborId);
+-    const neighborSegment = neighbor && buildSegments(record, neighbor)[0];
+-    if (neighborSegment) survey.affectedSegments.add(neighborSegment.id);
+-  } else {
+-    survey.affectedSegments.delete(segmentId);
++  const course = record.courses.find((entry) => (
++    buildSegments(record, entry).some((segment) => segment.id === segmentId)
++  ));
++  if (!course) return;
++  for (const segment of buildSegments(record, course)) {
++    if (state === 'affected') survey.affectedSegments.add(segment.id);
++    else survey.affectedSegments.delete(segment.id);
+   }
+ }
+ 
+-function proposeReplacement(survey, coilId, replacementId) {
++function proposeReplacement(survey, record, coilId, replacementId) {
+   survey.replacement[coilId] = replacementId;
++  for (const course of record.courses.filter((entry) => entry.points.includes(coilId))) {
++    delete survey.contactEvidence[`${coilId}:${course.id}`];
++  }
+ }
+ 
+ function inspectContacts(survey, record, coilId) {
+diff --git a/backend/topology.js b/backend/topology.js
+index 4b606ea..990ef21 100644
+--- a/backend/topology.js
++++ b/backend/topology.js
+@@ -14,15 +14,17 @@ function adjudicate(record, survey) {
+   const reviewReasons = [];
+   if (coils.some((coil) => coil.profileMatch === false)) reviewReasons.push('replacement profile');
+   if (coils.some((coil) => coil.needsReinspection > 0)) reviewReasons.push('contact reinspection');
++  if (coils.some((coil) => coil.webbingStatus === 2)) reviewReasons.push('failed webbing');
+   if (!front.complete) reviewReasons.push('front-edge evidence');
+-  const visibleCoils = coils.filter((coil) => !coil.excluded);
+-  const surveyComplete = visibleCoils.every((coil) => coil.complete) && front.complete;
++  const surveyComplete = coils.every((coil) => coil.complete)
++    && courses.every((course) => anchorStatus(record, course))
++    && front.complete;
+ 
+   return {
+     record,
+     courses,
+     coils,
+-    uniqueCourseCount: courses.reduce((sum, course) => sum + course.segments.length, 0),
++    uniqueCourseCount: new Set(courses.map((course) => course.canonicalId)).size,
+     crossingGroups: crossingGroups(record),
+     anchoredCourseCount: courses.filter((course) => anchorStatus(record, course)).length,
+     front,
+diff --git a/frontend/src/components/CourseStrip.jsx b/frontend/src/components/CourseStrip.jsx
+index de00221..ce5d239 100644
+--- a/frontend/src/components/CourseStrip.jsx
++++ b/frontend/src/components/CourseStrip.jsx
+@@ -4,13 +4,13 @@ export default function CourseStrip({ courses, selectedId, onSelect }) {
+   const sorted = [...courses].sort((first, second) => first.label.localeCompare(second.label));
+   return (
+     <nav className="course-strip" aria-label="Recorded cord courses">
+-      {sorted.map((course, index) => (
++      {sorted.map((course) => (
+         <button
+           key={course.id}
+           type="button"
+           aria-label={`Select ${course.id}`}
+           aria-pressed={course.id === selectedId}
+-          onClick={() => onSelect(courses[index]?.id)}
++          onClick={() => onSelect(course.id)}
+         >
+           <i data-axis={course.classifiedAxis} aria-hidden="true" />
+           <span>{course.id}</span>
+diff --git a/frontend/src/components/UnderseatView.jsx b/frontend/src/components/UnderseatView.jsx
+index 722e509..708723b 100644
+--- a/frontend/src/components/UnderseatView.jsx
++++ b/frontend/src/components/UnderseatView.jsx
+@@ -24,7 +24,7 @@ export default function UnderseatView({
+ 
+   function handlePointer(event) {
+     const point = pointerPoint(svgRef.current, event);
+-    const hit = nearestSegment(point, courses);
++    const hit = nearestSegment(point, courses, record);
+     if (hit) onSelectCourse(hit.courseId, hit.segmentId);
+   }
+ 
+diff --git a/frontend/src/evidence.js b/frontend/src/evidence.js
+index c178623..0d1668f 100644
+--- a/frontend/src/evidence.js
++++ b/frontend/src/evidence.js
+@@ -1,3 +1,5 @@
+ export function recordedFindingCount(entries = []) {
+-  return entries.filter((entry) => entry.code).length;
++  return entries.filter(
++    (entry) => entry.code !== null && entry.code !== undefined,
++  ).length;
+ }
+diff --git a/frontend/src/projection.js b/frontend/src/projection.js
+index 3285c5b..3d3e460 100644
+--- a/frontend/src/projection.js
++++ b/frontend/src/projection.js
+@@ -1,13 +1,25 @@
+-export function projectPoint(_record, point) {
+-  return { x: point.x, y: point.y };
++export function projectPoint(record, point) {
++  let projected;
++  if (record.orientation.front === 'north') {
++    projected = { x: point.x, y: 740 - point.y };
++  } else if (record.orientation.front === 'east') {
++    projected = { x: point.y * (1000 / 740), y: point.x * (740 / 1000) };
++  } else if (record.orientation.front === 'west') {
++    projected = { x: (740 - point.y) * (1000 / 740), y: (1000 - point.x) * (740 / 1000) };
++  } else {
++    projected = { x: point.x, y: point.y };
++  }
++  return record.orientation.mirrorX
++    ? { x: 1000 - projected.x, y: projected.y }
++    : projected;
+ }
+ 
+ export function pointerPoint(svg, event) {
+-  const rect = svg.getBoundingClientRect();
+-  return {
+-    x: event.clientX - rect.left,
+-    y: event.clientY - rect.top,
+-  };
++  const matrix = svg.getScreenCTM();
++  if (!matrix) return { x: 0, y: 0 };
++  const point = new DOMPoint(event.clientX, event.clientY)
++    .matrixTransform(matrix.inverse());
++  return { x: point.x, y: point.y };
+ }
+ 
+ function distanceToSegment(point, segment) {
+@@ -22,11 +34,14 @@ function distanceToSegment(point, segment) {
+   return Math.hypot(dx, dy);
+ }
+ 
+-export function nearestSegment(point, courses) {
++export function nearestSegment(point, courses, record) {
+   let nearest = null;
+   for (const course of courses) {
+     for (const segment of course.segments) {
+-      const distance = distanceToSegment(point, segment);
++      const distance = distanceToSegment(point, {
++        from: projectPoint(record, segment.from),
++        to: projectPoint(record, segment.to),
++      });
+       if (!nearest || distance < nearest.distance) {
+         nearest = { courseId: course.id, segmentId: segment.id, distance };
+       }
+diff --git a/frontend/src/styles.css b/frontend/src/styles.css
+index 4a49c10..e03a3ed 100644
+--- a/frontend/src/styles.css
++++ b/frontend/src/styles.css
+@@ -339,6 +339,27 @@ button:focus-visible, [role="button"]:focus-visible {
+ }
+ .inspect-button { width: 100%; }
+ 
++.work-surface {
++  grid-template-columns: minmax(0, 1fr) minmax(330px, .38fr);
++  grid-template-areas:
++    "stage loupe"
++    "courses loupe"
++    "summary summary";
++}
++.underseat-stage { grid-area: stage; }
++.course-strip { grid-area: courses; }
++.survey-summary { grid-area: summary; }
++.detail-loupe {
++  position: relative;
++  right: auto;
++  bottom: auto;
++  grid-area: loupe;
++  grid-template-columns: 120px minmax(0, 1fr);
++  width: 100%;
++  min-height: 0;
++  border-radius: 72px 8px 8px 72px;
++}
++
+ .inline-error, .fatal, .loading {
+   margin: 0;
+   padding: 12px 18px;
+@@ -357,52 +378,65 @@ button:focus-visible, [role="button"]:focus-visible {
+   .record-tags button:last-child { border-bottom: 0; }
+ 
+   .work-surface {
+-    min-height: 760px;
++    grid-template-columns: minmax(0, 1fr);
++    grid-template-areas:
++      "stage"
++      "courses"
++      "summary"
++      "loupe";
++    min-height: 0;
+     padding: 10px;
+-    overflow: hidden;
++    overflow: visible;
+   }
+   .underseat-stage {
+-    min-width: 780px;
+-    height: 410px;
+-    min-height: 410px;
++    min-width: 0;
++    height: auto;
++    min-height: 360px;
+   }
+   .underseat-stage svg {
+-    width: 780px;
+-    min-height: 410px;
++    width: 100%;
++    min-height: 360px;
+   }
+   .course-strip {
+-    grid-template-columns: repeat(6, 142px);
+-    width: max-content;
++    grid-template-columns: repeat(3, minmax(0, 1fr));
++    width: 100%;
+   }
+   .survey-summary {
+-    grid-template-columns: repeat(6, 160px);
+-    width: max-content;
++    grid-template-columns: repeat(3, minmax(0, 1fr));
++    width: 100%;
+   }
+   .detail-loupe {
+-    position: absolute;
+-    right: -86px;
+-    bottom: 74px;
+-    grid-template-columns: 120px 300px;
+-    width: 470px;
+-    min-height: 236px;
+-    overflow: hidden;
++    position: relative;
++    right: auto;
++    bottom: auto;
++    grid-template-columns: 120px minmax(0, 1fr);
++    width: 100%;
++    min-height: 220px;
++    overflow: visible;
++    border-radius: 72px 8px 8px 72px;
+   }
+ }
+ 
+ @media (max-width: 430px) {
+   .survey-header { min-height: 62px; border-bottom-width: 4px; }
+   .survey-header h1 { font-size: 24px; }
+-  .work-surface { min-height: 710px; }
++  .work-surface { min-height: 0; }
+   .underseat-stage {
+-    min-width: 720px;
+-    height: 350px;
+-    min-height: 350px;
++    min-width: 0;
++    height: auto;
++    min-height: 285px;
+   }
+-  .underseat-stage svg { width: 720px; min-height: 350px; }
++  .underseat-stage svg { width: 100%; min-height: 285px; }
++  .course-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
++  .survey-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+   .detail-loupe {
+-    right: -142px;
+-    bottom: 58px;
+-    width: 455px;
+-    transform: translateY(-74px);
++    right: auto;
++    bottom: auto;
++    grid-template-columns: minmax(0, 1fr);
++    width: 100%;
++    transform: none;
++    border-radius: 8px;
+   }
++  .loupe-lens { display: none; }
++  .loupe-copy dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ }

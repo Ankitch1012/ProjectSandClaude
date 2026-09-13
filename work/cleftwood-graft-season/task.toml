@@ -1,0 +1,41 @@
+schema_version = "1.1"
+
+[task]
+name = "afterquery/cleftwood-graft-season"
+description = "A season hand working an orchard through Cleftwood cannot trust the graft board: a stock worked twice grows a second card, work that was released is invisible to later visits, cutting a graft back rewrites the day it was bound, the season plan and the ways of entering the row lag behind the season, reading an old visit charges it again, a notebook page brings back a mixture of two seasons, two windows quietly overwrite one page, the record shuffles same-light work, and a narrow window buries the visit under its own panels."
+authors = [{ name = "Cleftwood Task Author", email = "author@local.invalid" }]
+keywords = ["narrative-game", "orchard-grafting", "derived-state", "revision-conflict", "responsive-ui"]
+
+[metadata]
+category = "full-stack"
+task_family = "stateful-web-application"
+source_repo = "cleftwood-graft-season"
+base_commit = "78770b42feea39a437bdfb22bf14f4fc75efc5aa"
+fail_to_pass_count = 39
+pass_to_pass_count = 11
+skipped_meta_files = []
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[verifier.env]
+
+[agent]
+timeout_sec = 1800.0
+user = "root"
+
+[solution]
+
+[solution.env]
+
+[environment]
+build_timeout_sec = 1200.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+gpu_types = []
+allow_internet = true
+
+[environment.env]

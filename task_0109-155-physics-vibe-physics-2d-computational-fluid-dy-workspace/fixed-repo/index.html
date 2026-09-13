@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Underwater Cavitation Lab — Hydrodynamic Telemetry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/layout.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark"></div>
+    <h1>Cavitation <span>Lab</span></h1>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="help-btn" id="btnHelp" title="Keyboard shortcuts">? KEYS</button>
+    <div class="header-badge">2D Hydrodynamic Solver v2.1</div>
+  </div>
+</header>
+
+<!-- WARNING BAR -->
+<div class="warning-bar" id="warningBar">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M12 2l10 18H2z"/></svg>
+  <span id="warningText">Cavitation detected — vapor pocket forming</span>
+</div>
+
+<!-- VALIDATION BAR -->
+<div class="validation-bar" id="validationBar">
+  <div class="v-dot pulse-dot"></div>
+  <span id="validationText" role="status" aria-label="Solver validation">Physics solver active — running self-tests…</span>
+</div>
+<div class="method-strip" aria-label="Run basis">
+  <span>2.0 m body</span><span>50 kg</span><span>0.0707 m² frontal area</span>
+  <span>metric depth</span><span>60 samples/s</span>
+</div>
+
+<!-- HELP MODAL -->
+<div class="modal-overlay" id="helpModal" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box">
+    <button class="modal-close" aria-label="Close keyboard shortcuts" onclick="document.getElementById('helpModal').classList.remove('open')">✕</button>
+    <h2>Keyboard Shortcuts</h2>
+    <div class="shortcut-row"><span class="shortcut-label">Play / Pause</span><span class="shortcut-key">SPACE</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Step forward</span><span class="shortcut-key">→</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Velocity +2 m/s</span><span class="shortcut-key">↑</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Velocity −2 m/s</span><span class="shortcut-key">↓</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Reset simulation</span><span class="shortcut-key">R</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Preset: Gentle</span><span class="shortcut-key">1</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Preset: Pre-Cavitation</span><span class="shortcut-key">2</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Preset: Cavitating</span><span class="shortcut-key">3</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Preset: Supercavity</span><span class="shortcut-key">4</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Preset: Shallow Sprint</span><span class="shortcut-key">5</span></div>
+    <div class="shortcut-row"><span class="shortcut-label">Show this help</span><span class="shortcut-key">?</span></div>
+    <p style="margin-top:14px;font-size:11px;color:var(--ink-dim);line-height:1.5;">
+      Drag the <strong style="color:var(--amber)">Velocity</strong> slider past ~50 m/s to cross the
+      cavitation threshold. Watch the vapor bubble form and envelope the projectile,
+      dropping drag coefficient to near zero.
+    </p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- LEFT: SIMULATION -->
+  <div class="viewport">
+    <div class="sim-canvas-wrap">
+      <canvas id="simCanvas" aria-label="Flow visualization"></canvas>
+      <div class="canvas-overlay-labels">
+        <div class="overlay-label">2D Flow Visualization — Side Elevation</div>
+      </div>
+      <div class="canvas-regime-badge regime-sub" id="regimeBadge">SUBCRITICAL</div>
+    </div>
+    <div class="plots-bar">
+      <div class="plot-panel">
+        <div class="plot-title">C<sub>d</sub> vs Velocity <span id="cdPlotVal"></span></div>
+        <div class="plot-canvas-wrap"><canvas id="cdPlot"></canvas></div>
+      </div>
+      <div class="plot-panel">
+        <div class="plot-title">Pressure Distribution <span id="pressPlotVal"></span></div>
+        <div class="plot-canvas-wrap"><canvas id="pressPlot"></canvas></div>
+      </div>
+      <div class="plot-panel">
+        <div class="plot-title">Drag History <span id="dragPlotVal"></span></div>
+        <div class="plot-canvas-wrap"><canvas id="dragPlot"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar" aria-label="Experiment controls">
+    <!-- SIMULATION CONTROL -->
+    <div class="sidebar-section">
+      <div class="section-header">Simulation Control</div>
+      <div class="btn-row">
+        <button class="btn primary" id="btnPlayPause">▶ PLAY</button>
+        <button class="btn" id="btnStep">STEP</button>
+        <button class="btn danger" id="btnReset">↺ RESET</button>
+      </div>
+    </div>
+
+    <!-- PARAMETERS -->
+    <div class="sidebar-section">
+      <div class="section-header">Parameters</div>
+      <div class="slider-group">
+        <div class="slider-label">
+          <span class="slider-label-text">Velocity</span>
+          <span class="slider-value" id="valVel" aria-label="Velocity readout">20.0 <span class="unit">m/s</span></span>
+        </div>
+        <input type="range" id="sliderVel" aria-label="Velocity" min="0" max="120" step="0.5" value="20">
+      </div>
+      <div class="slider-group">
+        <div class="slider-label">
+          <span class="slider-label-text">Depth</span>
+          <span class="slider-value" id="valDepth" aria-label="Depth readout">50 <span class="unit">m</span></span>
+        </div>
+        <input type="range" id="sliderDepth" aria-label="Depth" min="1" max="200" step="1" value="50">
+      </div>
+      <div class="slider-group">
+        <div class="slider-label">
+          <span class="slider-label-text">Water Temp</span>
+          <span class="slider-value" id="valTemp" aria-label="Water temperature readout">20 <span class="unit">°C</span></span>
+        </div>
+        <input type="range" id="sliderTemp" aria-label="Water temperature" min="0" max="80" step="1" value="20">
+      </div>
+      <div class="preset-row">
+        <button class="preset-btn" title="15 m/s · 50 m · 20 °C" onclick="window.__setPreset(15,50,20)">Gentle</button>
+        <button class="preset-btn" title="45 m/s · 50 m · 20 °C" onclick="window.__setPreset(45,50,20)">Pre-Cav</button>
+        <button class="preset-btn" title="65 m/s · 50 m · 20 °C" onclick="window.__setPreset(65,50,20)">Cavitating</button>
+        <button class="preset-btn" title="100 m/s · 100 m · 20 °C" onclick="window.__setPreset(100,100,20)">Supercav</button>
+        <button class="preset-btn" title="80 m/s · 5 m · 20 °C" onclick="window.__setPreset(80,5,20)">Shallow Sprint</button>
+      </div>
+    </div>
+
+    <!-- TELEMETRY -->
+    <div class="sidebar-section">
+      <div class="section-header">Telemetry</div>
+      <div class="telemetry-grid">
+        <div class="telem-card" id="tcRe" aria-label="Reynolds number card" data-tip="Re = ρvL/μ — Ratio of inertial to viscous forces">
+          <div class="telem-label">Reynolds #</div>
+          <div class="telem-value" id="tRe" aria-label="Reynolds number telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcCd" aria-label="Drag coefficient card" data-tip="Total drag coefficient: form + friction drag">
+          <div class="telem-label">Drag Coeff.</div>
+          <div class="telem-value" id="tCd" aria-label="Drag coefficient telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcSigma" data-tip="σ = (P∞−Pv)/(½ρv²) — Cavitation number">
+          <div class="telem-label">Cavitation σ</div>
+          <div class="telem-value" id="tSigma" aria-label="Cavitation number telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcDrag" aria-label="Drag force card" data-tip="F_d = ½·Cd·ρ·v²·A_front — Total drag force">
+          <div class="telem-label">Drag Force</div>
+          <div class="telem-value" id="tDrag" aria-label="Drag force telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcBubble" data-tip="Length of vapor cavity enveloping the body">
+          <div class="telem-label">Bubble Len.</div>
+          <div class="telem-value" id="tBubble">—</div>
+        </div>
+        <div class="telem-card" id="tcPower" data-tip="P = F_d · v — Power needed to overcome drag">
+          <div class="telem-label">Power Req.</div>
+          <div class="telem-value" id="tPower" aria-label="Power telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcPv" data-tip="Vapor pressure of water at current temperature">
+          <div class="telem-label">Vapor P.</div>
+          <div class="telem-value" id="tPv" aria-label="Vapor pressure telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcPamb" data-tip="P_amb = P_atm + ρgh — Hydrostatic + atmospheric">
+          <div class="telem-label">Ambient P.</div>
+          <div class="telem-value" id="tPamb" aria-label="Ambient pressure telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcKE" data-tip="KE = ½mv² — Kinetic energy of the projectile">
+          <div class="telem-label">KE</div>
+          <div class="telem-value" id="tKE" aria-label="Kinetic energy telemetry">—</div>
+        </div>
+        <div class="telem-card" id="tcRho" data-tip="Water density varies with temperature">
+          <div class="telem-label">ρ water</div>
+          <div class="telem-value" id="tRho" aria-label="Water density telemetry">—</div>
+        </div>
+        <div class="telem-card">
+          <div class="telem-label">Elapsed</div>
+          <div class="telem-value" id="tTime" aria-label="Elapsed time telemetry">0.000 <span class="u">s</span></div>
+        </div>
+        <div class="telem-card">
+          <div class="telem-label">Samples</div>
+          <div class="telem-value" id="tSamples" aria-label="History samples telemetry">0 <span class="u">—</span></div>
+        </div>
+        <div class="telem-card">
+          <div class="telem-label">Trial</div>
+          <div class="telem-value" id="tTrial" aria-label="Trial number telemetry">1 <span class="u">—</span></div>
+        </div>
+        <div class="telem-card">
+          <div class="telem-label">Retained</div>
+          <div class="telem-value" id="tRetained" aria-label="Retained samples telemetry">0 <span class="u">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE FORMULAS -->
+    <div class="sidebar-section">
+      <div class="section-header">Active Equations</div>
+      <div class="formula-box" id="formulaBox">
+        <div>σ = (<span class="hi">P∞</span> − <span class="warn">Pv</span>) / (½ ρ v²)</div>
+        <div style="margin-top:4px">C<sub>f</sub> = 0.074 · Re<sup>−0.2</sup> <span class="acc">(turbulent skin)</span></div>
+        <div style="margin-top:4px">C<sub>friction</sub> = C<sub>f</sub> · (A<sub>wet</sub>/A<sub>front</sub>) <span class="acc">(wet→front)</span></div>
+        <div style="margin-top:4px">F<sub>d</sub> = ½ · <span class="acc">C<sub>d</sub></span> · ρ · v² · A<sub>front</sub></div>
+        <div style="margin-top:4px">μ(T) = A·exp(B/(Tk+140)) <span class="acc">(Vogel)</span></div>
+      </div>
+    </div>
+
+    <!-- PROJECTILE SPECS -->
+    <div class="sidebar-section">
+      <div class="section-header">Projectile Specs</div>
+      <div class="formula-box">
+        <div>Body: Blunt nose, 2.0m × 0.3m</div>
+        <div>Mass: <span class="hi">50 kg</span></div>
+        <div>A<sub>frontal</sub> = 0.0707 m²</div>
+        <div>A<sub>wetted</sub> = 1.673 m²</div>
+        <div style="margin-top:4px">A<sub>wet</sub>/A<sub>front</sub> ≈ <span class="hi">23.7</span></div>
+        <div>μ(T) = 2.414e-5 · exp(<span class="hi">247.8</span>/(Tk+140))</div>
+      </div>
+    </div>
+  </aside>
+  <section class="history-panel" aria-label="Recent samples">
+    <div class="history-heading">
+      <div>
+        <span class="history-kicker">Trial ledger</span>
+        <h2>Recent Samples</h2>
+      </div>
+      <span>latest eight retained readings</span>
+    </div>
+    <div class="history-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Trial</th><th scope="col">Sample</th><th scope="col">Time (s)</th>
+            <th scope="col">Velocity</th><th scope="col">Depth</th><th scope="col">Temp</th>
+            <th scope="col">Cd</th><th scope="col">Drag (N)</th>
+          </tr>
+        </thead>
+        <tbody id="recentSamples">
+          <tr><td colspan="8">No samples in this trial</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="comparison-panel" aria-label="Trial comparison">
+    <div class="comparison-heading">
+      <div><span class="history-kicker">A/B shelf</span><h2>Paused Trial Comparison</h2></div>
+      <div class="comparison-actions">
+        <button id="pinReference">PIN REFERENCE</button>
+        <button id="pinCandidate">PIN CANDIDATE</button>
+        <button id="swapComparison">SWAP</button>
+        <button id="clearComparison">CLEAR</button>
+      </div>
+    </div>
+    <div class="comparison-grid">
+      <article class="pin-card empty" data-pin="Reference" aria-label="Reference pin">
+        <h3>Reference</h3>
+        <div class="pin-values">
+          <span>Trial <output aria-label="Reference Trial">—</output></span>
+          <span>Sample <output aria-label="Reference Sample">—</output></span>
+          <span>Velocity <output aria-label="Reference Velocity">—</output></span>
+          <span>Depth <output aria-label="Reference Depth">—</output></span>
+          <span>Temp <output aria-label="Reference Temp">—</output></span>
+          <span>Cd <output aria-label="Reference Cd">—</output></span>
+          <span>Drag <output aria-label="Reference Drag">—</output></span>
+        </div>
+      </article>
+      <article class="pin-card empty" data-pin="Candidate" aria-label="Candidate pin">
+        <h3>Candidate</h3>
+        <div class="pin-values">
+          <span>Trial <output aria-label="Candidate Trial">—</output></span>
+          <span>Sample <output aria-label="Candidate Sample">—</output></span>
+          <span>Velocity <output aria-label="Candidate Velocity">—</output></span>
+          <span>Depth <output aria-label="Candidate Depth">—</output></span>
+          <span>Temp <output aria-label="Candidate Temp">—</output></span>
+          <span>Cd <output aria-label="Candidate Cd">—</output></span>
+          <span>Drag <output aria-label="Candidate Drag">—</output></span>
+        </div>
+      </article>
+      <div class="delta-card" aria-label="Comparison deltas">
+        <span>Candidate − Reference</span>
+        <strong>ΔCd <output aria-label="Drag coefficient delta">—</output></strong>
+        <strong>ΔDrag <output aria-label="Drag force delta">—</output> N</strong>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script type="module" src="js/main.js"></script>
+<script>
+// Expose setPreset globally for inline onclick handlers
+window.__setPreset = function(v, d, t) {
+  import('./js/ui/controls.js').then(m => m.setPreset(v, d, t));
+};
+</script>
+</body>
+</html>

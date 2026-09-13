@@ -1,0 +1,36 @@
+/* ============================================================
+   BASE — Resets, Typography, Theme Tokens
+   Design: Deep-sea research instrument aesthetic
+   ============================================================ */
+:root {
+  --bg-deep: #0B1628;
+  --bg-surface: #111E33;
+  --bg-panel: #162240;
+  --bg-inset: #0D1929;
+  --water-deep: #04111F;
+  --ink: #E8EDF5;
+  --ink-mid: #8899B0;
+  --ink-dim: #556680;
+  --amber: #F5A623;
+  --amber-glow: rgba(245,166,35,0.15);
+  --cyan: #2DE2E6;
+  --cyan-dim: #1A8E91;
+  --red: #FF4757;
+  --red-glow: rgba(255,71,87,0.12);
+  --green: #2ED573;
+  --border: #1E3050;
+  --border-light: #2A3E5C;
+  --radius: 8px;
+  --radius-sm: 4px;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--font-display);
+  background: var(--bg-deep);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+}

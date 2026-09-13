@@ -1,0 +1,1963 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/work3/pw/node_modules/.bin/playwright",
+      "test",
+      "behavior.spec.js",
+      "--config=playwright.config.js",
+      "--reporter=json"
+    ],
+    "configFile": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/playwright.config.js",
+    "rootDir": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "*.spec.js"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "behavior.spec.js",
+      "file": "behavior.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "[P2P] The variance desk boots with its queue, reconciliation sheet, and decisions.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 902,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:10.546Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-The-variance-1ab4e-iation-sheet-and-decisions-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-97bce30c8ba26d21e544",
+          "file": "behavior.spec.js",
+          "line": 73,
+          "column": 1
+        },
+        {
+          "title": "[P2P] A fresh desk shows all six cases and selects CC-104.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 899,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:10.539Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-A-fresh-desk-c0367-x-cases-and-selects-CC-104-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-6839a463a7f1b8cd59bd",
+          "file": "behavior.spec.js",
+          "line": 79,
+          "column": 1
+        },
+        {
+          "title": "[P2P] Selecting an unfiltered case updates the reconciliation workspace.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 953,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:10.539Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-Selecting-an-3e660-e-reconciliation-workspace-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-d77fd2f1f0aee491317c",
+          "file": "behavior.spec.js",
+          "line": 84,
+          "column": 1
+        },
+        {
+          "title": "[P2P] The adjacent-bin case visibly carries equal and opposite row variances.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 889,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:10.548Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-The-adjacent-95db4-and-opposite-row-variances-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-31f720eb073301dd6cae",
+          "file": "behavior.spec.js",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "[P2P] A large unresolved loss cannot be adjusted without another count.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 672,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.109Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-A-large-unre-e5ae9-sted-without-another-count-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-0845c20bdd735dbe49c1",
+          "file": "behavior.spec.js",
+          "line": 94,
+          "column": 1
+        },
+        {
+          "title": "[P2P] HOLD marks the selected case without changing its quantities.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 701,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.124Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-HOLD-marks-t-8e9b2-ut-changing-its-quantities-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-ba6d86ce48d0b7951c4f",
+          "file": "behavior.spec.js",
+          "line": 99,
+          "column": 1
+        },
+        {
+          "title": "[P2P] Invalid recount input leaves the current count history unchanged.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 618,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.144Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-Invalid-reco-53ab3-nt-count-history-unchanged-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-43dbd7f30085e987f2b6",
+          "file": "behavior.spec.js",
+          "line": 106,
+          "column": 1
+        },
+        {
+          "title": "[P2P] Serial scanning is unavailable for ordinary inventory.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 638,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.175Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--P2P-Serial-scann-78b27-ble-for-ordinary-inventory-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-864cb3a2fb54c1d85587",
+          "file": "behavior.spec.js",
+          "line": 113,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] The second count is the authoritative total for CC-207.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 651,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.776Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D1-The-secon-ef3ab-oritative-total-for-CC-207-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-f9258517b75fe910774a",
+          "file": "behavior.spec.js",
+          "line": 120,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] CC-207 variance is derived from its second count.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 661,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.794Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D1-CC-207-va-a8411-ived-from-its-second-count-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-1b8ad873635dfca01c2e",
+          "file": "behavior.spec.js",
+          "line": 125,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] Posting 49 makes it the latest count immediately.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.829Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D1-Posting-4-bae07-e-latest-count-immediately-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-8a4c1e3d4d0ef73f41d6",
+          "file": "behavior.spec.js",
+          "line": 130,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] Only the last of two new recounts is authoritative.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 870,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:12.835Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D1-Only-the--16c09--recounts-is-authoritative-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-a3b39df00b9ce9f64a0a",
+          "file": "behavior.spec.js",
+          "line": 137,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] A posted recount and its latest total survive refresh.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 713,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:13.442Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D1-A-posted--ae1b0-test-total-survive-refresh-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-7fe51409b36f2172ee63",
+          "file": "behavior.spec.js",
+          "line": 145,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D1] UNDO removes the newest recount and restores the prior authoritative count.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 693,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:13.466Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D1-UNDO-remo-2bf16--prior-authoritative-count-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-5e2e406092c1c6a1910c",
+          "file": "behavior.spec.js",
+          "line": 154,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D2] Inbound units are included in Available for CC-509.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 592,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:13.605Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D2-Inbound-u-79467-ed-in-Available-for-CC-509-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-fbb02e820439ce1792db",
+          "file": "behavior.spec.js",
+          "line": 164,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D2] Inbound units are excluded from the physical variance for CC-509.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 587,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:13.727Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D2-Inbound-u-0171f-ysical-variance-for-CC-509-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-5abf8552007faff51e8c",
+          "file": "behavior.spec.js",
+          "line": 169,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D2] A recount of 14 changes variance but not the Available total.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 718,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.171Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D2-A-recount-adedf-ut-not-the-Available-total-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-158844531bc53aeafc01",
+          "file": "behavior.spec.js",
+          "line": 174,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] LINK TRANSPOSE is available for the adjacent equal-and-opposite pair.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 514,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.177Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D3-LINK-TRAN-a42e8-nt-equal-and-opposite-pair-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-b30648980d52a195166e",
+          "file": "behavior.spec.js",
+          "line": 186,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] Linking the adjacent exchange resolves CC-104.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 701,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.217Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D3-Linking-t-4bc15-t-exchange-resolves-CC-104-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-0c06bfeb8adbd7a4885b",
+          "file": "behavior.spec.js",
+          "line": 190,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] The linked decision identifies CC-104 without changing stock totals.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 721,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.330Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D3-The-linke-57d39-hout-changing-stock-totals-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-4f66ff662401e737cf02",
+          "file": "behavior.spec.js",
+          "line": 195,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] A linked transposition remains resolved after refresh.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.706Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D3-A-linked--4381c-ins-resolved-after-refresh-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-ec7d06d26b4d4551b3f4",
+          "file": "behavior.spec.js",
+          "line": 208,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] UNDO restores a linked pair to its complete open state.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 714,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.906Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D3-UNDO-rest-e8d55-to-its-complete-open-state-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-059bcfd999584dc3d80d",
+          "file": "behavior.spec.js",
+          "line": 215,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D3] A pair can be linked again after undo and remains durable.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 730,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:14.931Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D3-A-pair-ca-b070e-r-undo-and-remains-durable-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-41229619891911c81c6f",
+          "file": "behavior.spec.js",
+          "line": 223,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] The exact five-unit CC-421 boundary is adjustable.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 497,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:15.066Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D4-The-exact-630fc-421-boundary-is-adjustable-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-bf30b6e3eab7ff95130f",
+          "file": "behavior.spec.js",
+          "line": 233,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] Adjusting the exact boundary resolves CC-421.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 572,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:15.290Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D4-Adjusting-4ad76-t-boundary-resolves-CC-421-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-713bc65f365a0bc10825",
+          "file": "behavior.spec.js",
+          "line": 238,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] Boundary adjustment updates on-hand stock and clears variance.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 603,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:15.580Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D4-Boundary--08997--stock-and-clears-variance-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-ed610ba3598a4b389f56",
+          "file": "behavior.spec.js",
+          "line": 244,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] The boundary adjustment survives refresh with its decision.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 609,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:15.631Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D4-The-bound-0836c--refresh-with-its-decision-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-cfdd4987d10d56b8795a",
+          "file": "behavior.spec.js",
+          "line": 251,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D4] Recounting the large loss to the boundary enables adjustment.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 618,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:15.672Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D4-Recountin-b1a2b-oundary-enables-adjustment-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-3c59976c5311c135c747",
+          "file": "behavior.spec.js",
+          "line": 259,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] Serialized shortage cannot adjust before its missing serial is scanned.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 463,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:15.870Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D5-Serialize-1b777--missing-serial-is-scanned-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-44cf8a1b0832cdf27b67",
+          "file": "behavior.spec.js",
+          "line": 268,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] Serialized shortage initially reports zero of one required scans.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 505,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.195Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D5-Serialize-9c6f4-zero-of-one-required-scans-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-dc5be67c355ce0f581db",
+          "file": "behavior.spec.js",
+          "line": 273,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] Scanning the missing serial completes the evidence coverage.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 562,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.255Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D5-Scanning--73e7f-etes-the-evidence-coverage-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-6b20564d723f8d7de34f",
+          "file": "behavior.spec.js",
+          "line": 278,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] A fully evidenced serialized adjustment resolves the case.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 616,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.307Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D5-A-fully-e-83baf-justment-resolves-the-case-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-9d80e1af2050e7121b90",
+          "file": "behavior.spec.js",
+          "line": 285,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D5] Serialized evidence and adjustment survive refresh.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 794,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.350Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D5-Serialize-3fcab-adjustment-survive-refresh-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-69d2fa0ad025d24d2ab2",
+          "file": "behavior.spec.js",
+          "line": 292,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D6] Applying SERIALIZED does not replace selected case CC-509.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 471,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.713Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D6-Applying--db9ec-place-selected-case-CC-509-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-6105d5fd47674d5398f4",
+          "file": "behavior.spec.js",
+          "line": 304,
+          "column": 3
+        },
+        {
+          "title": "[F2P][D6] Applying OPEN does not replace selected case CC-421.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 439,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.828Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D6-Applying--98ecf-place-selected-case-CC-421-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-8c462833d9c47c62bd7f",
+          "file": "behavior.spec.js",
+          "line": 304,
+          "column": 3
+        },
+        {
+          "title": "[F2P][D6] Applying ALL does not replace selected case CC-318.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 459,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:16.949Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D6-Applying--dca7c-place-selected-case-CC-318-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-973719251f7d02be09ba",
+          "file": "behavior.spec.js",
+          "line": 304,
+          "column": 3
+        },
+        {
+          "title": "[F2P][D6] Repeated filter changes leave the reviewed case and evidence unchanged.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 622,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.160Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D6-Repeated--8788a-ase-and-evidence-unchanged-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-3769d34c82e32d3c9f09",
+          "file": "behavior.spec.js",
+          "line": 311,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D7] HOLD remains attached to the selected case after refresh.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 612,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.196Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D7-HOLD-rema-60ef4-elected-case-after-refresh-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-575d22544d657c2f40e5",
+          "file": "behavior.spec.js",
+          "line": 330,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D7] UNDO after HOLD restores the complete open case.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 707,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.277Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D7-UNDO-afte-c540f-res-the-complete-open-case-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-80d9dc66b9ea08886d0f",
+          "file": "behavior.spec.js",
+          "line": 338,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D7] UNDO after adjustment restores stock, count history, and status together.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 1120,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.425Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D7-UNDO-afte-23cdb-istory-and-status-together-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-d333b4e78f6e00f6c781",
+          "file": "behavior.spec.js",
+          "line": 346,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D7] Boundary recount, adjustment, and undo preserve the recount but restore stock.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 686,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.799Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D7-Boundary--ecffb--recount-but-restore-stock-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-a51c4c6c0cdca7d46463",
+          "file": "behavior.spec.js",
+          "line": 359,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D8] Expected and counted AX-14 rows share one horizontal register.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 433,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.819Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D8-Expected--af259-re-one-horizontal-register-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-de3968676ec42ad7c0b4",
+          "file": "behavior.spec.js",
+          "line": 375,
+          "column": 3
+        },
+        {
+          "title": "[F2P][D8] Expected and counted BZ-22 rows share one horizontal register.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 453,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:17.996Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D8-Expected--97eeb-re-one-horizontal-register-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-5f95e67603a869428aaf",
+          "file": "behavior.spec.js",
+          "line": 375,
+          "column": 3
+        },
+        {
+          "title": "[F2P][D9] The reconciliation sheet remains contained at phone width.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 545,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:18.276Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D9-The-recon-afa6a-s-contained-at-phone-width-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-a8c333fe08e189891ea7",
+          "file": "behavior.spec.js",
+          "line": 383,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D9] The inventory summary remains contained at phone width.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 512,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:18.460Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D9-The-inven-2a3c9-s-contained-at-phone-width-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-08f0b160853418343f47",
+          "file": "behavior.spec.js",
+          "line": 390,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D9] Every decision control remains contained and mutually separated on a phone.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 3,
+                  "status": "passed",
+                  "duration": 551,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:18.499Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D9-Every-dec-12a0a-ually-separated-on-a-phone-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-e3292a8d829175a5b2db",
+          "file": "behavior.spec.js",
+          "line": 397,
+          "column": 1
+        },
+        {
+          "title": "[F2P][D9] Live resize preserves alignment without document-level sideways overflow.",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 556,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T14:43:18.558Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/ankitchauhan/Desktop/AfterQuery/ProjectSandClaude/countback-variance-desk/tests/.blind-countback-check/pw/behavior--F2P-D9-Live-resi-f1d50-nt-level-sideways-overflow-/test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1866689bce076d8e877c-8f76af43c2db5b7a87b9",
+          "file": "behavior.spec.js",
+          "line": 411,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-11T14:43:10.290Z",
+    "duration": 8889.157,
+    "expected": 47,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,265 @@
+diff --git a/backend/lib/check.js b/backend/lib/check.js
+index 3529e0b..17f986c 100644
+--- a/backend/lib/check.js
++++ b/backend/lib/check.js
+@@ -12,7 +12,7 @@ const tokens = require('./tokens');
+ const DEFAULT_BARS = 32;
+ 
+ // Read a crib, dance it in the head, and say everything that is wrong with it.
+-function checkPhrase(phrase, state, found, top) {
++function checkPhrase(phrase, state, found) {
+   const scanned = phraseReader.scan(phrase.body, phrase.span.from);
+   const gives = ranges.length(phrase.span);
+   let walking = state;
+@@ -39,7 +39,7 @@ function checkPhrase(phrase, state, found, top) {
+     const requires = clause.figure.requires;
+ 
+     if (requires && requires.kind === 'adjacent' && clause.couples.length >= 2) {
+-      if (!set.areAdjacent(top, clause.couples)) {
++      if (!set.areAdjacent(walking, clause.couples)) {
+         found.push({
+           bar: clause.bar,
+           detail: { couples: clause.couples, figure: clause.figure.name },
+@@ -51,14 +51,14 @@ function checkPhrase(phrase, state, found, top) {
+ 
+     if (requires && requires.kind === 'place' && clause.couples.length >= 1) {
+       const couple = clause.couples[0];
+-      if (!set.isInPlace(top, couple, requires.place)) {
++      if (!set.isInPlace(walking, couple, requires.place)) {
+         found.push({
+           bar: clause.bar,
+           detail: {
+             couples: clause.couples,
+             figure: clause.figure.name,
+             place: requires.place,
+-            standing: set.placeOf(top, couple)
++            standing: set.placeOf(walking, couple)
+           },
+           kind: 'wrong-place-for-figure',
+           phrase
+@@ -132,9 +132,8 @@ function check(text, requestedBars) {
+   }
+ 
+   let state = set.opening(crossed);
+-  const top = set.opening(crossed);
+   const walked = read.phrases.map((phrase) => {
+-    const outcome = checkPhrase(phrase, state, found, top);
++    const outcome = checkPhrase(phrase, state, found);
+     state = outcome.state;
+     return outcome;
+   });
+diff --git a/backend/lib/faults.js b/backend/lib/faults.js
+index fc9ec97..12eed2e 100644
+--- a/backend/lib/faults.js
++++ b/backend/lib/faults.js
+@@ -80,7 +80,7 @@ function collect(raw) {
+     }
+     seen[key] = true;
+     kept.push({
+-      bar: fault.phrase && fault.phrase.span ? fault.phrase.span.from : fault.bar,
++      bar: fault.bar,
+       detail: fault.detail || null,
+       kind: fault.kind,
+       line,
+diff --git a/backend/lib/phrase.js b/backend/lib/phrase.js
+index 7b4b419..e07ca26 100644
+--- a/backend/lib/phrase.js
++++ b/backend/lib/phrase.js
+@@ -28,18 +28,7 @@ function readDancers(body, from) {
+ }
+ 
+ function isSeparator(ch) {
+-  return ch === ',' || ch === '.' || ch === ';' || ch === '&' || /\s/.test(ch);
+-}
+-
+-// How far a figure may reach before the writing turns to something else.
+-function reach(body, from) {
+-  for (let i = from; i < body.length; i += 1) {
+-    const ch = body.charAt(i);
+-    if (ch === ',' || ch === ';' || ch === '&') {
+-      return i;
+-    }
+-  }
+-  return body.length;
++  return ch === ',' || ch === '.' || ch === ';' || /\s/.test(ch);
+ }
+ 
+ // Break a phrase into the figures it asks for. `startBar` lets each figure
+@@ -50,18 +39,11 @@ function scan(body, startBar) {
+   const unknown = [];
+   let dancers = null;
+   let whole = false;
+-  let namedFigure = false;
+   let bar = startBar;
+   let i = 0;
+ 
+   while (i < body.length) {
+-    const here = body.charAt(i);
+-    if (here === ',' || here === ';') {
+-      namedFigure = false;
+-      i += 1;
+-      continue;
+-    }
+-    if (isSeparator(here)) {
++    if (isSeparator(body.charAt(i))) {
+       i += 1;
+       continue;
+     }
+@@ -74,9 +56,8 @@ function scan(body, startBar) {
+       continue;
+     }
+ 
+-    const found = figures.matchAt(body.slice(0, reach(body, i)), i);
++    const found = figures.matchAt(body, i);
+     if (found) {
+-      namedFigure = true;
+       clauses.push({
+         bar,
+         column: i,
+@@ -94,7 +75,7 @@ function scan(body, startBar) {
+       end += 1;
+     }
+     const text = body.slice(i, end).trim();
+-    if (text !== '' && !namedFigure) {
++    if (text !== '') {
+       unknown.push({ bar, column: i, text });
+     }
+     i = end + 1;
+diff --git a/backend/lib/preamble.js b/backend/lib/preamble.js
+index 29b32af..7d4800c 100644
+--- a/backend/lib/preamble.js
++++ b/backend/lib/preamble.js
+@@ -8,7 +8,7 @@
+ // A couple on opposite sides has swapped partners across the dance, and stays
+ // that way until the crib says otherwise. Everything else about the line is
+ // commentary and does not change where anyone stands.
+-const COUPLE_LIST = /(\d\s*s?(?:\s*\+\s*\d\s*s?)*)\s*start(?:ing)?\s+on\s+opposite\s+sides?/i;
++const COUPLE_LIST = /(\d\s*s?(?:\s*\+\s*\d\s*s?)*)\s*(?:start(?:ing)?\s*)?on\s+opposite\s+sides?/i;
+ 
+ function coupleNumbers(fragment) {
+   const found = [];
+diff --git a/backend/lib/progress.js b/backend/lib/progress.js
+index 8aff937..32584df 100644
+--- a/backend/lib/progress.js
++++ b/backend/lib/progress.js
+@@ -19,7 +19,7 @@ function check(endState, danceBars) {
+   const finished = set.order(endState);
+   const target = expected();
+ 
+-  const matches = finished.some((couple, index) => couple === target[index]);
++  const matches = finished.every((couple, index) => couple === target[index]);
+   if (matches) {
+     return null;
+   }
+diff --git a/backend/lib/ranges.js b/backend/lib/ranges.js
+index 05b6ffd..8a72ea6 100644
+--- a/backend/lib/ranges.js
++++ b/backend/lib/ranges.js
+@@ -9,7 +9,7 @@
+ // Devisors write the span with a dash, and may leave the closing bar off
+ // entirely, in which case the line runs to the bar before the next line
+ // starts, or to the end of the dance if it is the last one.
+-const DASHES = ['-'];
++const DASHES = ['-', '\u2013', '\u2014'];
+ 
+ function dashAt(text, from) {
+   for (let i = 0; i < DASHES.length; i += 1) {
+diff --git a/backend/lib/set.js b/backend/lib/set.js
+index d1608a6..4fbf1cb 100644
+--- a/backend/lib/set.js
++++ b/backend/lib/set.js
+@@ -55,7 +55,7 @@ function areAdjacent(state, couples) {
+   if (!couples || couples.length < 2) {
+     return true;
+   }
+-  const places = couples.slice().sort((a, b) => a - b);
++  const places = couples.map((couple) => placeOf(state, couple)).sort((a, b) => a - b);
+   for (let i = 1; i < places.length; i += 1) {
+     if (places[i] !== places[i - 1] + 1) {
+       return false;
+diff --git a/backend/lib/tiling.js b/backend/lib/tiling.js
+index ac123b4..59bc41b 100644
+--- a/backend/lib/tiling.js
++++ b/backend/lib/tiling.js
+@@ -6,7 +6,7 @@ const ranges = require('./ranges');
+ // in order, the first opens on bar 1, the last closes on the final bar, and
+ // each phrase picks up where the one before it left off.
+ function nextExpected(span) {
+-  return span.to;
++  return span.to + 1;
+ }
+ 
+ function check(phrases, danceBars) {
+diff --git a/backend/lib/tokens.js b/backend/lib/tokens.js
+index 23feeb8..c1d98a5 100644
+--- a/backend/lib/tokens.js
++++ b/backend/lib/tokens.js
+@@ -54,7 +54,7 @@ function read(text) {
+         strays.push({ line: lineNumber, reason: 'continuation-without-phrase', text: rawLine.trim() });
+         continue;
+       }
+-      open.body = rawLine.trim();
++      open.body += ` ${rawLine.trim()}`;
+       open.lines.push(lineNumber);
+       continue;
+     }
+diff --git a/frontend/public/app.js b/frontend/public/app.js
+index c6dc016..1250b7e 100644
+--- a/frontend/public/app.js
++++ b/frontend/public/app.js
+@@ -53,7 +53,7 @@ function renderStave(report) {
+   clear(el.source);
+ 
+   const faultedLines = {};
+-  report.faults.slice(0, 1).forEach((fault) => {
++  report.faults.forEach((fault) => {
+     if (fault.line) {
+       faultedLines[fault.line] = true;
+     }
+@@ -81,15 +81,13 @@ function renderStave(report) {
+ function renderFaults(report) {
+   clear(el.faults);
+ 
+-  const listed = report.faults.slice(0, 1);
+-
+   el.verdict.textContent = report.good
+     ? `The crib is sound: ${report.bars} bars, and the set hands on ${report.closing.join('-')}.`
+-    : `${listed.length} ${listed.length === 1 ? 'fault' : 'faults'} to answer for.`;
++    : `${report.faults.length} ${report.faults.length === 1 ? 'fault' : 'faults'} to answer for.`;
+   el.verdict.setAttribute('data-good', report.good ? 'yes' : 'no');
+-  el.verdict.setAttribute('data-fault-count', String(listed.length));
++  el.verdict.setAttribute('data-fault-count', String(report.faults.length));
+ 
+-  listed.forEach((fault) => {
++  report.faults.forEach((fault) => {
+     const row = node('li', 'fault');
+     row.setAttribute('data-testid', 'fault');
+     row.setAttribute('data-bar', fault.bar === null ? '' : String(fault.bar));
+diff --git a/frontend/public/styles.css b/frontend/public/styles.css
+index 3998111..b5e48ea 100644
+--- a/frontend/public/styles.css
++++ b/frontend/public/styles.css
+@@ -194,14 +194,13 @@ body {
+   overflow-x: auto;
+ }
+ 
++.gutterline,
+ .sourceline {
+   height: var(--row);
+   line-height: var(--row);
+ }
+ 
+ .gutterline {
+-  height: 1.35rem;
+-  line-height: 1.35rem;
+   color: var(--ink-soft);
+   padding-right: 0.55rem;
+   text-align: right;
+@@ -274,7 +273,6 @@ body {
+ 
+ .setrow.head {
+   border-bottom: 1px solid var(--rule);
+-  grid-template-columns: repeat(4, minmax(0, 1fr));
+   margin-bottom: 0.3rem;
+   padding-bottom: 0.4rem;
+ }

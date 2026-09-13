@@ -1,0 +1,120 @@
+---
+description: Project Sand import tasks — original design, authoritative template shape, visuals, semantic verification, Harbor gates, and normalized archives
+alwaysApply: true
+---
+
+# Project Sand — self-designed tasks (Import tab)
+
+Experts can now build a task themselves and upload it through the **Import**
+tab. It goes straight into automated review, and if it passes, on to manual
+review. Everything in the workflow and authoring rules still applies —
+difficulty, the rewritten instruction, the UI/layout claim, the test floor.
+
+Start from the **downloaded task template**. Its layout is authoritative; do
+not invent a structure.
+
+## Start from a new primitive
+
+Ship a **new domain primitive and a new UI shell** — not a noun-swap of a task
+already approved or in review. The primitive is the thing the app is about
+(a booking, a ledger entry, a patient chart, a build queue); the shell is how
+it is laid out and navigated. Both new, or the package reads as a repeat.
+
+Sketch the primitive, the scenario, and the defect families before writing any
+code. Prefer bugs and layout failures grounded in real cases where a capable
+model struggled, rather than synthetic complexity. Rebuilding after a "too
+similar" verdict costs the whole package.
+
+## Package shape
+
+- `instruction.md` — the only prompt the solving agent sees.
+- `environment/` — the application, its `Dockerfile`, and runtime files.
+  Problem images live in `environment/problem_assets/`.
+- `tests/` — the verifier, plus the runner and parser the template ships.
+- `solution/` — the reference patch, applied by `solution/solve.sh`.
+- Modern downloaded import templates have **no root `config.json`**. Do not
+  invent one. Wire `base_commit`, `fail_to_pass_count`, and
+  `pass_to_pass_count` in `task.toml`; tagged titles must be unique and parser
+  counts must cover the complete suite. A future fresh template remains
+  authoritative if its shape changes.
+
+## Hard requirements before upload
+
+- **The app must launch.** A package that does not boot in its container fails
+  automated review immediately.
+- **Manually exercise both states.** Launch and interact with the app at
+  `base_commit`, then apply the reference solution and repeat the same
+  scenarios. Harbor proves verifier consistency, not product correctness.
+- **The app must have visuals, and at least one image must be attached.** Add
+  another broken image whenever one view does not visibly cover the next
+  distinct visual defect.
+- **The images must be load-bearing.** The task should not be solvable without
+  looking at them; they carry the layout half of the contract.
+- **The UI defect must be real and severe.** Overlapping controls, clipped
+  text, an element outside its container, unreadable contrast — something a
+  reviewer would call objectively bad, moving to objectively good. Cosmetic
+  nudges do not qualify.
+- **The app must be original code.** Uploads are checked against public code
+  hosts and rejected on a match, so the application cannot come from a tutorial
+  repo, a public starter, or any published project. Write it for the task.
+- No secrets, credentials, or unrelated personal information in any file.
+- One archive, `.zip` / `.tar.gz` / `.tgz`, up to 512 MB.
+
+## The local gate — in this order
+
+Easiness audit first, then nop, then oracle twice. Hardening rewrites tests, so
+a green run taken before the audit proves nothing about the pack that ships.
+
+```bash
+harbor run -p ./my-task -a nop      # reward.txt must be 0
+harbor run -p ./my-task -a oracle   # reward.txt must be 1
+harbor run -p ./my-task -a oracle   # again — a suite that flakes once is broken
+harbor view ./jobs                  # inspect stdout/stderr/parser output
+```
+
+`nop` applies nothing and runs `tests/test.sh`; every `fail_to_pass` test must
+FAIL and every `pass_to_pass` test must PASS. A reward of `1` means the bug is
+already fixed at `base_commit`, or the tests never touch it.
+
+`oracle` applies `solution/solve.sh` first; every `fail_to_pass` ∪
+`pass_to_pass` test must PASS. A reward of `0` means one of three things: the
+patch did not apply (its context lines no longer match `base_commit`), the
+patch applied but the fix is incomplete, or `task.toml` counts/parser output do
+not match the tagged suite. `harbor view ./jobs` distinguishes them.
+
+Do not upload until nop is 0 and oracle is 1 on two consecutive runs.
+
+## Archive hygiene
+
+**Ship `.tar.gz`, not `.zip`.** A byte-identical `.zip` was rejected at intake
+with only "the package did not pass import checks"; the same tree as `.tar.gz`
+went straight through. The importer accepts both on paper — in practice use the
+tarball.
+
+**Do not deviate from the template's `task.toml`.** Raising `timeout_sec` or
+`build_timeout_sec` above the shipped defaults is a plausible intake rejection,
+as is shipping files the template does not have. Fill in the placeholder values
+and change nothing else.
+
+**Match the template's file list exactly.** No nested `.git` repository inside
+`environment/app`, no `.dockerignore`, no `.gitignore`, no editor dotfiles. The
+template ships a bare `app/.gitkeep`; your real source replaces it and nothing
+else is added. `solve.sh` applies the patch with `git apply`, which works fine
+outside a repository, so a committed history is not needed.
+
+Name the wrapper directory after the task slug, the way the template's wrapper
+matches its own name.
+
+These fail before a human sees the work:
+
+- **`HEAD` must equal `base_commit`.** Committing a stray fix after setting
+  `base_commit` means oracle is patching a tree that no longer matches.
+- **Unix file modes.** Executable bits intact on `solve.sh`, `test.sh`,
+  `run_script.sh`, and `launch.sh`; no Windows or macOS metadata riding along.
+- **Screenshots only under `environment/problem_assets/`.** Not at the root,
+  not beside the source.
+- **No extra root junk.** No `.DS_Store`, editor directories, `node_modules`,
+  scratch notes, or leftover `UNVERIFIED.md` / `warning.md`.
+
+Archive the task directory and upload it through the Import tab. The difficulty
+probe runs on self-designed tasks exactly as it does on claimed ones.

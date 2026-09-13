@@ -1,0 +1,41 @@
+schema_version = "1.1"
+
+[task]
+name = "afterquery/seat-spring-survey"
+description = "A furniture conservator cannot trust cord-course identity, crossing semantics, spring-contact evidence, record orientation, or the contained underside survey view."
+authors = [{ name = "Project Sand Expert", email = "expert@local.invalid" }]
+keywords = ["conservation", "upholstery", "topology", "react", "express", "responsive-ui"]
+
+[metadata]
+category = "conservation-documentation"
+task_family = "fullstack-topology-survey"
+source_repo = "seat-spring-survey"
+base_commit = "87e39b48bd42f6703d870c803b179be1ad2c40a3"
+fail_to_pass_count = 30
+pass_to_pass_count = 5
+skipped_meta_files = []
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[verifier.env]
+
+[agent]
+timeout_sec = 1800.0
+user = "root"
+
+[solution]
+
+[solution.env]
+
+[environment]
+build_timeout_sec = 1200.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+gpu_types = []
+allow_internet = true
+
+[environment.env]

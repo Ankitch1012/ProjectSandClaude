@@ -1,0 +1,41 @@
+schema_version = "1.1"
+
+[task]
+name = "afterquery/countback-variance-desk"
+description = "A warehouse controller cannot trust recount supersession, stock availability, linked transpositions, serialized evidence, durable undo, or the alignment of the expected-versus-counted reconciliation sheet."
+authors = [{ name = "Project Sand Expert", email = "expert@local.invalid" }]
+keywords = ["inventory", "reconciliation", "react", "express", "responsive-ui"]
+
+[metadata]
+category = "inventory-control"
+task_family = "fullstack-state-reconciliation"
+source_repo = "countback-variance-desk"
+base_commit = "d9b909391fb01705235ccf68b6d21f4e82b768c4"
+fail_to_pass_count = 39
+pass_to_pass_count = 8
+skipped_meta_files = []
+
+[verifier]
+timeout_sec = 600.0
+user = "root"
+
+[verifier.env]
+
+[agent]
+timeout_sec = 1800.0
+user = "root"
+
+[solution]
+
+[solution.env]
+
+[environment]
+build_timeout_sec = 1200.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+gpu_types = []
+allow_internet = true
+
+[environment.env]

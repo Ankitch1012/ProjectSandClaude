@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#17383b" />
+  <title>RifflePair — Colocated Leaf-Pack Recovery Map</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="field-header">
+    <a class="identity" href="/" aria-label="RifflePair home">
+      <span class="identity-mark" aria-hidden="true"><i></i><i></i></span>
+      <span><strong>RifflePair</strong><small>Leaf-pack recovery map</small></span>
+    </a>
+    <div class="study-title">
+      <span>INTERMITTENT-STREAM STUDY</span>
+      <h1 id="study-title">Loading reach…</h1>
+    </div>
+    <div class="datum-chip" aria-label="Study datum">
+      <span>COMMON DATUM</span>
+      <strong id="datum">—</strong>
+    </div>
+  </header>
+
+  <main class="field-sheet">
+    <section class="channel-frame" aria-label="Spatial channel recovery map">
+      <div class="channel-heading">
+        <div>
+          <span class="field-label">WILLOW BEND / CHANNEL SECTION</span>
+          <h2>Colocated coarse + fine anchors</h2>
+        </div>
+        <div class="stage-quality" aria-label="Stage quality">
+          <span>STAGE SERIES</span>
+          <strong id="stage-quality" aria-label="Stage quality result">—</strong>
+        </div>
+      </div>
+
+      <div id="channel-map" class="channel-map" aria-label="Fixed-position channel anchors">
+        <svg id="channel-svg" viewBox="0 0 1200 430" role="img" aria-label="Channel bed, elevation bands, and anchor positions">
+          <defs>
+            <linearGradient id="waterBand" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7cc9cb" stop-opacity="0.08" />
+              <stop offset="100%" stop-color="#17808a" stop-opacity="0.35" />
+            </linearGradient>
+            <pattern id="gravel" width="28" height="18" patternUnits="userSpaceOnUse">
+              <circle cx="5" cy="8" r="3" fill="#6f7363" />
+              <circle cx="18" cy="4" r="5" fill="#8c8974" />
+              <circle cx="25" cy="14" r="4" fill="#5d665d" />
+            </pattern>
+          </defs>
+          <path d="M0 68 C170 52 290 92 438 76 C620 56 700 102 860 80 C1000 58 1090 88 1200 66 L1200 370 L0 370 Z" fill="url(#waterBand)" />
+          <path d="M0 310 C110 278 180 332 285 304 C390 272 490 346 603 312 C725 275 800 340 918 296 C1035 252 1110 317 1200 282 L1200 430 L0 430 Z" fill="url(#gravel)" />
+          <path d="M0 310 C110 278 180 332 285 304 C390 272 490 346 603 312 C725 275 800 340 918 296 C1035 252 1110 317 1200 282" fill="none" stroke="#303e3b" stroke-width="7" />
+          <g id="stage-bands"></g>
+          <g id="anchor-glyphs"></g>
+          <g class="elevation-ruler" aria-hidden="true">
+            <line x1="28" y1="70" x2="28" y2="360" />
+            <text x="38" y="92">1.5 m</text>
+            <text x="38" y="232">1.1 m</text>
+            <text x="38" y="350">0.8 m</text>
+          </g>
+        </svg>
+        <div id="anchor-targets" class="anchor-targets"></div>
+
+        <section class="filter-shoal" aria-label="Anchor visibility filter">
+          <span class="field-label">FILTER SHOAL</span>
+          <label>
+            <span>Visible anchors</span>
+            <select id="filter" aria-label="Visible anchors">
+              <option value="all">All anchors</option>
+              <option value="eligible">Eligible pairs</option>
+              <option value="ineligible">Ineligible pairs</option>
+              <option value="intact">Intact recoveries</option>
+            </select>
+          </label>
+          <small>Filtering changes visibility, never reach statistics.</small>
+        </section>
+      </div>
+    </section>
+
+    <section class="gravel-apron">
+      <section class="recovery-tag" aria-label="Selected anchor recovery tag">
+        <div class="tag-hole" aria-hidden="true"></div>
+        <header>
+          <div>
+            <span class="field-label">SELECTED REPLICATE ANCHOR</span>
+            <h2 id="selected-anchor">No anchor selected</h2>
+          </div>
+          <select id="anchor-select" aria-label="Selected anchor"></select>
+        </header>
+        <div class="tag-grid">
+          <div><span>BED ELEVATION</span><strong id="anchor-elevation" aria-label="Selected bed elevation">—</strong></div>
+          <div><span>EST. WATER CONTACT</span><strong id="wet-duration" aria-label="Estimated water contact">—</strong></div>
+          <div><span>PAIR STATUS</span><strong id="pair-status" aria-label="Selected pair eligibility">—</strong></div>
+          <div><span>COARSE − FINE</span><strong id="pair-contrast" aria-label="Selected pair contrast">—</strong></div>
+        </div>
+        <div class="pair-readout" aria-label="Selected bag results">
+          <div>
+            <span>COARSE</span>
+            <strong id="coarse-loss" aria-label="Coarse proportional mass loss">—</strong>
+            <small id="coarse-afdm" aria-label="Coarse normalization details">AFDM —</small>
+          </div>
+          <div class="pair-link" aria-hidden="true">↔</div>
+          <div>
+            <span>FINE</span>
+            <strong id="fine-loss" aria-label="Fine proportional mass loss">—</strong>
+            <small id="fine-afdm" aria-label="Fine normalization details">AFDM —</small>
+          </div>
+        </div>
+        <p id="pair-reason" class="pair-reason">Choose an anchor on the channel map.</p>
+      </section>
+
+      <section class="sample-controls" aria-label="Selected bag laboratory values">
+        <span class="field-label">ETCHED BAG TAG</span>
+        <div class="control-line">
+          <label>
+            <span>Bag mesh</span>
+            <select id="bag-mesh" aria-label="Bag mesh">
+              <option value="coarse">Coarse</option>
+              <option value="fine">Fine</option>
+            </select>
+          </label>
+          <label>
+            <span>Disposition</span>
+            <select id="disposition" aria-label="Disposition">
+              <option value="intact">Intact</option>
+              <option value="disturbed">Disturbed</option>
+              <option value="lost">Lost</option>
+            </select>
+          </label>
+          <label>
+            <span>Loaded air-dry g</span>
+            <input id="loaded-mass" aria-label="Loaded air-dry mass" type="number" step="0.01" />
+          </label>
+        </div>
+        <div class="mass-grid">
+          <label><span>Dry gross g</span><input id="dry-gross" aria-label="Dry gross mass" type="number" step="0.01" /></label>
+          <label><span>Dry tare g</span><input id="dry-tare" aria-label="Dry tare mass" type="number" step="0.01" /></label>
+          <label><span>Ash gross g</span><input id="ash-gross" aria-label="Ash gross mass" type="number" step="0.01" /></label>
+          <label><span>Ash tare g</span><input id="ash-tare" aria-label="Ash tare mass" type="number" step="0.01" /></label>
+        </div>
+        <button id="analyze" class="analyze-button" type="button">Analyze current reach</button>
+      </section>
+
+      <section class="reach-stone" aria-label="Reach paired contrast summary">
+        <span class="field-label">REACH CONTRAST STONE</span>
+        <div class="stone-value">
+          <strong id="reach-mean" aria-label="Reach mean contrast">—</strong>
+          <span>equal-weight mean</span>
+        </div>
+        <div class="stone-n">
+          <span>ELIGIBLE ANCHORS</span>
+          <strong id="reach-n" aria-label="Eligible anchor count">—</strong>
+        </div>
+        <p id="summary-note">Descriptive paired contrast; no causal attribution.</p>
+      </section>
+    </section>
+  </main>
+
+  <div id="notice" class="notice" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

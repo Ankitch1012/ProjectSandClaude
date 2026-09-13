@@ -1,0 +1,14 @@
+{
+  "name": "bywash-flight-shell",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bywash lock-flight keeper's shell",
+  "license": "UNLICENSED",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

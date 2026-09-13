@@ -1,0 +1,73 @@
+---
+description: Evidence checklist for every Project Sand Import review stage
+alwaysApply: true
+---
+
+# Import review gates — evidence required
+
+## Intake checks
+- Use the newest downloaded template and preserve its exact `task.toml` schema.
+- Modern templates use counts in `task.toml`; do not add root `config.json`.
+- Keep template timeouts, `FROM app-base:latest`, and required scripts.
+- Upload `.tar.gz`; stay below the size limit.
+
+## Originality check
+- Change primitive + scenario + defect roots + layout together.
+- Search public products/benchmarks before coding; never copy public source.
+- Reject concepts resembling prior submissions, even if names/colors differ.
+
+## Structure check
+- Source only under `environment/app`; images only under
+  `environment/problem_assets`; verifier under `tests`; patch under `solution`.
+- Develop with `.git` if useful, but never ship it.
+- `task.toml` counts equal the complete unique tagged suite.
+
+## Build
+- Install from lockfiles, boot through `launch.sh`, and exercise real UI routes.
+- Verify health, frontend reachability, browser console, and both viewports.
+
+## Change check
+- Base must fail because of product defects, never setup/timeouts.
+- Fixed state must genuinely implement the contract, not special-case fixtures.
+- `HEAD == base_commit`; `solution/solve.sh` applies cleanly to that base.
+
+## Writing check
+- Write a natural, specific user report—not scaffold/spec language.
+- State product rules and observable outcomes, never files/functions/diagnosis.
+- Every sentence maps to tests; every visual claim maps to an embedded image.
+
+## Verification review
+- Drive public UI behavior; fixture APIs may prepare state but never replace UI.
+- Test semantics, not wording or implementation: avoid exact incidental messages,
+  private hooks, source checks, DOM class state, import names, and call order.
+- Await visible completion before reload; no sleeps that hide request races.
+- Test both operation orders, non-round values, blank drafts, boundaries, reload,
+  concurrency, and live resize when the instruction promises them.
+- Run a valid alternative implementation against the protected suite; if it
+  fails only due presentation wording/structure, loosen the verifier.
+
+## Package check
+- Normalize archive ownership to `root:root`, modes, and timestamps; strip
+  xattrs/PAX metadata, symlinks, `.DS_Store`, `node_modules`, `.git`, and junk.
+- Extract to a clean directory; compare tree, modes, counts, images, and patch.
+
+## Baseline test run
+- Harbor nop reward `0`; every F2P fails and every P2P passes.
+- Inspect per-defect buckets and reject any F2P that accidentally passes.
+
+## Solution test run
+- Harbor oracle reward `1` twice on the same final digest.
+- All tagged tests pass; no retries, flakes, hidden network, or shared test state.
+
+## Difficulty calibration
+- Use many orthogonal families, not duplicate assertions.
+- Fail site and fix site should differ; frontend/backend must reconcile where
+  architecture supports it.
+- Run a blind solver with no tests/solution. If it passes the protected suite,
+  harden the defect architecture and rerun every gate.
+- Final audit must rate the package submit-ready before upload.
+
+## Returned imports
+- Download the returned package and preserve its generated identity/task shape.
+- Generic verification feedback still requires a claim-by-claim fairness audit.
+- Upload only through **Upload fixed version** using a newly normalized archive.

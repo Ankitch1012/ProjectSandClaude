@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bywash &mdash; The Marsden Flight</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="mast">
+      <div class="mast-name">
+        <span class="mast-word">Bywash</span>
+        <span class="mast-place" data-testid="flight-name">The Marsden Flight</span>
+      </div>
+      <div class="mast-meta">
+        <span class="chip" data-testid="boat-name">&mdash;</span>
+        <span class="chip" data-testid="boat-place" data-place="">on the tail water</span>
+        <span class="chip" data-testid="worked-count" data-count="0">0 worked</span>
+      </div>
+    </header>
+
+    <p class="notice" data-testid="notice" hidden></p>
+
+    <main class="yard">
+      <section class="elevation" data-testid="elevation">
+        <h2 class="panel-head">The flight, tail water to summit</h2>
+        <div class="stage" data-testid="flight-stage">
+          <div class="stage-rungs" data-testid="stage-rungs"></div>
+        </div>
+      </section>
+
+      <aside class="plan" data-testid="plan-panel">
+        <h2 class="panel-head">The plan</h2>
+        <form class="composer" data-testid="step-composer">
+          <label class="composer-label" for="pick-chamber">Chamber</label>
+          <select id="pick-chamber" data-testid="pick-chamber"></select>
+          <label class="composer-label" for="pick-operation">Operation</label>
+          <select id="pick-operation" data-testid="pick-operation"></select>
+          <button type="submit" class="composer-add" data-testid="add-step">Add to the plan</button>
+        </form>
+        <div class="plan-tools">
+          <button type="button" class="plan-tool" data-testid="undo-step">Take back the last step</button>
+          <button type="button" class="plan-tool" data-testid="clear-plan">Start the plan again</button>
+        </div>
+        <p class="refusal" data-testid="refusal" hidden></p>
+        <ol class="steps" data-testid="step-list"></ol>
+        <p class="steps-empty" data-testid="steps-empty">No steps written down yet.</p>
+      </aside>
+    </main>
+
+    <section class="account" data-testid="account">
+      <h2 class="panel-head">The water account</h2>
+      <div class="gauges" data-testid="pound-list"></div>
+      <div class="ledger" data-testid="ledger">
+        <span class="ledger-figure" data-testid="account-figure" data-field="drawn" data-value="0"></span>
+        <span class="ledger-figure" data-testid="account-figure" data-field="delivered" data-value="0"></span>
+        <span class="ledger-figure" data-testid="account-figure" data-field="standing" data-value="0"></span>
+        <span class="ledger-balance" data-testid="account-balances" data-balances="true"></span>
+      </div>
+    </section>
+
+    <section class="desk">
+      <div class="desk-panel" data-testid="gauge-book">
+        <h2 class="panel-head">The gauge book</h2>
+        <ul class="gauge-list" data-testid="gauge-list"></ul>
+      </div>
+
+      <div class="desk-panel" data-testid="passage-state" data-complete="false">
+        <h2 class="panel-head">The passage</h2>
+        <p class="passage-line" data-testid="passage-line"></p>
+        <ul class="worked-list" data-testid="worked-list"></ul>
+        <p class="worked-empty" data-testid="worked-empty">No chamber worked through yet.</p>
+      </div>
+    </section>
+
+    <script src="app.js"></script>
+  </body>
+</html>

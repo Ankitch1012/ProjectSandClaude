@@ -1,0 +1,27 @@
+schema_version = "1.1"
+
+[task]
+name = "sand/sandwich-4e718574-9109-4db7-92b0-3614ab91c56c"
+
+[metadata]
+source_type = "sandwich"
+stack = "nextjs"
+fail_to_pass_count = 30
+pass_to_pass_count = 5
+
+[environment]
+docker_image = "sand-pending-build:import"
+allow_internet = true
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+build_timeout_sec = 1200
+
+[verifier]
+timeout_sec = 600
+user = "root"
+
+[agent]
+timeout_sec = 1800
+user = "root"

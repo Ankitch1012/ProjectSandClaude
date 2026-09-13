@@ -1,0 +1,158 @@
+diff --git a/backend/server.js b/backend/server.js
+index 28fdc1f..d14c6c9 100644
+--- a/backend/server.js
++++ b/backend/server.js
+@@ -47,21 +47,39 @@ function deskFor(req) {
+ }
+ 
+ function latestCount(row) {
+-  return row.counts[0];
++  return row.counts.at(-1);
+ }
+ 
+ function variance(row) {
+   return latestCount(row) - row.onHand;
+ }
+ 
++function binParts(bin) {
++  const match = /^([A-Z]+)-(\d+)$/.exec(bin);
++  return match ? { aisle: match[1], position: Number(match[2]) } : null;
++}
++
+ function canLink(item) {
+-  return item.rows.length === 2 &&
+-    item.rows[0].sku === item.rows[1].sku &&
+-    variance(item.rows[0]) + variance(item.rows[1]) === 0;
++  if (item.rows.length !== 2) return false;
++  const [left, right] = item.rows;
++  const a = binParts(left.bin);
++  const b = binParts(right.bin);
++  return Boolean(
++    a && b &&
++    a.aisle === b.aisle &&
++    Math.abs(a.position - b.position) === 1 &&
++    left.sku !== right.sku &&
++    variance(left) !== 0 &&
++    variance(left) + variance(right) === 0
++  );
+ }
+ 
+ function requiredScans(item) {
+-  return item.serialized ? 0 : item.rows.reduce((sum, row) => sum + Math.max(0, -variance(row)), 0);
++  if (!item.serialized) return 0;
++  return item.rows.reduce(
++    (sum, row) => sum + (row.serialRequired ?? Math.max(0, -variance(row))),
++    0,
++  );
+ }
+ 
+ function scanned(item) {
+@@ -69,7 +87,8 @@ function scanned(item) {
+ }
+ 
+ function canAdjust(item) {
+-  return item.rows.every(row => Math.abs(variance(row)) < item.threshold);
++  return item.rows.every(row => Math.abs(variance(row)) <= item.threshold) &&
++    scanned(item) >= requiredScans(item);
+ }
+ 
+ function present(item) {
+@@ -79,7 +98,7 @@ function present(item) {
+   return {
+     ...clone(item),
+     rows: item.rows.map(row => ({ ...clone(row), latest: latestCount(row), variance: variance(row) })),
+-    summary: { onHand, inTransit, available: onHand, latest, variance: latest - onHand - inTransit },
++    summary: { onHand, inTransit, available: onHand + inTransit, latest, variance: latest - onHand },
+     canLink: canLink(item),
+     canAdjust: canAdjust(item),
+     requiredScans: requiredScans(item),
+@@ -92,7 +111,8 @@ function sendDesk(res, desk) {
+ }
+ 
+ function transact(desk, change) {
+-  desk.undo.push({ cases: desk.cases });
++  desk.undo.push({ cases: clone(desk.cases) });
++  if (desk.undo.length > 20) desk.undo.shift();
+   change();
+ }
+ 
+@@ -114,7 +134,8 @@ app.post('/api/cases/:id/scan', (req, res) => {
+   if (!item?.serialized) return res.status(400).json({ error: 'not serialized' });
+   transact(desk, () => {
+     item.rows[0].scanned ||= [];
+-    item.rows[0].scanned.push('SN-MISS-1');
++    const serial = `SN-MISS-${item.rows[0].scanned.length + 1}`;
++    if (!item.rows[0].scanned.includes(serial)) item.rows[0].scanned.push(serial);
+   });
+   sendDesk(res, desk);
+ });
+diff --git a/frontend/src/App.js b/frontend/src/App.js
+index 794a851..56eb001 100644
+--- a/frontend/src/App.js
++++ b/frontend/src/App.js
+@@ -1,8 +1,10 @@
+ import React, { useEffect, useMemo, useState } from 'react';
+ 
+ const SESSION_KEY = 'countback-session';
+-const sessionId = crypto.randomUUID();
+-sessionStorage.setItem(SESSION_KEY, sessionId);
++const SELECTED_KEY = 'countback-selected';
++const FILTER_KEY = 'countback-filter';
++const sessionId = sessionStorage.getItem(SESSION_KEY) || crypto.randomUUID();
++if (!sessionStorage.getItem(SESSION_KEY)) sessionStorage.setItem(SESSION_KEY, sessionId);
+ 
+ async function api(path, options = {}) {
+   const response = await fetch(path, {
+@@ -29,8 +31,8 @@ function CaseButton({ item, selected, onClick }) {
+ 
+ function App() {
+   const [desk, setDesk] = useState({ cases: [], undoCount: 0 });
+-  const [selectedId, setSelectedId] = useState('CC-104');
+-  const [filter, setFilter] = useState('all');
++  const [selectedId, setSelectedId] = useState(() => sessionStorage.getItem(SELECTED_KEY) || 'CC-104');
++  const [filter, setFilter] = useState(() => sessionStorage.getItem(FILTER_KEY) || 'all');
+   const [recount, setRecount] = useState('');
+   const [error, setError] = useState('');
+ 
+@@ -44,6 +46,8 @@ function App() {
+   };
+ 
+   useEffect(() => { refresh(); }, []);
++  useEffect(() => { sessionStorage.setItem(SELECTED_KEY, selectedId); }, [selectedId]);
++  useEffect(() => { sessionStorage.setItem(FILTER_KEY, filter); }, [filter]);
+ 
+   const selected = desk.cases.find(item => item.id === selectedId) || desk.cases[0];
+   const visible = useMemo(() => {
+@@ -54,12 +58,6 @@ function App() {
+ 
+   const chooseFilter = next => {
+     setFilter(next);
+-    const nextVisible = next === 'all'
+-      ? desk.cases
+-      : next === 'serialized'
+-        ? desk.cases.filter(item => item.serialized)
+-        : desk.cases.filter(item => item.status === next);
+-    if (nextVisible[0]) setSelectedId(nextVisible[0].id);
+   };
+ 
+   const mutate = async (path, options = {}) => {
+diff --git a/frontend/src/styles.css b/frontend/src/styles.css
+index 0321f07..eddf7ee 100644
+--- a/frontend/src/styles.css
++++ b/frontend/src/styles.css
+@@ -238,15 +238,5 @@ dd { margin: 3px 0 0; font: 700 12px ui-monospace, monospace; }
+   .decision-actions { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
+   .decision-actions button { min-height: 38px; }
+ }
+-
+-/* narrow reconciliation failures */
+-.count-cell { transform: translateY(18px); }
+-.decision-dock { left: 300px; right: 0; bottom: 0; }
+-@media (max-width: 760px) {
+-  .sheet { min-width: 680px; }
+-  .metric-strip { width: 660px; overflow: hidden; }
+-  .decision-actions { width: 540px; grid-template-columns: repeat(4, 128px); }
+-  .decision-dock { left: 0; right: -120px; bottom: 12px; }
+-}
+ .loading { padding: 40px; }
+ .error { padding: 8px 20px; color: white; background: var(--red); font-size: 12px; }
